@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+//apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 28
@@ -35,4 +37,26 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+}
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+        repositories {
+            maven {
+                url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
+                credentials(HttpHeaderCredentials) {
+                    name = "Private-Token"
+                    value = gitLabPrivateToken
+                    // the variable resides in ~/.gradle/gradle.properties
+                }
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+            }
+        }
+    }
 }

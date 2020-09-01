@@ -3,6 +3,17 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
+            name "GitLab"
+            credentials(HttpHeaderCredentials) {
+                name = 'Job-Token'
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.0"
