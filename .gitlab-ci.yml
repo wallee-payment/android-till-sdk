@@ -22,8 +22,8 @@ before_script:
   - set -o pipefail
 
 stages:
-  - build
-  - test
+ # - build
+ # - test
   - deploy
 
 lintDebug:
