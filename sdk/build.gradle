@@ -53,8 +53,10 @@ afterEvaluate {
                 url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
                 name "GitLab"
                 credentials(HttpHeaderCredentials) {
-                    name = 'Private-Token'
-                    value = gitLabPrivateToken
+                    name = 'Job-Token'
+                    value = System.getenv("CI_JOB_TOKEN")
+                    //name = 'Private-Token'
+                    //value = gitLabPrivateToken
                     // the variable resides in ~/.gradle/gradle.properties
                 }
                 authentication {

@@ -1,6 +1,0 @@
-deploy:
-  image: gradle:6.5-jdk11
-  script:
-    - 'gradle publish'
-  only:
-    - master
