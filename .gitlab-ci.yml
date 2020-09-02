@@ -22,27 +22,7 @@ before_script:
   - set -o pipefail
 
 stages:
- # - build
- # - test
   - deploy
-
-lintDebug:
-  stage: build
-  script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
-
-assembleDebug:
-  stage: build
-  script:
-    - ./gradlew assembleDebug
-  artifacts:
-    paths:
-      - app/build/outputs/
-
-debugTests:
-  stage: test
-  script:
-    - ./gradlew -Pci --console=plain :app:testDebug
 
 deploy:
   #image: gradle:6.5-jdk11
