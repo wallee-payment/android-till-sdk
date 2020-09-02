@@ -43,13 +43,17 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
+                groupId 'com.wallee.android.till'
+                artifactId 'sdk'
+                version '0.9'
             }
         }
         repositories {
             maven {
                 url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
+                name "GitLab"
                 credentials(HttpHeaderCredentials) {
-                    name = "Private-Token"
+                    name = 'Private-Token'
                     value = gitLabPrivateToken
                     // the variable resides in ~/.gradle/gradle.properties
                 }
