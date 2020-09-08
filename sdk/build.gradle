@@ -45,7 +45,7 @@ afterEvaluate {
                 from components.release
                 groupId 'com.wallee.android.till'
                 artifactId 'sdk'
-                version '0.9.2'
+                version '0.9.3'
             }
         }
         repositories {

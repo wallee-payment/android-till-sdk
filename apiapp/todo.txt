@@ -1,0 +1,11 @@
+cancel
+ITransaction
+3rd party
+
+compatibility/ serializable -> security
+
+state / error code
+
+before pinpad 3rd party
+
+immmutable, builder

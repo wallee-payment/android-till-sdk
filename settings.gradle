@@ -1,2 +1,3 @@
 include ':sdk'
+include ':apiapp'
 rootProject.name = "com.wallee.android.till.sdk"
