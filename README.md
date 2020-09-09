@@ -29,3 +29,26 @@ Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference
 //API call
 con.authorizeTransaction(transaction);
 ```
+
+## How to get it
+
+Copy and paste this inside your pom.xml dependencies block.
+
+```
+<dependency>
+  <groupId>com.wallee.android.till</groupId>
+  <artifactId>sdk</artifactId>
+  <version>0.9.6</version>
+</dependency>
+```
+
+You will also need to add the repository to your pom.xml file.
+
+```
+<repositories>
+  <repository>
+    <id>gitlab-maven</id>
+    <url>https://gitlab.com/api/v4/projects/21028526/packages/maven</url>
+  </repository>
+</repositories>
+```
