@@ -45,12 +45,13 @@ afterEvaluate {
                 from components.release
                 groupId 'com.wallee.android.till'
                 artifactId 'sdk'
-                version '0.9.3'
+                version '0.9.1'
             }
         }
         repositories {
             maven {
-                url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
+                //url "https://gitlab.com/api/v4/projects/20860608/packages/maven"
+                url "https://gitlab.com/api/v4/projects/19567497/packages/maven"
                 name "GitLab"
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
