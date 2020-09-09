@@ -9,7 +9,7 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static com.wallee.android.till.sdk.data.Utils.check;
+
 import static com.wallee.android.till.sdk.data.Utils.checkAscii;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 

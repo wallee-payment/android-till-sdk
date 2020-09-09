@@ -57,12 +57,7 @@ public abstract class AbstractActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setAction(action);
             List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL);
-            Collections.sort(activities, new Comparator<ResolveInfo>() {
-                @Override
-                public int compare(ResolveInfo o1, ResolveInfo o2) {
-                    return o1.activityInfo.packageName.compareTo(o2.activityInfo.packageName);
-                }
-            });//make execution deterministic by sorting alphabetically
+            Collections.sort(activities, (o1, o2) -> o1.activityInfo.packageName.compareTo(o2.activityInfo.packageName));//make execution deterministic by sorting alphabetically
             for (ResolveInfo info : activities) {
                 result.add(info.activityInfo);
             }
