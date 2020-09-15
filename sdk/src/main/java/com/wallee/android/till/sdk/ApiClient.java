@@ -17,10 +17,10 @@ import com.wallee.android.till.sdk.data.Transaction;
 /**
  * The public interface to the service API.
  * The activity that uses this class should call 'bind' in onCreate and 'unbind' in onDestroy.
- * Currently the only real API call is authorizeTransaction.
+ * Currently the only API call is 'authorizeTransaction'.
  */
-public class ApiConnection {
-    private static final String TAG = "ApiConnection";
+public class ApiClient {
+    private static final String TAG = "ApiClient";
     private Messenger myService;
     private final Messenger callback;
     private final ResponseHandler handler;
@@ -47,15 +47,18 @@ public class ApiConnection {
         }
     };
 
-
-    public ApiConnection(ResponseHandler handler) {
+    /**
+     * Instantiate an ApiClient with the given ResponseHandler.
+     * @param handler the handler for any responses from the API server.
+     */
+    public ApiClient(ResponseHandler handler) {
         this.handler = handler;
         callback = new Messenger(handler);
     }
 
     /**
-     * Initialize connection to remote service.
-     * @param activity the activity the service will get bound to
+     * Bind the API server to the given Activity. This will initialize the API server and enable calling API method.
+     * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this Activity.
      */
     public void bind(Activity activity) {
         Intent intent = new Intent()
@@ -64,14 +67,18 @@ public class ApiConnection {
         Log.d(TAG, "Service started: "+started);
     }
 
+    /**
+     * Unbind the API server from the given Activity.
+     * @param activity the activity the service will get unbound from. Must be the same activity that was passed into 'bind'.
+     */
     public void unbind(Activity activity) {
         activity.unbindService(this.con);
     }
 
     /**
-     * Example API call.
-     * @param transaction the transaction
-     * @throws RemoteException
+     * Authorize a transaction.
+     * @param transaction the transaction that should be authorized.
+     * @throws RemoteException any errors while communicating with the API server.
      */
     public void authorizeTransaction(Transaction transaction) throws RemoteException {
         Message msg = Message.obtain();

@@ -11,7 +11,7 @@ import com.wallee.android.till.sdk.data.Transaction;
 
 /**
  * Callbacks from the service API.
- * The ApiConnection needs a concrete implementation of this class to dispatch the API responses.
+ * The ApiClient needs a concrete implementation of this class to dispatch the API responses.
  */
 public abstract class ResponseHandler extends Handler {
 
@@ -34,7 +34,7 @@ public abstract class ResponseHandler extends Handler {
     }
 
     /**
-     * The response from an authorizeTransaction call.
+     * The response from an 'authorizeTransaction' call.
      * Check transaction.getState() and in case of errors also transaction.getFailureReason()
      * @param transaction the transaction as it was processed.
      */
