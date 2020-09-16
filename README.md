@@ -13,42 +13,59 @@ e.g. the [A920](https://www.pax.us/portfolio_page/a920/)
 This SDK integrates access to terminal hardware like e.g. the card/stripe/nfc reader
 and allows for easy payment processing with wallee.
 
-## Examples
+## Example
 
 ```
-//establish connection to payment service
-MockResponseHandler responseHandler = new MockResponseHandler(this);
-ApiConnection con = new ApiConnection(responseHandler);
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-//create Transaction object
-BigDecimal amount = new BigDecimal(amountString);
-List<LineItem> lineItems = new LineItem.ListBuilder("Widget A", amount).getCurrent().setName("bar").addTax("VAT", BigDecimal.TEN).getListBuilder().
-addNext("OtherWidget", BigDecimal.ONE).getCurrent().setType(LineItemType.FEE).getListBuilder().build();
-Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference(invoiceRef).setMerchantReference("MREF-123").build();
+        //dummy example implementation of an API response handler
+        ResponseHandler responseHandler = new ResponseHandler() {
+            @Override
+            public void authorizeTransactionReply(Transaction transaction) {
+                Log.i("Main", "authorizeTransactionReply:  + transaction;
+            }
+        };
 
-//API call
-con.authorizeTransaction(transaction);
+        //create the client with a reference to the response handler
+        ApiClient client = new ApiClient(responseHandler);
+        //and establish connection to API service
+        client.bind(this);
+        
+        //create your Transaction object
+        BigDecimal amount = new BigDecimal("12.34");
+        List<LineItem> lineItems = new LineItem.ListBuilder("Widget A", amount).build();
+        Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference("IREF-123").setMerchantReference("MREF-123").build();
+        
+        //and call the API service with your Transaction
+        try {
+            client.authorizeTransaction(transaction);
+        } catch(RemoteException ex) {
+            Log.e(TAG, "API call failed", ex);
+        }
 ```
 
 ## How to get it
 
-Copy and paste this inside your pom.xml dependencies block.
+Copy and paste this inside your build.gradle dependencies block.
 
 ```
-<dependency>
-  <groupId>com.wallee.android.till</groupId>
-  <artifactId>sdk</artifactId>
-  <version>0.9.6</version>
-</dependency>
+dependencies {
+    implementation 'com.wallee.android.till:sdk:0.9.7'
+}
 ```
 
-You will also need to add the repository to your pom.xml file.
+You will also need to add the SDK repository to your project build.gradle file.
 
 ```
-<repositories>
-  <repository>
-    <id>gitlab-maven</id>
-    <url>https://gitlab.com/api/v4/projects/21028526/packages/maven</url>
-  </repository>
-</repositories>
+allprojects {
+    repositories {
+        google()
+        maven {
+            url "https://gitlab.com/api/v4/projects/21028526/packages/maven"
+        }
+    }
+}
 ```
