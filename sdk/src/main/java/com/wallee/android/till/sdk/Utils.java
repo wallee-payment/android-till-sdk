@@ -22,8 +22,8 @@ public class Utils {
 
     /**
      * Check whether a certain transaction is processable. Should be called in onCreate.
-     * @param a
-     * @param checker
+     * @param a the 3rd party activity that is being checked.
+     * @param checker SAM-type interface to do the check. If the check returns false the activity will be terminated without processing the Transaction.
      */
     public static void checkTransaction(Activity a, TransactionChecker checker) {
         Transaction transaction = getTransaction(a.getIntent());
@@ -34,15 +34,15 @@ public class Utils {
     }
 
     /**
-     * Process a Transaction.
-     * @param a
-     * @param p
+     * 3rd party processing of a Transaction.
+     * @param a the 3rd party activity
+     * @param p SAM-type interface for processing the activity.
      */
     public static Transaction processTransaction(Activity a, TransactionProcessor p) {
         Transaction transaction = getTransaction(a.getIntent());
         try {
             Transaction processedTransaction = p.process(transaction);
-            a.setResult(0, new Intent().putExtra(KEY_TRANSACTION_JSON, GSON.toJson(processedTransaction)));
+            a.setResult(ReturnCode.OK.ordinal(), new Intent().putExtra(KEY_TRANSACTION_JSON, GSON.toJson(processedTransaction)));
             a.finish();
             return processedTransaction;
         } catch (Exception ex) {

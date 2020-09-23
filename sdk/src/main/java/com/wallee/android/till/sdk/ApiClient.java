@@ -57,7 +57,7 @@ public class ApiClient {
     }
 
     /**
-     * Bind the API server to the given Activity. This will initialize the API server and enable calling API method.
+     * Bind the API server to the given Activity. This will initialize the API server and enable calling API methods.
      * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this Activity.
      */
     public void bind(Activity activity) {
@@ -82,7 +82,7 @@ public class ApiClient {
      */
     public void authorizeTransaction(Transaction transaction) throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessage.AUTHORIZE_TRANSACTION.ordinal();
+        msg.arg1 = ApiMessageType.AUTHORIZE_TRANSACTION.ordinal();
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_JSON, Utils.GSON.toJson(transaction));
 

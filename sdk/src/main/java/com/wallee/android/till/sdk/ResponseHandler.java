@@ -14,6 +14,7 @@ import com.wallee.android.till.sdk.data.Transaction;
  * The ApiClient needs a concrete implementation of this class to dispatch the API responses.
  */
 public abstract class ResponseHandler extends Handler {
+    private static final String TAG = "ResponseHandler";
 
     public ResponseHandler() {
     }
@@ -26,10 +27,12 @@ public abstract class ResponseHandler extends Handler {
     public final void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
-        if (msg.arg1 == ApiMessage.AUTHORIZE_TRANSACTION.ordinal()) {
+        if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
             authorizeTransactionReply(transaction);
+        } else {
+            Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
     }
 
