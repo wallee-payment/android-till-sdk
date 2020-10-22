@@ -12,6 +12,8 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.wallee.android.till.sdk.data.Reserve;
+import com.wallee.android.till.sdk.data.Reverse;
 import com.wallee.android.till.sdk.data.Transaction;
 
 /**
@@ -91,4 +93,35 @@ public class ApiClient {
         myService.send(msg);
     }
 
+    /**
+     * Reverse a transaction (or a reserved transaction).
+     * @param reverse the reverse that should be processed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void reverseTransaction(Reverse reverse) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.REVERSE_TRANSACTION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_REVERSE_JSON, Utils.GSON.toJson(reverse));
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Reserve a transaction.
+     * @param reserve the reserve that should be processed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void reserveTransaction(Reserve reserve) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.RESERVE_TRANSACTION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_RESERVE_JSON, Utils.GSON.toJson(reserve));
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
 }

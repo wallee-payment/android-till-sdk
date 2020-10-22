@@ -21,6 +21,7 @@ public final class Transaction {
 
     private final String merchantReference;
     private final String invoiceReference;
+    private final Long reserveReference;
 
     private final String customerId;
     private final Currency currency;
@@ -34,15 +35,22 @@ public final class Transaction {
     private final String failureReason;
     private final TransactionCompletionBehavior transactionCompletionBehavior;
 
+    private final String authorizationResponseCode;
+    private final String authorizationCode;
+    private final String terminalId;
+    private final Long sequenceCount;
+    private final String transactionTime;
+
     private final Map<String, String> metaData;
 
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, Long tokenId, TransactionCompletionBehavior transactionCompletionBehavior, State state, String failureReason, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, Long reserveReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, Long tokenId, TransactionCompletionBehavior transactionCompletionBehavior, State state, String failureReason, String authorizationResponseCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
+        this.reserveReference = reserveReference;
         this.customerId = customerId;
         this.currency = currency;
         this.customerEmailAddress = customerEmailAddress;
@@ -52,9 +60,14 @@ public final class Transaction {
         this.transactionCompletionBehavior = requireNonNull(transactionCompletionBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
 
-        // FIXME: For read only properties we need a solution to prevent public modification (state and failureReason).
+        // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
         this.failureReason = failureReason;
+        this.authorizationResponseCode = authorizationResponseCode;
+        this.authorizationCode = authorizationCode;
+        this.terminalId = terminalId;
+        this.sequenceCount = sequenceCount;
+        this.transactionTime = transactionTime;
 
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
@@ -78,6 +91,10 @@ public final class Transaction {
 
     public String getInvoiceReference() {
         return invoiceReference;
+    }
+
+    public Long getReserveReference() {
+        return reserveReference;
     }
 
     public String getCustomerId() {
@@ -112,6 +129,26 @@ public final class Transaction {
         return transactionCompletionBehavior;
     }
 
+    public String getAuthorizationResponseCode() {
+        return authorizationResponseCode;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
+    }
+
+    public String getTerminalId() {
+        return terminalId;
+    }
+
+    public Long getSequenceCount() {
+        return sequenceCount;
+    }
+
+    public String getTransactionTime() {
+        return transactionTime;
+    }
+
     public Map<String, String> getMetaData() {
         return metaData;
     }
@@ -129,7 +166,8 @@ public final class Transaction {
     public String toString() {
         return getTotalAmountIncludingTax() + " " + getCurrency() +
                 "\nmerchantRef=" + merchantReference +
-                "\ninvoiceRef=" + invoiceReference;
+                "\ninvoiceRef=" + invoiceReference +
+                "\nreserveRef=" + reserveReference;
     }
 
     public static class Builder {
@@ -137,6 +175,7 @@ public final class Transaction {
 
         private String merchantReference = "";
         private String invoiceReference;
+        private Long reserveReference;
 
         private String customerId;
         private Currency currency = Currency.getInstance("CHF");
@@ -150,8 +189,13 @@ public final class Transaction {
         private String failureReason;
         private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
 
-        private Map<String, String> metaData = new HashMap<>();
+        private String authorizationResponseCode;
+        private String authorizationCode;
+        private String terminalId;
+        private Long sequenceCount;
+        private String transactionTime;
 
+        private Map<String, String> metaData = new HashMap<>();
 
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -165,7 +209,9 @@ public final class Transaction {
             this.lineItems = new ArrayList<>(transaction.lineItems);
             this.merchantReference = transaction.merchantReference;
             this.invoiceReference = transaction.invoiceReference;
+            this.reserveReference = transaction.reserveReference;
             this.customerId = transaction.customerId;
+            this.currency = transaction.currency;
             this.customerEmailAddress = transaction.customerEmailAddress;
             this.billingAddress = transaction.billingAddress;
             this.shippingAddress = transaction.shippingAddress;
@@ -173,6 +219,11 @@ public final class Transaction {
             this.state = transaction.state;
             this.failureReason = transaction.failureReason;
             this.transactionCompletionBehavior = transaction.transactionCompletionBehavior;
+            this.authorizationResponseCode = transaction.authorizationResponseCode;
+            this.authorizationCode = transaction.authorizationCode;
+            this.terminalId = transaction.terminalId;
+            this.sequenceCount = transaction.sequenceCount;
+            this.transactionTime = transaction.transactionTime;
             this.metaData = new HashMap<>(transaction.metaData);
         }
 
@@ -204,6 +255,11 @@ public final class Transaction {
 
         public Builder setInvoiceReference(String invoiceReference) {
             this.invoiceReference = invoiceReference;
+            return this;
+        }
+
+        public Builder setReserveReference(Long reserveReference) {
+            this.reserveReference = reserveReference;
             return this;
         }
 
@@ -250,13 +306,38 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setAuthorizationResponseCode(String authorizationResponseCode) {
+            this.authorizationResponseCode = authorizationResponseCode;
+            return this;
+        }
+
+        public Builder setAuthorizationCode(String authorizationCode) {
+            this.authorizationCode = authorizationCode;
+            return this;
+        }
+
+        public Builder setTerminalId(String terminalId) {
+            this.terminalId = terminalId;
+            return this;
+        }
+
+        public Builder setSequenceCount(Long sequenceCount) {
+            this.sequenceCount = sequenceCount;
+            return this;
+        }
+
+        public Builder setTransactionTime(String transactionTime) {
+            this.transactionTime = transactionTime;
+            return this;
+        }
+
         public Builder putMetaData(String key, String value) {
             this.metaData.put(key, value);
             return this;
         }
 
         public Transaction build() {
-            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.tokenId, this.transactionCompletionBehavior, this.state, this.failureReason, this.metaData);
+            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.reserveReference, this.customerId, currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.tokenId, this.transactionCompletionBehavior, this.state, this.failureReason, this.authorizationResponseCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.metaData);
             return transaction;
         }
     }

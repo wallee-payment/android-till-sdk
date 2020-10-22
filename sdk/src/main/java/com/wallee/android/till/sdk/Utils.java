@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.wallee.android.till.sdk.data.Reserve;
+import com.wallee.android.till.sdk.data.Reverse;
 import com.wallee.android.till.sdk.data.Transaction;
 
 public class Utils {
@@ -14,10 +16,22 @@ public class Utils {
 
     public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     public static final String KEY_TRANSACTION_JSON = "transaction";
+    public static final String KEY_REVERSE_JSON = "reverse";
+    public static final String KEY_RESERVE_JSON = "reserve";
 
     public static Transaction getTransaction(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
         return GSON.fromJson(json, Transaction.class);
+    }
+
+    public static Reverse getReverse(Intent intent) {
+        String json = intent.getStringExtra(KEY_REVERSE_JSON);
+        return GSON.fromJson(json, Reverse.class);
+    }
+
+    public static Reserve getReserve(Intent intent) {
+        String json = intent.getStringExtra(KEY_RESERVE_JSON);
+        return GSON.fromJson(json, Reserve.class);
     }
 
     /**

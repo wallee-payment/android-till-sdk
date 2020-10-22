@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.wallee.android.till.sdk.data.Reserve;
+import com.wallee.android.till.sdk.data.Reverse;
 import com.wallee.android.till.sdk.data.Transaction;
 
 /**
@@ -31,6 +33,14 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
             authorizeTransactionReply(transaction);
+        } else if (msg.arg1 == ApiMessageType.REVERSE_TRANSACTION.ordinal()) {
+            Bundle bundle = msg.getData();
+            Reverse reverse = Utils.GSON.fromJson(bundle.getString(Utils.KEY_REVERSE_JSON), Reverse.class);
+            reverseTransactionReply(reverse);
+        } else if (msg.arg1 == ApiMessageType.RESERVE_TRANSACTION.ordinal()) {
+            Bundle bundle = msg.getData();
+            Reserve reserve = Utils.GSON.fromJson(bundle.getString(Utils.KEY_RESERVE_JSON), Reserve.class);
+            reserveTransactionReply(reserve);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -42,4 +52,18 @@ public abstract class ResponseHandler extends Handler {
      * @param transaction the transaction as it was processed.
      */
     public abstract void authorizeTransactionReply(Transaction transaction);
+
+    /**
+     * The response from an 'reverseTransaction' call.
+     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * @param reverse the reverse as it was processed.
+     */
+    public abstract void reverseTransactionReply(Reverse reverse);
+
+    /**
+     * The response from an 'reserveTransaction' call.
+     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * @param reserve the reserve as it was processed.
+     */
+    public abstract void reserveTransactionReply(Reserve reserve);
 }
