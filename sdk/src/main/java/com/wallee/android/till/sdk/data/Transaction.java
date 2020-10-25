@@ -3,9 +3,11 @@ package com.wallee.android.till.sdk.data;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,6 +161,10 @@ public final class Transaction {
             result = result.add(item.getTotalAmountIncludingTax());
         }
         return result;
+    }
+
+    public Date getParsedTransactionTime() throws ParseException {
+        return Utils.parseTime(transactionTime, "transactionTime");
     }
 
     @NonNull

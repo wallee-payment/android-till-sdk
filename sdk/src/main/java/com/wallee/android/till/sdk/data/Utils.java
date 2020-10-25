@@ -1,9 +1,14 @@
 package com.wallee.android.till.sdk.data;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 class Utils {
@@ -71,6 +76,13 @@ class Utils {
         return t;
     }
 
+    static Date parseTime(String s, String name) throws ParseException {
+        if (s == null) {
+            throw new ParseException(name + " must not be null", 0);
+        }
+        return TRANSACTION_TIME_FORMAT.parse(s);
+    }
+
     // below patterns taken from wallee io.wallee.lib.common.base.validation.StringValidationType
     public static final String UTF8_NON_PRINTABLE = "\\p{C}\\p{Cn}";
 
@@ -93,4 +105,10 @@ class Utils {
      * Matches all printable UTF-8 chars including spaces but without line breaks.
      */
     public static final String UTF8_SINGLE_LINE = "([[^" + UTF8_NON_PRINTABLE + UNICODE_LINE_BREAKS + "][\t]])*";
+
+    /**
+     * A formatter for parsing transaction date.
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static final SimpleDateFormat TRANSACTION_TIME_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 }

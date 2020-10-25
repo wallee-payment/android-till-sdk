@@ -2,6 +2,9 @@ package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import static com.wallee.android.till.sdk.data.Utils.checkAscii;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
@@ -93,6 +96,10 @@ public final class Reverse {
 
     public String getTransactionTime() {
         return transactionTime;
+    }
+
+    public Date getParsedTransactionTime() throws ParseException {
+        return Utils.parseTime(transactionTime, "transactionTime");
     }
 
     @NonNull

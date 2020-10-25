@@ -3,7 +3,9 @@ package com.wallee.android.till.sdk.data;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Currency;
+import java.util.Date;
 
 import static com.wallee.android.till.sdk.data.Utils.checkAscii;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
@@ -109,6 +111,10 @@ public final class Reserve {
 
     public Long getReserveReference() {
         return reserveReference;
+    }
+
+    public Date getParsedTransactionTime() throws ParseException {
+        return Utils.parseTime(transactionTime, "transactionTime");
     }
 
     @NonNull
