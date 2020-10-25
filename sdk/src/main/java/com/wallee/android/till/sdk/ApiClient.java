@@ -13,7 +13,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.wallee.android.till.sdk.data.Reserve;
-import com.wallee.android.till.sdk.data.Reverse;
+import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 
 /**
@@ -94,15 +94,15 @@ public class ApiClient {
     }
 
     /**
-     * Reverse a transaction (or a reserved transaction).
-     * @param reverse the reverse that should be processed.
+     * Cancel a transaction (or a reserved transaction).
+     * @param cancellation the cancellation that should be processed.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void reverseTransaction(Reverse reverse) throws RemoteException {
+    public void cancelTransaction(Cancellation cancellation) throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.REVERSE_TRANSACTION.ordinal();
+        msg.arg1 = ApiMessageType.CANCEL_TRANSACTION.ordinal();
         Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_REVERSE_JSON, Utils.GSON.toJson(reverse));
+        bundle.putString(Utils.KEY_CANCELLATION_JSON, Utils.GSON.toJson(cancellation));
 
         msg.setData(bundle);
         msg.replyTo = callback;

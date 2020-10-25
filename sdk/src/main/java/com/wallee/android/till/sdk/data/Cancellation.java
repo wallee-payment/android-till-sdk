@@ -11,10 +11,10 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 /**
  *
  */
-public final class Reverse {
+public final class Cancellation {
 
-    private final Long sequenceCountToReverse;
-    private final Long reserveReferenceToReverse;
+    private final Long sequenceCountToCancel;
+    private final Long reserveReferenceToCancel;
 
     private final String merchantReference;
 
@@ -33,9 +33,9 @@ public final class Reverse {
     /**
      * Ctor for Builder
      */
-    private Reverse(Long sequenceCountToReverse, Long reserveReferenceToReverse, String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime) {
-        this.sequenceCountToReverse = sequenceCountToReverse;
-        this.reserveReferenceToReverse = reserveReferenceToReverse;
+    private Cancellation(Long sequenceCountToCancel, Long reserveReferenceToCancel, String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime) {
+        this.sequenceCountToCancel = sequenceCountToCancel;
+        this.reserveReferenceToCancel = reserveReferenceToCancel;
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.customerId = customerId;
         this.customerEmailAddress = customerEmailAddress;
@@ -50,12 +50,12 @@ public final class Reverse {
         this.transactionTime = transactionTime;
     }
 
-    public Long getSequenceCountToReverse() {
-        return sequenceCountToReverse;
+    public Long getSequenceCountToCancel() {
+        return sequenceCountToCancel;
     }
 
-    public Long getReserveReferenceToReverse() {
-        return reserveReferenceToReverse;
+    public Long getReserveReferenceToCancel() {
+        return reserveReferenceToCancel;
     }
 
     public String getMerchantReference() {
@@ -105,14 +105,14 @@ public final class Reverse {
     @NonNull
     @Override
     public String toString() {
-        return "sequenceCountToReverse=" + sequenceCountToReverse +
-                "\nreserveReferenceToReverse=" + reserveReferenceToReverse +
+        return "sequenceCountToCancel=" + sequenceCountToCancel +
+                "\nreserveReferenceToCancel=" + reserveReferenceToCancel +
                 "\nmerchantRef=" + merchantReference;
     }
 
     public static class Builder {
-        private Long sequenceCountToReverse;
-        private Long reserveReferenceToReverse;
+        private Long sequenceCountToCancel;
+        private Long reserveReferenceToCancel;
 
         private String merchantReference = "";
 
@@ -128,37 +128,37 @@ public final class Reverse {
         private Long sequenceCount;
         private String transactionTime;
 
-        public Builder(Long sequenceCountToReverse, Long reserveReferenceToReverse) {
-            this.sequenceCountToReverse = sequenceCountToReverse;
-            this.reserveReferenceToReverse = reserveReferenceToReverse;
+        public Builder(Long sequenceCountToCancel, Long reserveReferenceToCancel) {
+            this.sequenceCountToCancel = sequenceCountToCancel;
+            this.reserveReferenceToCancel = reserveReferenceToCancel;
         }
 
         /**
          * Copy ctor
-         * @param reverse
+         * @param cancellation
          */
-        public Builder(Reverse reverse) {
-            this.sequenceCountToReverse = reverse.sequenceCountToReverse;
-            this.reserveReferenceToReverse = reverse.reserveReferenceToReverse;
-            this.merchantReference = reverse.merchantReference;
-            this.customerId = reverse.customerId;
-            this.customerEmailAddress = reverse.customerEmailAddress;
-            this.tokenId = reverse.tokenId;
-            this.state = reverse.state;
-            this.failureReason = reverse.failureReason;
-            this.authorizationResponseCode = reverse.authorizationResponseCode;
-            this.terminalId = reverse.terminalId;
-            this.sequenceCount = reverse.sequenceCount;
-            this.transactionTime = reverse.transactionTime;
+        public Builder(Cancellation cancellation) {
+            this.sequenceCountToCancel = cancellation.sequenceCountToCancel;
+            this.reserveReferenceToCancel = cancellation.reserveReferenceToCancel;
+            this.merchantReference = cancellation.merchantReference;
+            this.customerId = cancellation.customerId;
+            this.customerEmailAddress = cancellation.customerEmailAddress;
+            this.tokenId = cancellation.tokenId;
+            this.state = cancellation.state;
+            this.failureReason = cancellation.failureReason;
+            this.authorizationResponseCode = cancellation.authorizationResponseCode;
+            this.terminalId = cancellation.terminalId;
+            this.sequenceCount = cancellation.sequenceCount;
+            this.transactionTime = cancellation.transactionTime;
         }
 
-        public Builder setSequenceCountToReverse(Long sequenceCountToReverse) {
-            this.sequenceCountToReverse = sequenceCountToReverse;
+        public Builder setSequenceCountToCancel(Long sequenceCountToCancel) {
+            this.sequenceCountToCancel = sequenceCountToCancel;
             return this;
         }
 
-        public Builder setReserveReferenceToReverse(Long reserveReferenceToReverse) {
-            this.reserveReferenceToReverse = reserveReferenceToReverse;
+        public Builder setReserveReferenceToCancel(Long reserveReferenceToCancel) {
+            this.reserveReferenceToCancel = reserveReferenceToCancel;
             return this;
         }
 
@@ -212,9 +212,9 @@ public final class Reverse {
             return this;
         }
 
-        public Reverse build() {
-            Reverse reverse = new Reverse(this.sequenceCountToReverse, this.reserveReferenceToReverse, this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime);
-            return reverse;
+        public Cancellation build() {
+            Cancellation cancellation = new Cancellation(this.sequenceCountToCancel, this.reserveReferenceToCancel, this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime);
+            return cancellation;
         }
     }
 }

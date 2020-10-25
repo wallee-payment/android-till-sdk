@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.wallee.android.till.sdk.data.Reserve;
-import com.wallee.android.till.sdk.data.Reverse;
+import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 
 /**
@@ -33,10 +33,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
             authorizeTransactionReply(transaction);
-        } else if (msg.arg1 == ApiMessageType.REVERSE_TRANSACTION.ordinal()) {
+        } else if (msg.arg1 == ApiMessageType.CANCEL_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            Reverse reverse = Utils.GSON.fromJson(bundle.getString(Utils.KEY_REVERSE_JSON), Reverse.class);
-            reverseTransactionReply(reverse);
+            Cancellation cancellation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELLATION_JSON), Cancellation.class);
+            cancelTransactionReply(cancellation);
         } else if (msg.arg1 == ApiMessageType.RESERVE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             Reserve reserve = Utils.GSON.fromJson(bundle.getString(Utils.KEY_RESERVE_JSON), Reserve.class);
@@ -54,11 +54,11 @@ public abstract class ResponseHandler extends Handler {
     public abstract void authorizeTransactionReply(Transaction transaction);
 
     /**
-     * The response from an 'reverseTransaction' call.
+     * The response from an 'cancelTransaction' call.
      * Check transaction.getState() and in case of errors also transaction.getFailureReason()
-     * @param reverse the reverse as it was processed.
+     * @param cancellation the cancellation as it was processed.
      */
-    public abstract void reverseTransactionReply(Reverse reverse);
+    public abstract void cancelTransactionReply(Cancellation cancellation);
 
     /**
      * The response from an 'reserveTransaction' call.
