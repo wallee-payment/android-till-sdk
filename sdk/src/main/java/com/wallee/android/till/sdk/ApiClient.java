@@ -98,9 +98,9 @@ public class ApiClient {
      * @param cancellation the cancellation that should be processed.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void cancelTransaction(Cancellation cancellation) throws RemoteException {
+    public void cancelLastTransaction(Cancellation cancellation) throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.CANCEL_TRANSACTION.ordinal();
+        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal();
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_CANCELLATION_JSON, Utils.GSON.toJson(cancellation));
 

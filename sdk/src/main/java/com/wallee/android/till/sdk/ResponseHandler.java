@@ -33,10 +33,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
             authorizeTransactionReply(transaction);
-        } else if (msg.arg1 == ApiMessageType.CANCEL_TRANSACTION.ordinal()) {
+        } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             Cancellation cancellation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELLATION_JSON), Cancellation.class);
-            cancelTransactionReply(cancellation);
+            cancelLastTransactionReply(cancellation);
         } else if (msg.arg1 == ApiMessageType.RESERVE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             Reserve reserve = Utils.GSON.fromJson(bundle.getString(Utils.KEY_RESERVE_JSON), Reserve.class);
@@ -54,11 +54,11 @@ public abstract class ResponseHandler extends Handler {
     public abstract void authorizeTransactionReply(Transaction transaction);
 
     /**
-     * The response from an 'cancelTransaction' call.
+     * The response from an 'cancelLastTransaction' call.
      * Check transaction.getState() and in case of errors also transaction.getFailureReason()
      * @param cancellation the cancellation as it was processed.
      */
-    public abstract void cancelTransactionReply(Cancellation cancellation);
+    public abstract void cancelLastTransactionReply(Cancellation cancellation);
 
     /**
      * The response from an 'reserveTransaction' call.

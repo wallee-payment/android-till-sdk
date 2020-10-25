@@ -1,7 +1,5 @@
 package com.wallee.android.till.sdk.data;
 
-import androidx.annotation.NonNull;
-
 import java.text.ParseException;
 import java.util.Date;
 
@@ -12,9 +10,6 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
  *
  */
 public final class Cancellation {
-
-    private final Long sequenceCountToCancel;
-    private final Long reserveReferenceToCancel;
 
     private final String merchantReference;
 
@@ -33,9 +28,7 @@ public final class Cancellation {
     /**
      * Ctor for Builder
      */
-    private Cancellation(Long sequenceCountToCancel, Long reserveReferenceToCancel, String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime) {
-        this.sequenceCountToCancel = sequenceCountToCancel;
-        this.reserveReferenceToCancel = reserveReferenceToCancel;
+    private Cancellation(String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime) {
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.customerId = customerId;
         this.customerEmailAddress = customerEmailAddress;
@@ -48,14 +41,6 @@ public final class Cancellation {
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
-    }
-
-    public Long getSequenceCountToCancel() {
-        return sequenceCountToCancel;
-    }
-
-    public Long getReserveReferenceToCancel() {
-        return reserveReferenceToCancel;
     }
 
     public String getMerchantReference() {
@@ -102,18 +87,7 @@ public final class Cancellation {
         return Utils.parseTime(transactionTime, "transactionTime");
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "sequenceCountToCancel=" + sequenceCountToCancel +
-                "\nreserveReferenceToCancel=" + reserveReferenceToCancel +
-                "\nmerchantRef=" + merchantReference;
-    }
-
     public static class Builder {
-        private Long sequenceCountToCancel;
-        private Long reserveReferenceToCancel;
-
         private String merchantReference = "";
 
         private String customerId;
@@ -128,9 +102,7 @@ public final class Cancellation {
         private Long sequenceCount;
         private String transactionTime;
 
-        public Builder(Long sequenceCountToCancel, Long reserveReferenceToCancel) {
-            this.sequenceCountToCancel = sequenceCountToCancel;
-            this.reserveReferenceToCancel = reserveReferenceToCancel;
+        public Builder() {
         }
 
         /**
@@ -138,8 +110,6 @@ public final class Cancellation {
          * @param cancellation
          */
         public Builder(Cancellation cancellation) {
-            this.sequenceCountToCancel = cancellation.sequenceCountToCancel;
-            this.reserveReferenceToCancel = cancellation.reserveReferenceToCancel;
             this.merchantReference = cancellation.merchantReference;
             this.customerId = cancellation.customerId;
             this.customerEmailAddress = cancellation.customerEmailAddress;
@@ -150,16 +120,6 @@ public final class Cancellation {
             this.terminalId = cancellation.terminalId;
             this.sequenceCount = cancellation.sequenceCount;
             this.transactionTime = cancellation.transactionTime;
-        }
-
-        public Builder setSequenceCountToCancel(Long sequenceCountToCancel) {
-            this.sequenceCountToCancel = sequenceCountToCancel;
-            return this;
-        }
-
-        public Builder setReserveReferenceToCancel(Long reserveReferenceToCancel) {
-            this.reserveReferenceToCancel = reserveReferenceToCancel;
-            return this;
         }
 
         public Builder setMerchantReference(String merchantReference) {
@@ -213,7 +173,7 @@ public final class Cancellation {
         }
 
         public Cancellation build() {
-            Cancellation cancellation = new Cancellation(this.sequenceCountToCancel, this.reserveReferenceToCancel, this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime);
+            Cancellation cancellation = new Cancellation(this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime);
             return cancellation;
         }
     }
