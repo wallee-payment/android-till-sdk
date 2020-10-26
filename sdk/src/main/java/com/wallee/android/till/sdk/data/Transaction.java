@@ -34,10 +34,9 @@ public final class Transaction {
 
     private final Long tokenId;
     private final State state;
-    private final String failureReason;
     private final TransactionCompletionBehavior transactionCompletionBehavior;
 
-    private final String authorizationResponseCode;
+    private final String resultCode;
     private final String authorizationCode;
     private final String terminalId;
     private final Long sequenceCount;
@@ -48,7 +47,7 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, Long reserveReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, Long tokenId, TransactionCompletionBehavior transactionCompletionBehavior, State state, String failureReason, String authorizationResponseCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, Long reserveReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, Long tokenId, TransactionCompletionBehavior transactionCompletionBehavior, State state, String resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -64,8 +63,7 @@ public final class Transaction {
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.failureReason = failureReason;
-        this.authorizationResponseCode = authorizationResponseCode;
+        this.resultCode = resultCode;
         this.authorizationCode = authorizationCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
@@ -123,16 +121,12 @@ public final class Transaction {
         return state;
     }
 
-    public String getFailureReason() {
-        return failureReason;
-    }
-
     public TransactionCompletionBehavior getTransactionCompletionBehavior() {
         return transactionCompletionBehavior;
     }
 
-    public String getAuthorizationResponseCode() {
-        return authorizationResponseCode;
+    public String getResultCode() {
+        return resultCode;
     }
 
     public String getAuthorizationCode() {
@@ -192,10 +186,9 @@ public final class Transaction {
 
         private Long tokenId;
         private State state = State.PENDING;
-        private String failureReason;
         private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
 
-        private String authorizationResponseCode;
+        private String resultCode;
         private String authorizationCode;
         private String terminalId;
         private Long sequenceCount;
@@ -223,9 +216,8 @@ public final class Transaction {
             this.shippingAddress = transaction.shippingAddress;
             this.tokenId = transaction.tokenId;
             this.state = transaction.state;
-            this.failureReason = transaction.failureReason;
             this.transactionCompletionBehavior = transaction.transactionCompletionBehavior;
-            this.authorizationResponseCode = transaction.authorizationResponseCode;
+            this.resultCode = transaction.resultCode;
             this.authorizationCode = transaction.authorizationCode;
             this.terminalId = transaction.terminalId;
             this.sequenceCount = transaction.sequenceCount;
@@ -302,18 +294,13 @@ public final class Transaction {
             return this;
         }
 
-        protected Builder setFailureReason(String failureReason) {
-            this.failureReason = failureReason;
-            return this;
-        }
-
         public Builder setTransactionCompletionBehavior(TransactionCompletionBehavior transactionCompletionBehavior) {
             this.transactionCompletionBehavior = transactionCompletionBehavior;
             return this;
         }
 
-        public Builder setAuthorizationResponseCode(String authorizationResponseCode) {
-            this.authorizationResponseCode = authorizationResponseCode;
+        public Builder setResultCode(String resultCode) {
+            this.resultCode = resultCode;
             return this;
         }
 
@@ -343,7 +330,7 @@ public final class Transaction {
         }
 
         public Transaction build() {
-            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.reserveReference, this.customerId, currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.tokenId, this.transactionCompletionBehavior, this.state, this.failureReason, this.authorizationResponseCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.metaData);
+            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.reserveReference, this.customerId, currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.tokenId, this.transactionCompletionBehavior, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.metaData);
             return transaction;
         }
     }

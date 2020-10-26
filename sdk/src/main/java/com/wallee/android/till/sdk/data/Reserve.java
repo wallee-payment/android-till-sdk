@@ -27,9 +27,8 @@ public final class Reserve {
 
     private final Long tokenId;
     private final State state;
-    private final String failureReason;
 
-    private final String authorizationResponseCode;
+    private final String resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
@@ -38,7 +37,7 @@ public final class Reserve {
     /**
      * Ctor for Builder
      */
-    private Reserve(@NonNull BigDecimal amount, String merchantReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime, Long reserveReference) {
+    private Reserve(@NonNull BigDecimal amount, String merchantReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Long tokenId, State state, String resultCode, String terminalId, Long sequenceCount, String transactionTime, Long reserveReference) {
         this.amount = requireNonNull(amount, "amount");
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.customerId = customerId;
@@ -49,8 +48,7 @@ public final class Reserve {
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.failureReason = failureReason;
-        this.authorizationResponseCode = authorizationResponseCode;
+        this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
@@ -89,12 +87,8 @@ public final class Reserve {
         return state;
     }
 
-    public String getFailureReason() {
-        return failureReason;
-    }
-
-    public String getAuthorizationResponseCode() {
-        return authorizationResponseCode;
+    public String getResultCode() {
+        return resultCode;
     }
 
     public String getTerminalId() {
@@ -138,9 +132,8 @@ public final class Reserve {
 
         private Long tokenId;
         private State state = State.PENDING;
-        private String failureReason;
 
-        private String authorizationResponseCode;
+        private String resultCode;
         private String terminalId;
         private Long sequenceCount;
         private String transactionTime;
@@ -163,8 +156,7 @@ public final class Reserve {
             this.billingAddress = reserve.billingAddress;
             this.tokenId = reserve.tokenId;
             this.state = reserve.state;
-            this.failureReason = reserve.failureReason;
-            this.authorizationResponseCode = reserve.authorizationResponseCode;
+            this.resultCode = reserve.resultCode;
             this.terminalId = reserve.terminalId;
             this.sequenceCount = reserve.sequenceCount;
             this.transactionTime = reserve.transactionTime;
@@ -211,13 +203,8 @@ public final class Reserve {
             return this;
         }
 
-        public Builder setFailureReason(String failureReason) {
-            this.failureReason = failureReason;
-            return this;
-        }
-
-        public Builder setAuthorizationResponseCode(String authorizationResponseCode) {
-            this.authorizationResponseCode = authorizationResponseCode;
+        public Builder setResultCode(String resultCode) {
+            this.resultCode = resultCode;
             return this;
         }
 
@@ -242,7 +229,7 @@ public final class Reserve {
         }
 
         public Reserve build() {
-            Reserve reserve = new Reserve(this.amount, this.merchantReference, this.customerId, currency, this.customerEmailAddress, this.billingAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference);
+            Reserve reserve = new Reserve(this.amount, this.merchantReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.tokenId, this.state, this.resultCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference);
             return reserve;
         }
     }

@@ -18,9 +18,8 @@ public final class Cancellation {
 
     private final Long tokenId;
     private final State state;
-    private final String failureReason;
 
-    private final String authorizationResponseCode;
+    private final String resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
@@ -28,7 +27,7 @@ public final class Cancellation {
     /**
      * Ctor for Builder
      */
-    private Cancellation(String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String failureReason, String authorizationResponseCode, String terminalId, Long sequenceCount, String transactionTime) {
+    private Cancellation(String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String resultCode, String terminalId, Long sequenceCount, String transactionTime) {
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.customerId = customerId;
         this.customerEmailAddress = customerEmailAddress;
@@ -36,8 +35,7 @@ public final class Cancellation {
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.failureReason = failureReason;
-        this.authorizationResponseCode = authorizationResponseCode;
+        this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
@@ -63,12 +61,8 @@ public final class Cancellation {
         return state;
     }
 
-    public String getFailureReason() {
-        return failureReason;
-    }
-
-    public String getAuthorizationResponseCode() {
-        return authorizationResponseCode;
+    public String getResultCode() {
+        return resultCode;
     }
 
     public String getTerminalId() {
@@ -95,9 +89,8 @@ public final class Cancellation {
 
         private Long tokenId;
         private State state = State.PENDING;
-        private String failureReason;
 
-        private String authorizationResponseCode;
+        private String resultCode;
         private String terminalId;
         private Long sequenceCount;
         private String transactionTime;
@@ -115,8 +108,7 @@ public final class Cancellation {
             this.customerEmailAddress = cancellation.customerEmailAddress;
             this.tokenId = cancellation.tokenId;
             this.state = cancellation.state;
-            this.failureReason = cancellation.failureReason;
-            this.authorizationResponseCode = cancellation.authorizationResponseCode;
+            this.resultCode = cancellation.resultCode;
             this.terminalId = cancellation.terminalId;
             this.sequenceCount = cancellation.sequenceCount;
             this.transactionTime = cancellation.transactionTime;
@@ -147,13 +139,8 @@ public final class Cancellation {
             return this;
         }
 
-        public Builder setFailureReason(String failureReason) {
-            this.failureReason = failureReason;
-            return this;
-        }
-
-        public Builder setAuthorizationResponseCode(String authorizationResponseCode) {
-            this.authorizationResponseCode = authorizationResponseCode;
+        public Builder setResultCode(String resultCode) {
+            this.resultCode = resultCode;
             return this;
         }
 
@@ -173,7 +160,7 @@ public final class Cancellation {
         }
 
         public Cancellation build() {
-            Cancellation cancellation = new Cancellation(this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.failureReason, this.authorizationResponseCode, this.terminalId, this.sequenceCount, this.transactionTime);
+            Cancellation cancellation = new Cancellation(this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.resultCode, this.terminalId, this.sequenceCount, this.transactionTime);
             return cancellation;
         }
     }
