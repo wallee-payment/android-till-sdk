@@ -31,7 +31,6 @@ public final class Transaction {
     private final Address billingAddress;
     private final Address shippingAddress;
 
-    private final Long tokenId;
     private final State state;
     private final TransactionCompletionBehavior transactionCompletionBehavior;
 
@@ -47,7 +46,7 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, Long tokenId, TransactionCompletionBehavior transactionCompletionBehavior, State state, String resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, String resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -56,7 +55,6 @@ public final class Transaction {
         this.customerEmailAddress = customerEmailAddress;
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
-        this.tokenId = tokenId;
         this.transactionCompletionBehavior = requireNonNull(transactionCompletionBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
 
@@ -80,9 +78,6 @@ public final class Transaction {
 
     public Currency getCurrency() {
         return currency;
-    }
-    public Long getTokenId() {
-        return tokenId;
     }
 
     public String getMerchantReference() {
@@ -182,7 +177,6 @@ public final class Transaction {
         private Address billingAddress;
         private Address shippingAddress;
 
-        private Long tokenId;
         private State state = State.PENDING;
         private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
 
@@ -212,7 +206,6 @@ public final class Transaction {
             this.customerEmailAddress = transaction.customerEmailAddress;
             this.billingAddress = transaction.billingAddress;
             this.shippingAddress = transaction.shippingAddress;
-            this.tokenId = transaction.tokenId;
             this.state = transaction.state;
             this.transactionCompletionBehavior = transaction.transactionCompletionBehavior;
             this.resultCode = transaction.resultCode;
@@ -278,11 +271,6 @@ public final class Transaction {
             return this;
         }
 
-        public Builder setTokenId(Long tokenId) {
-            this.tokenId = tokenId;
-            return this;
-        }
-
         protected Builder setState(State state) {
             this.state = state;
             return this;
@@ -329,7 +317,7 @@ public final class Transaction {
         }
 
         public Transaction build() {
-            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.tokenId, this.transactionCompletionBehavior, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.deferredReference, this.metaData);
+            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionCompletionBehavior, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.deferredReference, this.metaData);
             return transaction;
         }
     }
