@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
+import com.wallee.android.till.sdk.data.TransactionCompletion;
 
 /**
  * The public interface to the service API.
@@ -86,6 +87,22 @@ public class ApiClient {
         msg.arg1 = ApiMessageType.AUTHORIZE_TRANSACTION.ordinal();
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_JSON, Utils.GSON.toJson(transaction));
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Complete a deferred transaction.
+     * @param transaction the transaction that should be completed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void completeTransaction(TransactionCompletion transaction) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.COMPLETE_TRANSACTION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_JSON, Utils.GSON.toJson(transaction));
 
         msg.setData(bundle);
         msg.replyTo = callback;

@@ -9,17 +9,24 @@ import com.google.gson.GsonBuilder;
 
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
+import com.wallee.android.till.sdk.data.TransactionCompletion;
 
 public class Utils {
     private static final String TAG = "Utils";
 
     public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     public static final String KEY_TRANSACTION_JSON = "transaction";
+    public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
     public static final String KEY_CANCELLATION_JSON = "cancellation";
 
     public static Transaction getTransaction(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
         return GSON.fromJson(json, Transaction.class);
+    }
+
+    public static TransactionCompletion getTransactionCompletion(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSACTION_COMPLETION_JSON);
+        return GSON.fromJson(json, TransactionCompletion.class);
     }
 
     public static Cancellation getCancellation(Intent intent) {

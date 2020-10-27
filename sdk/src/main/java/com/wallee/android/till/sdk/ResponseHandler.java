@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
+import com.wallee.android.till.sdk.data.TransactionCompletion;
 
 /**
  * Callbacks from the service API.
@@ -32,6 +33,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
             authorizeTransactionReply(transaction);
+        } else if (msg.arg1 == ApiMessageType.COMPLETE_TRANSACTION.ordinal()) {
+            Bundle bundle = msg.getData();
+            TransactionCompletion transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_COMPLETION_JSON), TransactionCompletion.class);
+            completeTransactionReply(transaction);
         } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             Cancellation cancellation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELLATION_JSON), Cancellation.class);
@@ -47,6 +52,13 @@ public abstract class ResponseHandler extends Handler {
      * @param transaction the transaction as it was processed.
      */
     public abstract void authorizeTransactionReply(Transaction transaction);
+
+    /**
+     * The response from an 'completeTransaction' call.
+     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * @param transaction the transaction as it was processed.
+     */
+    public abstract void completeTransactionReply(TransactionCompletion transaction);
 
     /**
      * The response from an 'cancelLastTransaction' call.
