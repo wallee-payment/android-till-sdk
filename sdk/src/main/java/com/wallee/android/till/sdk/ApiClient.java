@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.VoidReservation;
 
 /**
  * The public interface to the service API.
@@ -116,6 +117,22 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal();
 
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Void a deferred transaction.
+     * @param voidReservation the void that should be processed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void voidReservation(VoidReservation voidReservation) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.VOID_RESERVATION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_VOID_RESERVATION_JSON, Utils.GSON.toJson(voidReservation));
+
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }

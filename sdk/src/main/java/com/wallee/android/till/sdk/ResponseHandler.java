@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.VoidReservation;
 
 /**
  * Callbacks from the service API.
@@ -41,6 +42,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Cancellation cancellation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELLATION_JSON), Cancellation.class);
             cancelLastTransactionReply(cancellation);
+        } else if (msg.arg1 == ApiMessageType.VOID_RESERVATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            VoidReservation voidReservation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_VOID_RESERVATION_JSON), VoidReservation.class);
+            voidReservationReply(voidReservation);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -66,4 +71,11 @@ public abstract class ResponseHandler extends Handler {
      * @param cancellation the cancellation as it was processed.
      */
     public abstract void cancelLastTransactionReply(Cancellation cancellation);
+
+    /**
+     * The response from an 'voidReservation' call.
+     * Check voidReservation.getState() and in case of errors also voidReservation.getFailureReason()
+     * @param voidReservation the void as it was processed.
+     */
+    public abstract void voidReservationReply(VoidReservation voidReservation);
 }

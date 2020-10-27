@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.VoidReservation;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -18,6 +19,7 @@ public class Utils {
     public static final String KEY_TRANSACTION_JSON = "transaction";
     public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
     public static final String KEY_CANCELLATION_JSON = "cancellation";
+    public static final String KEY_VOID_RESERVATION_JSON = "voidReservation";
 
     public static Transaction getTransaction(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
@@ -32,6 +34,11 @@ public class Utils {
     public static Cancellation getCancellation(Intent intent) {
         String json = intent.getStringExtra(KEY_CANCELLATION_JSON);
         return GSON.fromJson(json, Cancellation.class);
+    }
+
+    public static VoidReservation getVoidReservation(Intent intent) {
+        String json = intent.getStringExtra(KEY_VOID_RESERVATION_JSON);
+        return GSON.fromJson(json, VoidReservation.class);
     }
 
     /**

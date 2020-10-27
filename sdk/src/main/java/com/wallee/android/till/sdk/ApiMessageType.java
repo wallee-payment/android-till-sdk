@@ -6,5 +6,6 @@ package com.wallee.android.till.sdk;
 public enum ApiMessageType {
     AUTHORIZE_TRANSACTION,
     COMPLETE_TRANSACTION,
-    CANCEL_LAST_TRANSACTION
+    CANCEL_LAST_TRANSACTION,
+    VOID_RESERVATION
 }
