@@ -62,7 +62,7 @@ public abstract class ResponseHandler extends Handler {
 
     /**
      * The response from an 'cancelLastTransaction' call.
-     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * Check cancellation.getState() and in case of errors also cancellation.getFailureReason()
      * @param cancellation the cancellation as it was processed.
      */
     public abstract void cancelLastTransactionReply(Cancellation cancellation);

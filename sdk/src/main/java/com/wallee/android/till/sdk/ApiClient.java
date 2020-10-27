@@ -12,7 +12,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
 
@@ -110,17 +109,13 @@ public class ApiClient {
     }
 
     /**
-     * Cancel a transaction (or a reserved transaction).
-     * @param cancellation the cancellation that should be processed.
+     * Cancel last authorized (not deferred) transaction.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void cancelLastTransaction(Cancellation cancellation) throws RemoteException {
+    public void cancelLastTransaction() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal();
-        Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_CANCELLATION_JSON, Utils.GSON.toJson(cancellation));
 
-        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }

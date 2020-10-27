@@ -3,7 +3,6 @@ package com.wallee.android.till.sdk.data;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.wallee.android.till.sdk.data.Utils.checkAscii;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
@@ -11,50 +10,25 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
  */
 public final class Cancellation {
 
-    private final String merchantReference;
-
-    private final String customerId;
-    private final String customerEmailAddress;
-
-    private final Long tokenId;
     private final State state;
 
     private final String resultCode;
     private final String terminalId;
     private final Long sequenceCount;
+    private final Long cancelledSequenceCount;
     private final String transactionTime;
 
     /**
      * Ctor for Builder
      */
-    private Cancellation(String merchantReference, String customerId, String customerEmailAddress, Long tokenId, State state, String resultCode, String terminalId, Long sequenceCount, String transactionTime) {
-        this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
-        this.customerId = customerId;
-        this.customerEmailAddress = customerEmailAddress;
-        this.tokenId = tokenId;
-
+    private Cancellation(State state, String resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
         this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
+        this.cancelledSequenceCount = cancelledSequenceCount;
         this.transactionTime = transactionTime;
-    }
-
-    public String getMerchantReference() {
-        return merchantReference;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public String getCustomerEmailAddress() {
-        return customerEmailAddress;
-    }
-
-    public Long getTokenId() {
-        return tokenId;
     }
 
     public State getState() {
@@ -73,6 +47,10 @@ public final class Cancellation {
         return sequenceCount;
     }
 
+    public Long getCancelledSequenceCount() {
+        return cancelledSequenceCount;
+    }
+
     public String getTransactionTime() {
         return transactionTime;
     }
@@ -82,17 +60,12 @@ public final class Cancellation {
     }
 
     public static class Builder {
-        private String merchantReference = "";
-
-        private String customerId;
-        private String customerEmailAddress;
-
-        private Long tokenId;
         private State state = State.PENDING;
 
         private String resultCode;
         private String terminalId;
         private Long sequenceCount;
+        private Long cancelledSequenceCount;
         private String transactionTime;
 
         public Builder() {
@@ -103,35 +76,12 @@ public final class Cancellation {
          * @param cancellation
          */
         public Builder(Cancellation cancellation) {
-            this.merchantReference = cancellation.merchantReference;
-            this.customerId = cancellation.customerId;
-            this.customerEmailAddress = cancellation.customerEmailAddress;
-            this.tokenId = cancellation.tokenId;
             this.state = cancellation.state;
             this.resultCode = cancellation.resultCode;
             this.terminalId = cancellation.terminalId;
             this.sequenceCount = cancellation.sequenceCount;
+            this.cancelledSequenceCount = cancellation.cancelledSequenceCount;
             this.transactionTime = cancellation.transactionTime;
-        }
-
-        public Builder setMerchantReference(String merchantReference) {
-            this.merchantReference = merchantReference;
-            return this;
-        }
-
-        public Builder setCustomerId(String customerId) {
-            this.customerId = customerId;
-            return this;
-        }
-
-        public Builder setCustomerEmailAddress(String customerEmailAddress) {
-            this.customerEmailAddress = customerEmailAddress;
-            return this;
-        }
-
-        public Builder setTokenId(Long tokenId) {
-            this.tokenId = tokenId;
-            return this;
         }
 
         public Builder setState(State state) {
@@ -154,13 +104,18 @@ public final class Cancellation {
             return this;
         }
 
+        public Builder setCancelledSequenceCount(Long cancelledSequenceCount) {
+            this.cancelledSequenceCount = cancelledSequenceCount;
+            return this;
+        }
+
         public Builder setTransactionTime(String transactionTime) {
             this.transactionTime = transactionTime;
             return this;
         }
 
         public Cancellation build() {
-            Cancellation cancellation = new Cancellation(this.merchantReference, this.customerId, this.customerEmailAddress, this.tokenId, this.state, this.resultCode, this.terminalId, this.sequenceCount, this.transactionTime);
+            Cancellation cancellation = new Cancellation(this.state, this.resultCode, this.terminalId, this.sequenceCount, this.cancelledSequenceCount, this.transactionTime);
             return cancellation;
         }
     }
