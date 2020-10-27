@@ -12,7 +12,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.wallee.android.till.sdk.data.Reserve;
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 
@@ -103,22 +102,6 @@ public class ApiClient {
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal();
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_CANCELLATION_JSON, Utils.GSON.toJson(cancellation));
-
-        msg.setData(bundle);
-        msg.replyTo = callback;
-        myService.send(msg);
-    }
-
-    /**
-     * Reserve a transaction.
-     * @param reserve the reserve that should be processed.
-     * @throws RemoteException any errors while communicating with the API server.
-     */
-    public void reserveTransaction(Reserve reserve) throws RemoteException {
-        Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.RESERVE_TRANSACTION.ordinal();
-        Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_RESERVE_JSON, Utils.GSON.toJson(reserve));
 
         msg.setData(bundle);
         msg.replyTo = callback;

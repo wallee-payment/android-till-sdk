@@ -7,7 +7,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.wallee.android.till.sdk.data.Reserve;
 import com.wallee.android.till.sdk.data.Cancellation;
 import com.wallee.android.till.sdk.data.Transaction;
 
@@ -17,7 +16,6 @@ public class Utils {
     public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     public static final String KEY_TRANSACTION_JSON = "transaction";
     public static final String KEY_CANCELLATION_JSON = "cancellation";
-    public static final String KEY_RESERVE_JSON = "reserve";
 
     public static Transaction getTransaction(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
@@ -27,11 +25,6 @@ public class Utils {
     public static Cancellation getCancellation(Intent intent) {
         String json = intent.getStringExtra(KEY_CANCELLATION_JSON);
         return GSON.fromJson(json, Cancellation.class);
-    }
-
-    public static Reserve getReserve(Intent intent) {
-        String json = intent.getStringExtra(KEY_RESERVE_JSON);
-        return GSON.fromJson(json, Reserve.class);
     }
 
     /**

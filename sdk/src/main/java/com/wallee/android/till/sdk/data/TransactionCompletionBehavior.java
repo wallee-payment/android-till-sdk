@@ -2,9 +2,12 @@ package com.wallee.android.till.sdk.data;
 
 public enum TransactionCompletionBehavior {
     /**
-     * Complete the transaction immediately. Currently the only option.
+     * Complete the transaction immediately.
      */
     COMPLETE_IMMEDIATELY,
 
-    /*COMPLETE_DEFERRED */
+    /**
+     * Reserve the transaction.
+     */
+    COMPLETE_DEFERRED
 }
