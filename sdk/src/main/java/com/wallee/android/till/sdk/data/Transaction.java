@@ -34,7 +34,7 @@ public final class Transaction {
     private final State state;
     private final TransactionCompletionBehavior transactionCompletionBehavior;
 
-    private final String resultCode;
+    private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
     private final Long sequenceCount;
@@ -46,7 +46,7 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, String resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -116,7 +116,7 @@ public final class Transaction {
         return transactionCompletionBehavior;
     }
 
-    public String getResultCode() {
+    public ResultCode getResultCode() {
         return resultCode;
     }
 
@@ -180,7 +180,7 @@ public final class Transaction {
         private State state = State.PENDING;
         private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
 
-        private String resultCode;
+        private ResultCode resultCode;
         private String authorizationCode;
         private String terminalId;
         private Long sequenceCount;
@@ -281,7 +281,7 @@ public final class Transaction {
             return this;
         }
 
-        public Builder setResultCode(String resultCode) {
+        public Builder setResultCode(ResultCode resultCode) {
             this.resultCode = resultCode;
             return this;
         }

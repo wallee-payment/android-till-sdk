@@ -12,7 +12,7 @@ public final class Cancellation {
 
     private final State state;
 
-    private final String resultCode;
+    private final ResultCode resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final Long cancelledSequenceCount;
@@ -21,7 +21,7 @@ public final class Cancellation {
     /**
      * Ctor for Builder
      */
-    private Cancellation(State state, String resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
+    private Cancellation(State state, ResultCode resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
         this.resultCode = resultCode;
@@ -35,7 +35,7 @@ public final class Cancellation {
         return state;
     }
 
-    public String getResultCode() {
+    public ResultCode getResultCode() {
         return resultCode;
     }
 
@@ -62,7 +62,7 @@ public final class Cancellation {
     public static class Builder {
         private State state = State.PENDING;
 
-        private String resultCode;
+        private ResultCode resultCode;
         private String terminalId;
         private Long sequenceCount;
         private Long cancelledSequenceCount;
@@ -89,7 +89,7 @@ public final class Cancellation {
             return this;
         }
 
-        public Builder setResultCode(String resultCode) {
+        public Builder setResultCode(ResultCode resultCode) {
             this.resultCode = resultCode;
             return this;
         }

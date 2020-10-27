@@ -24,7 +24,7 @@ public final class TransactionCompletion {
 
     private final State state;
 
-    private final String resultCode;
+    private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
     private final Long sequenceCount;
@@ -33,7 +33,7 @@ public final class TransactionCompletion {
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long deferredReference, Currency currency, State state, String resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long deferredReference, Currency currency, State state, ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.deferredReference = deferredReference;
         this.currency = currency;
@@ -71,7 +71,7 @@ public final class TransactionCompletion {
         return state;
     }
 
-    public String getResultCode() {
+    public ResultCode getResultCode() {
         return resultCode;
     }
 
@@ -119,7 +119,7 @@ public final class TransactionCompletion {
 
         private State state = State.PENDING;
 
-        private String resultCode;
+        private ResultCode resultCode;
         private String authorizationCode;
         private String terminalId;
         private Long sequenceCount;
@@ -169,7 +169,7 @@ public final class TransactionCompletion {
             return this;
         }
 
-        public Builder setResultCode(String resultCode) {
+        public Builder setResultCode(ResultCode resultCode) {
             this.resultCode = resultCode;
             return this;
         }

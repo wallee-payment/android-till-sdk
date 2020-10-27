@@ -11,7 +11,7 @@ public final class VoidReservation {
 
     private final State state;
 
-    private final String resultCode;
+    private final ResultCode resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
@@ -19,7 +19,7 @@ public final class VoidReservation {
     /**
      * Ctor for Builder
      */
-    private VoidReservation(Long deferredReference, State state, String resultCode, String terminalId, Long sequenceCount, String transactionTime) {
+    private VoidReservation(Long deferredReference, State state, ResultCode resultCode, String terminalId, Long sequenceCount, String transactionTime) {
         this.deferredReference = deferredReference;
 
         // FIXME: For read only properties we need a solution to prevent public modification
@@ -38,7 +38,7 @@ public final class VoidReservation {
         return state;
     }
 
-    public String getResultCode() {
+    public ResultCode getResultCode() {
         return resultCode;
     }
 
@@ -59,7 +59,7 @@ public final class VoidReservation {
 
         private State state = State.PENDING;
 
-        private String resultCode;
+        private ResultCode resultCode;
         private String terminalId;
         private Long sequenceCount;
         private String transactionTime;
@@ -91,7 +91,7 @@ public final class VoidReservation {
             return this;
         }
 
-        public Builder setResultCode(String resultCode) {
+        public Builder setResultCode(ResultCode resultCode) {
             this.resultCode = resultCode;
             return this;
         }
