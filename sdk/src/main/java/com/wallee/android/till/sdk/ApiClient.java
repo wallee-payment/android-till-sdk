@@ -136,4 +136,40 @@ public class ApiClient {
         msg.replyTo = callback;
         myService.send(msg);
     }
+
+    /**
+     * Start submission operation.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void submissionRequest() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.SUBMISSION_REQUEST.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Start transmission operation.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void transmissionRequest() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.TRANSMISSION_REQUEST.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Start final balance operation.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void finalBalanceRequest() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.FINAL_BALANCE_REQUEST.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
 }
