@@ -3,11 +3,9 @@ package com.wallee.android.till.sdk.data;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,19 +32,14 @@ public final class Transaction {
     private final State state;
     private final TransactionCompletionBehavior transactionCompletionBehavior;
 
-    private final ResultCode resultCode;
-    private final String authorizationCode;
-    private final String terminalId;
-    private final Long sequenceCount;
-    private final String transactionTime;
-    private final Long deferredReference;
-
     private final Map<String, String> metaData;
+
+    private final TransactionResponse response;
 
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, Map<String, String> metaData, TransactionResponse response) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -60,12 +53,7 @@ public final class Transaction {
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.resultCode = resultCode;
-        this.authorizationCode = authorizationCode;
-        this.terminalId = terminalId;
-        this.sequenceCount = sequenceCount;
-        this.transactionTime = transactionTime;
-        this.deferredReference = deferredReference;
+        this.response = response;
 
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
@@ -116,32 +104,12 @@ public final class Transaction {
         return transactionCompletionBehavior;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
-    }
-
-    public String getAuthorizationCode() {
-        return authorizationCode;
-    }
-
-    public String getTerminalId() {
-        return terminalId;
-    }
-
-    public Long getSequenceCount() {
-        return sequenceCount;
-    }
-
-    public String getTransactionTime() {
-        return transactionTime;
-    }
-
-    public Long getDeferredReference() {
-        return deferredReference;
-    }
-
     public Map<String, String> getMetaData() {
         return metaData;
+    }
+
+    public TransactionResponse getResponse() {
+        return response;
     }
 
     public BigDecimal getTotalAmountIncludingTax() {
@@ -150,10 +118,6 @@ public final class Transaction {
             result = result.add(item.getTotalAmountIncludingTax());
         }
         return result;
-    }
-
-    public Date getParsedTransactionTime() throws ParseException {
-        return Utils.parseTime(transactionTime, "transactionTime");
     }
 
     @NonNull
@@ -180,14 +144,9 @@ public final class Transaction {
         private State state = State.PENDING;
         private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
 
-        private ResultCode resultCode;
-        private String authorizationCode;
-        private String terminalId;
-        private Long sequenceCount;
-        private String transactionTime;
-        private Long deferredReference;
-
         private Map<String, String> metaData = new HashMap<>();
+
+        private TransactionResponse response;
 
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -208,13 +167,8 @@ public final class Transaction {
             this.shippingAddress = transaction.shippingAddress;
             this.state = transaction.state;
             this.transactionCompletionBehavior = transaction.transactionCompletionBehavior;
-            this.resultCode = transaction.resultCode;
-            this.authorizationCode = transaction.authorizationCode;
-            this.terminalId = transaction.terminalId;
-            this.sequenceCount = transaction.sequenceCount;
-            this.transactionTime = transaction.transactionTime;
-            this.deferredReference = transaction.deferredReference;
             this.metaData = new HashMap<>(transaction.metaData);
+            this.response = transaction.response;
         }
 
         public List<LineItem> getLineItems() {
@@ -281,44 +235,18 @@ public final class Transaction {
             return this;
         }
 
-        public Builder setResultCode(ResultCode resultCode) {
-            this.resultCode = resultCode;
-            return this;
-        }
-
-        public Builder setAuthorizationCode(String authorizationCode) {
-            this.authorizationCode = authorizationCode;
-            return this;
-        }
-
-        public Builder setTerminalId(String terminalId) {
-            this.terminalId = terminalId;
-            return this;
-        }
-
-        public Builder setSequenceCount(Long sequenceCount) {
-            this.sequenceCount = sequenceCount;
-            return this;
-        }
-
-        public Builder setTransactionTime(String transactionTime) {
-            this.transactionTime = transactionTime;
-            return this;
-        }
-
-        public Builder setDeferredReference(Long deferredReference) {
-            this.deferredReference = deferredReference;
-            return this;
-        }
-
         public Builder putMetaData(String key, String value) {
             this.metaData.put(key, value);
             return this;
         }
 
+        public Builder setResponse(TransactionResponse response) {
+            this.response = response;
+            return this;
+        }
+
         public Transaction build() {
-            Transaction transaction = new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionCompletionBehavior, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.deferredReference, this.metaData);
-            return transaction;
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionCompletionBehavior, this.state, this.metaData, this.response);
         }
     }
 }

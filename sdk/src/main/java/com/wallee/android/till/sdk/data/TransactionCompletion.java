@@ -3,11 +3,9 @@ package com.wallee.android.till.sdk.data;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
-import java.util.Date;
 import java.util.List;
 
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
@@ -24,27 +22,19 @@ public final class TransactionCompletion {
 
     private final State state;
 
-    private final ResultCode resultCode;
-    private final String authorizationCode;
-    private final String terminalId;
-    private final Long sequenceCount;
-    private final String transactionTime;
+    private final TransactionCompletionResponse response;
 
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long deferredReference, Currency currency, State state, ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long deferredReference, Currency currency, State state, TransactionCompletionResponse response) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.deferredReference = deferredReference;
         this.currency = currency;
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.resultCode = resultCode;
-        this.authorizationCode = authorizationCode;
-        this.terminalId = terminalId;
-        this.sequenceCount = sequenceCount;
-        this.transactionTime = transactionTime;
+        this.response = response;
 
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
@@ -71,24 +61,8 @@ public final class TransactionCompletion {
         return state;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
-    }
-
-    public String getAuthorizationCode() {
-        return authorizationCode;
-    }
-
-    public String getTerminalId() {
-        return terminalId;
-    }
-
-    public Long getSequenceCount() {
-        return sequenceCount;
-    }
-
-    public String getTransactionTime() {
-        return transactionTime;
+    public TransactionCompletionResponse getResponse() {
+        return response;
     }
 
     public BigDecimal getTotalAmountIncludingTax() {
@@ -97,10 +71,6 @@ public final class TransactionCompletion {
             result = result.add(item.getTotalAmountIncludingTax());
         }
         return result;
-    }
-
-    public Date getParsedTransactionTime() throws ParseException {
-        return Utils.parseTime(transactionTime, "transactionTime");
     }
 
     @NonNull
@@ -119,11 +89,7 @@ public final class TransactionCompletion {
 
         private State state = State.PENDING;
 
-        private ResultCode resultCode;
-        private String authorizationCode;
-        private String terminalId;
-        private Long sequenceCount;
-        private String transactionTime;
+        private TransactionCompletionResponse response;
 
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -138,11 +104,7 @@ public final class TransactionCompletion {
             this.deferredReference = transaction.deferredReference;
             this.currency = transaction.currency;
             this.state = transaction.state;
-            this.resultCode = transaction.resultCode;
-            this.authorizationCode = transaction.authorizationCode;
-            this.terminalId = transaction.terminalId;
-            this.sequenceCount = transaction.sequenceCount;
-            this.transactionTime = transaction.transactionTime;
+            this.response = transaction.response;
         }
 
         public List<LineItem> getLineItems() {
@@ -169,33 +131,13 @@ public final class TransactionCompletion {
             return this;
         }
 
-        public Builder setResultCode(ResultCode resultCode) {
-            this.resultCode = resultCode;
-            return this;
-        }
-
-        public Builder setAuthorizationCode(String authorizationCode) {
-            this.authorizationCode = authorizationCode;
-            return this;
-        }
-
-        public Builder setTerminalId(String terminalId) {
-            this.terminalId = terminalId;
-            return this;
-        }
-
-        public Builder setSequenceCount(Long sequenceCount) {
-            this.sequenceCount = sequenceCount;
-            return this;
-        }
-
-        public Builder setTransactionTime(String transactionTime) {
-            this.transactionTime = transactionTime;
+        public Builder setResponse(TransactionCompletionResponse response) {
+            this.response = response;
             return this;
         }
 
         public TransactionCompletion build() {
-            TransactionCompletion transaction = new TransactionCompletion(this.lineItems, this.deferredReference, this.currency, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime);
+            TransactionCompletion transaction = new TransactionCompletion(this.lineItems, this.deferredReference, this.currency, this.state, this.response);
             return transaction;
         }
     }

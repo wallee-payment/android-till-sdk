@@ -11,23 +11,17 @@ public final class VoidReservation {
 
     private final State state;
 
-    private final ResultCode resultCode;
-    private final String terminalId;
-    private final Long sequenceCount;
-    private final String transactionTime;
+    private final VoidReservationResponse response;
 
     /**
      * Ctor for Builder
      */
-    private VoidReservation(Long deferredReference, State state, ResultCode resultCode, String terminalId, Long sequenceCount, String transactionTime) {
+    private VoidReservation(Long deferredReference, State state, VoidReservationResponse response) {
         this.deferredReference = deferredReference;
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
-        this.resultCode = resultCode;
-        this.terminalId = terminalId;
-        this.sequenceCount = sequenceCount;
-        this.transactionTime = transactionTime;
+        this.response = response;
     }
 
     public Long getDeferredReference() {
@@ -38,20 +32,8 @@ public final class VoidReservation {
         return state;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
-    }
-
-    public String getTerminalId() {
-        return terminalId;
-    }
-
-    public Long getSequenceCount() {
-        return sequenceCount;
-    }
-
-    public String getTransactionTime() {
-        return transactionTime;
+    public VoidReservationResponse getResponse() {
+        return response;
     }
 
     public static class Builder {
@@ -59,10 +41,7 @@ public final class VoidReservation {
 
         private State state = State.PENDING;
 
-        private ResultCode resultCode;
-        private String terminalId;
-        private Long sequenceCount;
-        private String transactionTime;
+        private VoidReservationResponse response;
 
         public Builder(Long deferredReference) {
             this.deferredReference = deferredReference;
@@ -75,10 +54,7 @@ public final class VoidReservation {
         public Builder(VoidReservation voidReservation) {
             this.deferredReference = voidReservation.deferredReference;
             this.state = voidReservation.state;
-            this.resultCode = voidReservation.resultCode;
-            this.terminalId = voidReservation.terminalId;
-            this.sequenceCount = voidReservation.sequenceCount;
-            this.transactionTime = voidReservation.transactionTime;
+            this.response = voidReservation.response;
         }
 
         public Builder setDeferredReference(Long deferredReference) {
@@ -91,29 +67,13 @@ public final class VoidReservation {
             return this;
         }
 
-        public Builder setResultCode(ResultCode resultCode) {
-            this.resultCode = resultCode;
-            return this;
-        }
-
-        public Builder setTerminalId(String terminalId) {
-            this.terminalId = terminalId;
-            return this;
-        }
-
-        public Builder setSequenceCount(Long sequenceCount) {
-            this.sequenceCount = sequenceCount;
-            return this;
-        }
-
-        public Builder setTransactionTime(String transactionTime) {
-            this.transactionTime = transactionTime;
+        public Builder setResponse(VoidReservationResponse response) {
+            this.response = response;
             return this;
         }
 
         public VoidReservation build() {
-            VoidReservation voidReservation = new VoidReservation(this.deferredReference, this.state, this.resultCode, this.terminalId, this.sequenceCount, this.transactionTime);
-            return voidReservation;
+            return new VoidReservation(this.deferredReference, this.state, this.response);
         }
     }
 }
