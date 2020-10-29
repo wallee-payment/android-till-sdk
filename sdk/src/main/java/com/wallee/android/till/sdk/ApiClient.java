@@ -141,9 +141,9 @@ public class ApiClient {
      * Start submission operation.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void submissionRequest() throws RemoteException {
+    public void executeSubmission() throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.SUBMISSION_REQUEST.ordinal();
+        msg.arg1 = ApiMessageType.EXECUTE_SUBMISSION.ordinal();
 
         msg.replyTo = callback;
         myService.send(msg);
@@ -153,9 +153,9 @@ public class ApiClient {
      * Start transmission operation.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void transmissionRequest() throws RemoteException {
+    public void executeTransmission() throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.TRANSMISSION_REQUEST.ordinal();
+        msg.arg1 = ApiMessageType.EXECUTE_TRANSMISSION.ordinal();
 
         msg.replyTo = callback;
         myService.send(msg);
@@ -165,9 +165,9 @@ public class ApiClient {
      * Start final balance operation.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void finalBalanceRequest() throws RemoteException {
+    public void executeFinalBalance() throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.FINAL_BALANCE_REQUEST.ordinal();
+        msg.arg1 = ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal();
 
         msg.replyTo = callback;
         myService.send(msg);

@@ -8,8 +8,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.wallee.android.till.sdk.data.Cancellation;
+import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransmissionResult;
 import com.wallee.android.till.sdk.data.VoidReservation;
 
 /**
@@ -46,6 +49,18 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             VoidReservation voidReservation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_VOID_RESERVATION_JSON), VoidReservation.class);
             voidReservationReply(voidReservation);
+        } else if (msg.arg1 == ApiMessageType.EXECUTE_SUBMISSION.ordinal()) {
+            Bundle bundle = msg.getData();
+            SubmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_SUBMISSION_RESULT_JSON), SubmissionResult.class);
+            executeSubmissionReply(result);
+        } else if (msg.arg1 == ApiMessageType.EXECUTE_TRANSMISSION.ordinal()) {
+            Bundle bundle = msg.getData();
+            TransmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSMISSION_RESULT_JSON), TransmissionResult.class);
+            executeTransmissionReply(result);
+        } else if (msg.arg1 == ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal()) {
+            Bundle bundle = msg.getData();
+            FinalBalanceResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_FINAL_BALANCE_RESULT_JSON), FinalBalanceResult.class);
+            executeFinalBalanceReply(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -78,4 +93,22 @@ public abstract class ResponseHandler extends Handler {
      * @param voidReservation the void as it was processed.
      */
     public abstract void voidReservationReply(VoidReservation voidReservation);
+
+    /**
+     * The response from an 'executeSubmission' call.
+     * @param result the submission as it was processed.
+     */
+    public abstract void executeSubmissionReply(SubmissionResult result);
+
+    /**
+     * The response from an 'executeTransmission' call.
+     * @param result the transmission as it was processed.
+     */
+    public abstract void executeTransmissionReply(TransmissionResult result);
+
+    /**
+     * The response from an 'executeFinalBalance' call.
+     * @param result the final balance as it was processed.
+     */
+    public abstract void executeFinalBalanceReply(FinalBalanceResult result);
 }

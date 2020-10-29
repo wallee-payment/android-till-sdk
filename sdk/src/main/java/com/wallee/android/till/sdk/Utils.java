@@ -8,8 +8,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.wallee.android.till.sdk.data.Cancellation;
+import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransmissionResult;
 import com.wallee.android.till.sdk.data.VoidReservation;
 
 public class Utils {
@@ -20,6 +23,9 @@ public class Utils {
     public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
     public static final String KEY_CANCELLATION_JSON = "cancellation";
     public static final String KEY_VOID_RESERVATION_JSON = "voidReservation";
+    public static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
+    public static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
+    public static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
 
     public static Transaction getTransaction(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
@@ -39,6 +45,21 @@ public class Utils {
     public static VoidReservation getVoidReservation(Intent intent) {
         String json = intent.getStringExtra(KEY_VOID_RESERVATION_JSON);
         return GSON.fromJson(json, VoidReservation.class);
+    }
+
+    public static SubmissionResult getSubmission(Intent intent) {
+        String json = intent.getStringExtra(KEY_SUBMISSION_RESULT_JSON);
+        return GSON.fromJson(json, SubmissionResult.class);
+    }
+
+    public static TransmissionResult getTransmission(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSMISSION_RESULT_JSON);
+        return GSON.fromJson(json, TransmissionResult.class);
+    }
+
+    public static FinalBalanceResult getFinalBalanceResult(Intent intent) {
+        String json = intent.getStringExtra(KEY_FINAL_BALANCE_RESULT_JSON);
+        return GSON.fromJson(json, FinalBalanceResult.class);
     }
 
     /**
