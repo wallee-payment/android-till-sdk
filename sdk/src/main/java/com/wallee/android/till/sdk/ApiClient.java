@@ -113,9 +113,9 @@ public class ApiClient {
      * Cancel last authorized (not deferred) transaction.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void cancelLastTransaction() throws RemoteException {
+    public void cancelLastTransactionOperation() throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal();
+        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
 
         msg.replyTo = callback;
         myService.send(msg);

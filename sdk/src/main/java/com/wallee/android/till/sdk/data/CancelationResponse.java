@@ -3,14 +3,14 @@ package com.wallee.android.till.sdk.data;
 import java.text.ParseException;
 import java.util.Date;
 
-public final class CancellationResponse {
+public final class CancelationResponse {
     private final ResultCode resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final Long cancelledSequenceCount;
     private final String transactionTime;
 
-    public CancellationResponse(ResultCode resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
+    public CancelationResponse(ResultCode resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
         this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;

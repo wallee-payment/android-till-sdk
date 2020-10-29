@@ -5,13 +5,13 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 /**
  *
  */
-public final class Cancellation {
+public final class Cancelation {
 
     private final State state;
 
-    private final CancellationResponse response;
+    private final CancelationResponse response;
 
-    private Cancellation(State state, CancellationResponse response) {
+    private Cancelation(State state, CancelationResponse response) {
         this.state = requireNonNull(state, "state");
         this.response = response;
     }
@@ -20,7 +20,7 @@ public final class Cancellation {
         return state;
     }
 
-    public CancellationResponse getResponse() {
+    public CancelationResponse getResponse() {
         return response;
     }
 }

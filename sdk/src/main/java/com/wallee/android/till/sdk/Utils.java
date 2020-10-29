@@ -7,7 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.wallee.android.till.sdk.data.Cancellation;
+import com.wallee.android.till.sdk.data.Cancelation;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
@@ -21,7 +21,7 @@ public class Utils {
     public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     public static final String KEY_TRANSACTION_JSON = "transaction";
     public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
-    public static final String KEY_CANCELLATION_JSON = "cancellation";
+    public static final String KEY_CANCELATION_JSON = "cancelation";
     public static final String KEY_VOID_RESERVATION_JSON = "voidReservation";
     public static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
     public static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
@@ -37,9 +37,9 @@ public class Utils {
         return GSON.fromJson(json, TransactionCompletion.class);
     }
 
-    public static Cancellation getCancellation(Intent intent) {
-        String json = intent.getStringExtra(KEY_CANCELLATION_JSON);
-        return GSON.fromJson(json, Cancellation.class);
+    public static Cancelation getCancelation(Intent intent) {
+        String json = intent.getStringExtra(KEY_CANCELATION_JSON);
+        return GSON.fromJson(json, Cancelation.class);
     }
 
     public static VoidReservation getVoidReservation(Intent intent) {

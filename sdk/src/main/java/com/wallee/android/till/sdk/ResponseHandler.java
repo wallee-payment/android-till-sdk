@@ -7,7 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.wallee.android.till.sdk.data.Cancellation;
+import com.wallee.android.till.sdk.data.Cancelation;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
@@ -41,10 +41,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             TransactionCompletion transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_COMPLETION_JSON), TransactionCompletion.class);
             completeTransactionReply(transaction);
-        } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION.ordinal()) {
+        } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal()) {
             Bundle bundle = msg.getData();
-            Cancellation cancellation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELLATION_JSON), Cancellation.class);
-            cancelLastTransactionReply(cancellation);
+            Cancelation cancelation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELATION_JSON), Cancelation.class);
+            cancelLastTransactionOperationReply(cancelation);
         } else if (msg.arg1 == ApiMessageType.VOID_RESERVATION.ordinal()) {
             Bundle bundle = msg.getData();
             VoidReservation voidReservation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_VOID_RESERVATION_JSON), VoidReservation.class);
@@ -81,11 +81,11 @@ public abstract class ResponseHandler extends Handler {
     public abstract void completeTransactionReply(TransactionCompletion transaction);
 
     /**
-     * The response from an 'cancelLastTransaction' call.
-     * Check cancellation.getState() and in case of errors also cancellation.getFailureReason()
-     * @param cancellation the cancellation as it was processed.
+     * The response from an 'cancelLastTransactionOperation' call.
+     * Check cancelation.getState() and in case of errors also cancelation.getFailureReason()
+     * @param cancelation the cancelation as it was processed.
      */
-    public abstract void cancelLastTransactionReply(Cancellation cancellation);
+    public abstract void cancelLastTransactionOperationReply(Cancelation cancelation);
 
     /**
      * The response from an 'voidReservation' call.
