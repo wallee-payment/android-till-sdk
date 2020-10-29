@@ -94,7 +94,7 @@ public class ApiClient {
     }
 
     /**
-     * Complete a deferred transaction.
+     * Complete a reserved transaction.
      * @param transaction the transaction that should be completed.
      * @throws RemoteException any errors while communicating with the API server.
      */
@@ -110,7 +110,7 @@ public class ApiClient {
     }
 
     /**
-     * Cancel last authorized (not deferred) transaction.
+     * Cancel last authorized transaction.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void cancelLastTransactionOperation() throws RemoteException {
@@ -122,7 +122,7 @@ public class ApiClient {
     }
 
     /**
-     * Void a deferred transaction.
+     * Void a reserved transaction.
      * @param transactionVoid the void that should be processed.
      * @throws RemoteException any errors while communicating with the API server.
      */

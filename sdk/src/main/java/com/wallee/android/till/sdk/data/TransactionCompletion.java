@@ -16,7 +16,7 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 public final class TransactionCompletion {
     private final List<LineItem> lineItems;
 
-    private final Long deferredReference;
+    private final Long reserveReference;
 
     private final Currency currency;
 
@@ -27,9 +27,9 @@ public final class TransactionCompletion {
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long deferredReference, Currency currency, State state, TransactionCompletionResponse response) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long reserveReference, Currency currency, State state, TransactionCompletionResponse response) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
-        this.deferredReference = deferredReference;
+        this.reserveReference = reserveReference;
         this.currency = currency;
 
         // FIXME: For read only properties we need a solution to prevent public modification
@@ -49,8 +49,8 @@ public final class TransactionCompletion {
         return lineItems;
     }
 
-    public Long getDeferredReference() {
-        return deferredReference;
+    public Long getReserveReference() {
+        return reserveReference;
     }
 
     public Currency getCurrency() {
@@ -77,13 +77,13 @@ public final class TransactionCompletion {
     @Override
     public String toString() {
         return getTotalAmountIncludingTax() + " " + getCurrency() +
-                "\ndeferredReference=" + deferredReference;
+                "\nreserveReference=" + reserveReference;
     }
 
     public static class Builder {
         private List<LineItem> lineItems;
 
-        private Long deferredReference;
+        private Long reserveReference;
 
         private Currency currency = Currency.getInstance("CHF");
 
@@ -101,7 +101,7 @@ public final class TransactionCompletion {
          */
         public Builder(TransactionCompletion transaction) {
             this.lineItems = new ArrayList<>(transaction.lineItems);
-            this.deferredReference = transaction.deferredReference;
+            this.reserveReference = transaction.reserveReference;
             this.currency = transaction.currency;
             this.state = transaction.state;
             this.response = transaction.response;
@@ -116,8 +116,8 @@ public final class TransactionCompletion {
             return this;
         }
 
-        public Builder setDeferredReference(Long deferredReference) {
-            this.deferredReference = deferredReference;
+        public Builder setReserveReference(Long reserveReference) {
+            this.reserveReference = reserveReference;
             return this;
         }
 
@@ -137,7 +137,7 @@ public final class TransactionCompletion {
         }
 
         public TransactionCompletion build() {
-            TransactionCompletion transaction = new TransactionCompletion(this.lineItems, this.deferredReference, this.currency, this.state, this.response);
+            TransactionCompletion transaction = new TransactionCompletion(this.lineItems, this.reserveReference, this.currency, this.state, this.response);
             return transaction;
         }
     }

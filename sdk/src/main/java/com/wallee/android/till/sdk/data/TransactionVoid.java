@@ -7,7 +7,7 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
  */
 public final class TransactionVoid {
 
-    private final Long deferredReference;
+    private final Long reserveReference;
 
     private final State state;
 
@@ -16,16 +16,16 @@ public final class TransactionVoid {
     /**
      * Ctor for Builder
      */
-    private TransactionVoid(Long deferredReference, State state, TransactionVoidResponse response) {
-        this.deferredReference = deferredReference;
+    private TransactionVoid(Long reserveReference, State state, TransactionVoidResponse response) {
+        this.reserveReference = reserveReference;
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
         this.response = response;
     }
 
-    public Long getDeferredReference() {
-        return deferredReference;
+    public Long getReserveReference() {
+        return reserveReference;
     }
 
     public State getState() {
@@ -37,14 +37,14 @@ public final class TransactionVoid {
     }
 
     public static class Builder {
-        private Long deferredReference;
+        private Long reserveReference;
 
         private State state = State.PENDING;
 
         private TransactionVoidResponse response;
 
-        public Builder(Long deferredReference) {
-            this.deferredReference = deferredReference;
+        public Builder(Long reserveReference) {
+            this.reserveReference = reserveReference;
         }
 
         /**
@@ -52,13 +52,13 @@ public final class TransactionVoid {
          * @param transactionVoid
          */
         public Builder(TransactionVoid transactionVoid) {
-            this.deferredReference = transactionVoid.deferredReference;
+            this.reserveReference = transactionVoid.reserveReference;
             this.state = transactionVoid.state;
             this.response = transactionVoid.response;
         }
 
-        public Builder setDeferredReference(Long deferredReference) {
-            this.deferredReference = deferredReference;
+        public Builder setReserveReference(Long reserveReference) {
+            this.reserveReference = reserveReference;
             return this;
         }
 
@@ -73,7 +73,7 @@ public final class TransactionVoid {
         }
 
         public TransactionVoid build() {
-            return new TransactionVoid(this.deferredReference, this.state, this.response);
+            return new TransactionVoid(this.reserveReference, this.state, this.response);
         }
     }
 }

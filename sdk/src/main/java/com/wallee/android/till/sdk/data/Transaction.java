@@ -30,7 +30,7 @@ public final class Transaction {
     private final Address shippingAddress;
 
     private final State state;
-    private final TransactionCompletionBehavior transactionCompletionBehavior;
+    private final TransactionProcessingBehavior transactionProcessingBehavior;
 
     private final Map<String, String> metaData;
 
@@ -39,7 +39,7 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionCompletionBehavior transactionCompletionBehavior, State state, Map<String, String> metaData, TransactionResponse response) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, State state, Map<String, String> metaData, TransactionResponse response) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -48,7 +48,7 @@ public final class Transaction {
         this.customerEmailAddress = customerEmailAddress;
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
-        this.transactionCompletionBehavior = requireNonNull(transactionCompletionBehavior, "transactionCompletionBehavior");
+        this.transactionProcessingBehavior = requireNonNull(transactionProcessingBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
 
         // FIXME: For read only properties we need a solution to prevent public modification
@@ -100,8 +100,8 @@ public final class Transaction {
         return state;
     }
 
-    public TransactionCompletionBehavior getTransactionCompletionBehavior() {
-        return transactionCompletionBehavior;
+    public TransactionProcessingBehavior getTransactionProcessingBehavior() {
+        return transactionProcessingBehavior;
     }
 
     public Map<String, String> getMetaData() {
@@ -142,7 +142,7 @@ public final class Transaction {
         private Address shippingAddress;
 
         private State state = State.PENDING;
-        private TransactionCompletionBehavior transactionCompletionBehavior = TransactionCompletionBehavior.COMPLETE_IMMEDIATELY;
+        private TransactionProcessingBehavior transactionProcessingBehavior = TransactionProcessingBehavior.COMPLETE_IMMEDIATELY;
 
         private Map<String, String> metaData = new HashMap<>();
 
@@ -166,7 +166,7 @@ public final class Transaction {
             this.billingAddress = transaction.billingAddress;
             this.shippingAddress = transaction.shippingAddress;
             this.state = transaction.state;
-            this.transactionCompletionBehavior = transaction.transactionCompletionBehavior;
+            this.transactionProcessingBehavior = transaction.transactionProcessingBehavior;
             this.metaData = new HashMap<>(transaction.metaData);
             this.response = transaction.response;
         }
@@ -230,8 +230,8 @@ public final class Transaction {
             return this;
         }
 
-        public Builder setTransactionCompletionBehavior(TransactionCompletionBehavior transactionCompletionBehavior) {
-            this.transactionCompletionBehavior = transactionCompletionBehavior;
+        public Builder setTransactionProcessingBehavior(TransactionProcessingBehavior transactionProcessingBehavior) {
+            this.transactionProcessingBehavior = transactionProcessingBehavior;
             return this;
         }
 
@@ -246,7 +246,7 @@ public final class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionCompletionBehavior, this.state, this.metaData, this.response);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.state, this.metaData, this.response);
         }
     }
 }

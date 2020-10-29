@@ -9,15 +9,15 @@ public final class TransactionResponse {
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
-    private final Long deferredReference;
+    private final Long reserveReference;
 
-    public TransactionResponse(ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long deferredReference) {
+    public TransactionResponse(ResultCode resultCode, String authorizationCode, String terminalId, Long sequenceCount, String transactionTime, Long reserveReference) {
         this.resultCode = resultCode;
         this.authorizationCode = authorizationCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
-        this.deferredReference = deferredReference;
+        this.reserveReference = reserveReference;
     }
 
     public ResultCode getResultCode() {
@@ -40,8 +40,8 @@ public final class TransactionResponse {
         return transactionTime;
     }
 
-    public Long getDeferredReference() {
-        return deferredReference;
+    public Long getReserveReference() {
+        return reserveReference;
     }
 
     public Date getParsedTransactionTime() throws ParseException {
