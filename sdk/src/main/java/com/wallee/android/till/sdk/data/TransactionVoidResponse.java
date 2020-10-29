@@ -3,13 +3,13 @@ package com.wallee.android.till.sdk.data;
 import java.text.ParseException;
 import java.util.Date;
 
-public final class VoidReservationResponse {
+public final class TransactionVoidResponse {
     private final ResultCode resultCode;
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
 
-    public VoidReservationResponse(ResultCode resultCode, String terminalId, Long sequenceCount, String transactionTime) {
+    public TransactionVoidResponse(ResultCode resultCode, String terminalId, Long sequenceCount, String transactionTime) {
         this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;

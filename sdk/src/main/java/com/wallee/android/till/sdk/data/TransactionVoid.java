@@ -5,18 +5,18 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 /**
  *
  */
-public final class VoidReservation {
+public final class TransactionVoid {
 
     private final Long deferredReference;
 
     private final State state;
 
-    private final VoidReservationResponse response;
+    private final TransactionVoidResponse response;
 
     /**
      * Ctor for Builder
      */
-    private VoidReservation(Long deferredReference, State state, VoidReservationResponse response) {
+    private TransactionVoid(Long deferredReference, State state, TransactionVoidResponse response) {
         this.deferredReference = deferredReference;
 
         // FIXME: For read only properties we need a solution to prevent public modification
@@ -32,7 +32,7 @@ public final class VoidReservation {
         return state;
     }
 
-    public VoidReservationResponse getResponse() {
+    public TransactionVoidResponse getResponse() {
         return response;
     }
 
@@ -41,7 +41,7 @@ public final class VoidReservation {
 
         private State state = State.PENDING;
 
-        private VoidReservationResponse response;
+        private TransactionVoidResponse response;
 
         public Builder(Long deferredReference) {
             this.deferredReference = deferredReference;
@@ -49,12 +49,12 @@ public final class VoidReservation {
 
         /**
          * Copy ctor
-         * @param voidReservation
+         * @param transactionVoid
          */
-        public Builder(VoidReservation voidReservation) {
-            this.deferredReference = voidReservation.deferredReference;
-            this.state = voidReservation.state;
-            this.response = voidReservation.response;
+        public Builder(TransactionVoid transactionVoid) {
+            this.deferredReference = transactionVoid.deferredReference;
+            this.state = transactionVoid.state;
+            this.response = transactionVoid.response;
         }
 
         public Builder setDeferredReference(Long deferredReference) {
@@ -67,13 +67,13 @@ public final class VoidReservation {
             return this;
         }
 
-        public Builder setResponse(VoidReservationResponse response) {
+        public Builder setResponse(TransactionVoidResponse response) {
             this.response = response;
             return this;
         }
 
-        public VoidReservation build() {
-            return new VoidReservation(this.deferredReference, this.state, this.response);
+        public TransactionVoid build() {
+            return new TransactionVoid(this.deferredReference, this.state, this.response);
         }
     }
 }

@@ -13,7 +13,7 @@ import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
 import com.wallee.android.till.sdk.data.TransmissionResult;
-import com.wallee.android.till.sdk.data.VoidReservation;
+import com.wallee.android.till.sdk.data.TransactionVoid;
 
 /**
  * Callbacks from the service API.
@@ -45,10 +45,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             Cancelation cancelation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELATION_JSON), Cancelation.class);
             cancelLastTransactionOperationReply(cancelation);
-        } else if (msg.arg1 == ApiMessageType.VOID_RESERVATION.ordinal()) {
+        } else if (msg.arg1 == ApiMessageType.VOID_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            VoidReservation voidReservation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_VOID_RESERVATION_JSON), VoidReservation.class);
-            voidReservationReply(voidReservation);
+            TransactionVoid transactionVoid = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_VOID_JSON), TransactionVoid.class);
+            voidTransactionReply(transactionVoid);
         } else if (msg.arg1 == ApiMessageType.EXECUTE_SUBMISSION.ordinal()) {
             Bundle bundle = msg.getData();
             SubmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_SUBMISSION_RESULT_JSON), SubmissionResult.class);
@@ -88,11 +88,11 @@ public abstract class ResponseHandler extends Handler {
     public abstract void cancelLastTransactionOperationReply(Cancelation cancelation);
 
     /**
-     * The response from an 'voidReservation' call.
-     * Check voidReservation.getState() and in case of errors also voidReservation.getFailureReason()
-     * @param voidReservation the void as it was processed.
+     * The response from an 'voidTransaction' call.
+     * Check transactionVoid.getState() and in case of errors also transactionVoid.getFailureReason()
+     * @param transactionVoid the void as it was processed.
      */
-    public abstract void voidReservationReply(VoidReservation voidReservation);
+    public abstract void voidTransactionReply(TransactionVoid transactionVoid);
 
     /**
      * The response from an 'executeSubmission' call.

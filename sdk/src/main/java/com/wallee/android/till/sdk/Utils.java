@@ -13,7 +13,7 @@ import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
 import com.wallee.android.till.sdk.data.TransmissionResult;
-import com.wallee.android.till.sdk.data.VoidReservation;
+import com.wallee.android.till.sdk.data.TransactionVoid;
 
 public class Utils {
     private static final String TAG = "Utils";
@@ -22,7 +22,7 @@ public class Utils {
     public static final String KEY_TRANSACTION_JSON = "transaction";
     public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
     public static final String KEY_CANCELATION_JSON = "cancelation";
-    public static final String KEY_VOID_RESERVATION_JSON = "voidReservation";
+    public static final String KEY_TRANSACTION_VOID_JSON = "transactionVoid";
     public static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
     public static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
     public static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
@@ -42,9 +42,9 @@ public class Utils {
         return GSON.fromJson(json, Cancelation.class);
     }
 
-    public static VoidReservation getVoidReservation(Intent intent) {
-        String json = intent.getStringExtra(KEY_VOID_RESERVATION_JSON);
-        return GSON.fromJson(json, VoidReservation.class);
+    public static TransactionVoid getTransactionVoid(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSACTION_VOID_JSON);
+        return GSON.fromJson(json, TransactionVoid.class);
     }
 
     public static SubmissionResult getSubmission(Intent intent) {
