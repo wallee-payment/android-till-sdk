@@ -12,7 +12,7 @@ public final class SubmissionResult {
 
     public SubmissionResult(@NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
         this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.receipts = receipts;
+        this.receipts = requireNonNull(receipts, "receipts");
     }
 
     @NonNull
