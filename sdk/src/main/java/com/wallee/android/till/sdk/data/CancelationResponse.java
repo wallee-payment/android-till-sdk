@@ -2,6 +2,7 @@ package com.wallee.android.till.sdk.data;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 public final class CancelationResponse {
     private final ResultCode resultCode;
@@ -9,13 +10,15 @@ public final class CancelationResponse {
     private final Long sequenceCount;
     private final Long cancelledSequenceCount;
     private final String transactionTime;
+    private final List<Receipt> receipts;
 
-    public CancelationResponse(ResultCode resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime) {
+    public CancelationResponse(ResultCode resultCode, String terminalId, Long sequenceCount, Long cancelledSequenceCount, String transactionTime, List<Receipt> receipts) {
         this.resultCode = resultCode;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.cancelledSequenceCount = cancelledSequenceCount;
         this.transactionTime = transactionTime;
+        this.receipts = receipts;
     }
 
     public ResultCode getResultCode() {
@@ -36,6 +39,10 @@ public final class CancelationResponse {
 
     public String getTransactionTime() {
         return transactionTime;
+    }
+
+    public List<Receipt> getReceipts() {
+        return receipts;
     }
 
     public Date getParsedTransactionTime() throws ParseException {
