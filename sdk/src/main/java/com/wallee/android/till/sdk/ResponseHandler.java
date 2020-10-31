@@ -17,7 +17,7 @@ import com.wallee.android.till.sdk.data.TransactionVoid;
 
 /**
  * Callbacks from the service API.
- * The ApiClient needs a concrete implementation of this class to dispatch the API responses.
+ * The {@link ApiClient} needs a concrete implementation of this class to dispatch the API responses.
  */
 public abstract class ResponseHandler extends Handler {
     private static final String TAG = "ResponseHandler";
@@ -26,8 +26,8 @@ public abstract class ResponseHandler extends Handler {
     }
 
     /**
-     * generic message handler that dispatches to the specialized methods below.
-     * @param msg
+     * Generic message handler that dispatches to the specialized methods below.
+     * @param msg - API message.
      */
     @Override
     public final void handleMessage(@NonNull Message msg) {
@@ -67,47 +67,43 @@ public abstract class ResponseHandler extends Handler {
     }
 
     /**
-     * The response from an 'authorizeTransaction' call.
-     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * The response from an {@link ApiClient#authorizeTransaction(Transaction)} call.
      * @param transaction the transaction as it was processed.
      */
     public abstract void authorizeTransactionReply(Transaction transaction);
 
     /**
-     * The response from an 'completeTransaction' call.
-     * Check transaction.getState() and in case of errors also transaction.getFailureReason()
+     * The response from an {@link ApiClient#completeTransaction(TransactionCompletion)} call.
      * @param transaction the transaction as it was processed.
      */
     public abstract void completeTransactionReply(TransactionCompletion transaction);
 
     /**
-     * The response from an 'cancelLastTransactionOperation' call.
-     * Check cancelation.getState() and in case of errors also cancelation.getFailureReason()
+     * The response from an {@link ApiClient#cancelLastTransactionOperation()} call.
      * @param cancelation the cancelation as it was processed.
      */
     public abstract void cancelLastTransactionOperationReply(Cancelation cancelation);
 
     /**
-     * The response from an 'voidTransaction' call.
-     * Check transactionVoid.getState() and in case of errors also transactionVoid.getFailureReason()
+     * The response from an {@link ApiClient#voidTransaction(TransactionVoid)} call.
      * @param transactionVoid the void as it was processed.
      */
     public abstract void voidTransactionReply(TransactionVoid transactionVoid);
 
     /**
-     * The response from an 'executeSubmission' call.
+     * The response from an {@link ApiClient#executeSubmission()} call.
      * @param result the submission as it was processed.
      */
     public abstract void executeSubmissionReply(SubmissionResult result);
 
     /**
-     * The response from an 'executeTransmission' call.
+     * The response from an {@link ApiClient#executeTransmission()} call.
      * @param result the transmission as it was processed.
      */
     public abstract void executeTransmissionReply(TransmissionResult result);
 
     /**
-     * The response from an 'executeFinalBalance' call.
+     * The response from an {@link ApiClient#executeFinalBalance()} call.
      * @param result the final balance as it was processed.
      */
     public abstract void executeFinalBalanceReply(FinalBalanceResult result);

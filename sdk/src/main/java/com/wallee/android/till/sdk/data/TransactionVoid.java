@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
- *
+ * The reservation void data for {@link com.wallee.android.till.sdk.ApiClient#voidTransaction(TransactionVoid)} API call.
  */
 public final class TransactionVoid {
 

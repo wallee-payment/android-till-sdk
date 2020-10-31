@@ -14,7 +14,7 @@ import static com.wallee.android.till.sdk.data.Utils.checkAscii;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
- *
+ * The transaction data for {@link com.wallee.android.till.sdk.ApiClient#authorizeTransaction(Transaction)} API call.
  */
 public final class Transaction {
     private final List<LineItem> lineItems;

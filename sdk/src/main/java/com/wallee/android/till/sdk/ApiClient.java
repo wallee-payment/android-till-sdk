@@ -12,14 +12,17 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.wallee.android.till.sdk.data.Cancelation;
+import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
 import com.wallee.android.till.sdk.data.TransactionVoid;
+import com.wallee.android.till.sdk.data.TransmissionResult;
 
 /**
  * The public interface to the service API.
- * The activity that uses this class should call 'bind' in onCreate and 'unbind' in onDestroy.
- * Currently the only API call is 'authorizeTransaction'.
+ * The activity that uses this class should call {@link ApiClient#bind(Activity)} in onCreate and {@link ApiClient#unbind(Activity)} in onDestroy.
  */
 public class ApiClient {
     private static final String TAG = "ApiClient";
@@ -50,7 +53,7 @@ public class ApiClient {
     };
 
     /**
-     * Instantiate an ApiClient with the given ResponseHandler.
+     * Instantiate an {@link ApiClient} with the given {@link ResponseHandler}.
      * @param handler the handler for any responses from the API server.
      */
     public ApiClient(ResponseHandler handler) {
@@ -59,8 +62,8 @@ public class ApiClient {
     }
 
     /**
-     * Bind the API server to the given Activity. This will initialize the API server and enable calling API methods.
-     * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this Activity.
+     * Bind the API server to the given {@link Activity}. This will initialize the API server and enable calling API methods.
+     * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this {@link Activity}.
      */
     public void bind(Activity activity) {
         Intent intent = new Intent()
@@ -70,15 +73,17 @@ public class ApiClient {
     }
 
     /**
-     * Unbind the API server from the given Activity.
-     * @param activity the activity the service will get unbound from. Must be the same activity that was passed into 'bind'.
+     * Unbind the API server from the given {@link Activity}.
+     * @param activity the activity the service will get unbound from. Must be the same activity that was passed into {@link ApiClient#bind(Activity)}.
      */
     public void unbind(Activity activity) {
         activity.unbindService(this.con);
     }
 
     /**
-     * Authorize a transaction.
+     * Authorize a transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(Transaction)} method will be called,
+     * and the caller application will receive focus back.
      * @param transaction the transaction that should be authorized.
      * @throws RemoteException any errors while communicating with the API server.
      */
@@ -94,7 +99,9 @@ public class ApiClient {
     }
 
     /**
-     * Complete a reserved transaction.
+     * Complete a reserved transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#completeTransactionReply(TransactionCompletion)} method will be called,
+     * and the caller application will receive focus back.
      * @param transaction the transaction that should be completed.
      * @throws RemoteException any errors while communicating with the API server.
      */
@@ -110,7 +117,9 @@ public class ApiClient {
     }
 
     /**
-     * Cancel last authorized transaction.
+     * Cancel last authorized transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(Cancelation)} method will be called,
+     * and the caller application will receive focus back.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void cancelLastTransactionOperation() throws RemoteException {
@@ -122,7 +131,9 @@ public class ApiClient {
     }
 
     /**
-     * Void a reserved transaction.
+     * Void a reserved transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#voidTransactionReply(TransactionVoid)} method will be called,
+     * and the caller application will receive focus back.
      * @param transactionVoid the void that should be processed.
      * @throws RemoteException any errors while communicating with the API server.
      */
@@ -138,7 +149,8 @@ public class ApiClient {
     }
 
     /**
-     * Start submission operation.
+     * Start a submission operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeSubmissionReply(SubmissionResult)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void executeSubmission() throws RemoteException {
@@ -150,7 +162,8 @@ public class ApiClient {
     }
 
     /**
-     * Start transmission operation.
+     * Start a transmission operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeTransmissionReply(TransmissionResult)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void executeTransmission() throws RemoteException {
@@ -162,7 +175,8 @@ public class ApiClient {
     }
 
     /**
-     * Start final balance operation.
+     * Start a final balance operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeFinalBalanceReply(FinalBalanceResult)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void executeFinalBalance() throws RemoteException {

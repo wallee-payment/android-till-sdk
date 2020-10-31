@@ -12,7 +12,7 @@ import java.util.List;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
- *
+ * The transaction completion data for {@link com.wallee.android.till.sdk.ApiClient#completeTransaction(TransactionCompletion)} API call.
  */
 public final class TransactionCompletion {
     private final List<LineItem> lineItems;

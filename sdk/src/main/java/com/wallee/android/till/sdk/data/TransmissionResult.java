@@ -2,10 +2,15 @@ package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
 
+import com.wallee.android.till.sdk.ApiClient;
+
 import java.util.List;
 
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
+/**
+ * The transmission result data for {@link ApiClient#executeTransmission()} API call.
+ */
 public final class TransmissionResult {
     private final ResultCode resultCode;
     private final List<Receipt> receipts;
