@@ -1,5 +1,8 @@
 package com.wallee.android.till.sdk.data;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
@@ -16,22 +19,25 @@ public final class TransactionVoid {
     /**
      * Ctor for Builder
      */
-    private TransactionVoid(Long reserveReference, State state, TransactionVoidResponse response) {
-        this.reserveReference = reserveReference;
+    private TransactionVoid(@NonNull Long reserveReference, @NonNull State state, @Nullable TransactionVoidResponse response) {
+        this.reserveReference = requireNonNull(reserveReference, "reserveReference");
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
         this.response = response;
     }
 
+    @NonNull
     public Long getReserveReference() {
         return reserveReference;
     }
 
+    @NonNull
     public State getState() {
         return state;
     }
 
+    @Nullable
     public TransactionVoidResponse getResponse() {
         return response;
     }
@@ -43,7 +49,7 @@ public final class TransactionVoid {
 
         private TransactionVoidResponse response;
 
-        public Builder(Long reserveReference) {
+        public Builder(@NonNull Long reserveReference) {
             this.reserveReference = reserveReference;
         }
 
@@ -51,27 +57,31 @@ public final class TransactionVoid {
          * Copy ctor
          * @param transactionVoid
          */
-        public Builder(TransactionVoid transactionVoid) {
+        public Builder(@NonNull TransactionVoid transactionVoid) {
             this.reserveReference = transactionVoid.reserveReference;
             this.state = transactionVoid.state;
             this.response = transactionVoid.response;
         }
 
-        public Builder setReserveReference(Long reserveReference) {
+        @NonNull
+        public Builder setReserveReference(@NonNull Long reserveReference) {
             this.reserveReference = reserveReference;
             return this;
         }
 
-        public Builder setState(State state) {
+        @NonNull
+        public Builder setState(@NonNull State state) {
             this.state = state;
             return this;
         }
 
-        public Builder setResponse(TransactionVoidResponse response) {
+        @NonNull
+        public Builder setResponse(@Nullable TransactionVoidResponse response) {
             this.response = response;
             return this;
         }
 
+        @NonNull
         public TransactionVoid build() {
             return new TransactionVoid(this.reserveReference, this.state, this.response);
         }

@@ -12,18 +12,23 @@ import java.util.Date;
 import java.util.Objects;
 
 class Utils {
-    static @Nullable String checkLength(String s, String name, int maxLength) {
+    @Nullable
+    static String checkLength(@Nullable String s, @NonNull String name, int maxLength) {
         if (s != null && s.length() > maxLength) {
             throw new IllegalArgumentException(name + " must be less than " + maxLength + " characters:\n" + s);
         }
         return s;
     }
-    static @NonNull String checkLengthNonNull(String s, String name, int maxLength) {
+
+    @NonNull
+    static String checkLengthNonNull(@NonNull String s, @NonNull String name, int maxLength) {
         requireNonNull(s, name);
         checkLength(s, name, maxLength);
         return s;
     }
-    static String checkAscii(String s, String name, int maxLength) {
+
+    @NonNull
+    static String checkAscii(@NonNull String s, String name, int maxLength) {
         requireNonNull(s, name);
         checkLength(s, name, maxLength);
         if (! s.matches(ASCII)) {
@@ -32,7 +37,8 @@ class Utils {
         return s;
     }
 
-    static String checkPrintableNoLineBreaks(String s, String name) {
+    @Nullable
+    static String checkPrintableNoLineBreaks(@Nullable String s, @NonNull String name) {
         if (s != null) {
             if (! s.matches(UTF8_SINGLE_LINE)) {
                 throw new IllegalArgumentException(name + " can only contain printable characters without linebreaks:\n" + s);
@@ -40,22 +46,30 @@ class Utils {
         }
         return s;
     }
-    static String checkPrintableNoLineBreaksNonNull(String s, String name) {
+
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
+    static String checkPrintableNoLineBreaksNonNull(@NonNull String s, @NonNull String name) {
         requireNonNull(s, name);
         return checkPrintableNoLineBreaks(s, name);
     }
 
-    static String check(String s, String name, int maxLength) {
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
+    static String check(@NonNull String s, @NonNull String name, int maxLength) {
         requireNonNull(s, name);
         checkLength(s, name, maxLength);
         return checkPrintableNoLineBreaks(s, name);
     }
-    static String checkNullable(String s, String name, int maxLength) {
+
+    @Nullable
+    static String checkNullable(@Nullable String s, @NonNull String name, int maxLength) {
         checkLength(s, name, maxLength);
         return checkPrintableNoLineBreaks(s, name);
     }
 
-    static BigDecimal check(BigDecimal n, String name) {
+    @NonNull
+    static BigDecimal check(@NonNull BigDecimal n, @NonNull String name) {
         requireNonNull(n, name);
         if (n.scale() > 8) {
             throw new IllegalArgumentException(name + " must have 8 or less fractional decimals: " + n);
@@ -66,7 +80,8 @@ class Utils {
         return n;
     }
 
-    static <T> T requireNonNull(T t, String name) {
+    @NonNull
+    static <T> T requireNonNull(@NonNull T t, @NonNull String name) {
         Objects.requireNonNull(t, name + " must not be null");
         if (t instanceof String) {
             if (((String)t).isEmpty()) {
@@ -76,7 +91,9 @@ class Utils {
         return t;
     }
 
-    static Date parseTime(String s, String name) throws ParseException {
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
+    static Date parseTime(@NonNull String s, @NonNull String name) throws ParseException {
         if (s == null) {
             throw new ParseException(name + " must not be null", 0);
         }

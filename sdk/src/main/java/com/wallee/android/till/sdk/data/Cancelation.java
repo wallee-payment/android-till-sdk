@@ -1,5 +1,7 @@
 package com.wallee.android.till.sdk.data;
 
+import androidx.annotation.NonNull;
+
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
@@ -11,15 +13,17 @@ public final class Cancelation {
 
     private final CancelationResponse response;
 
-    private Cancelation(State state, CancelationResponse response) {
+    private Cancelation(@NonNull  State state, @NonNull CancelationResponse response) {
         this.state = requireNonNull(state, "state");
-        this.response = response;
+        this.response = requireNonNull(response, "response");
     }
 
+    @NonNull
     public State getState() {
         return state;
     }
 
+    @NonNull
     public CancelationResponse getResponse() {
         return response;
     }

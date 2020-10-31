@@ -1,6 +1,7 @@
 package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public final class TransactionCompletion {
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, Long reserveReference, Currency currency, State state, TransactionCompletionResponse response) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull Long reserveReference, @NonNull Currency currency, @NonNull State state, @Nullable TransactionCompletionResponse response) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
-        this.reserveReference = reserveReference;
-        this.currency = currency;
+        this.reserveReference = requireNonNull(reserveReference, "reserveReference");
+        this.currency = requireNonNull(currency, "currency");
 
         // FIXME: For read only properties we need a solution to prevent public modification
         this.state = requireNonNull(state, "state");
@@ -45,26 +46,32 @@ public final class TransactionCompletion {
         }
     }
 
+    @NonNull
     public List<LineItem> getLineItems() {
         return lineItems;
     }
 
+    @NonNull
     public Long getReserveReference() {
         return reserveReference;
     }
 
+    @NonNull
     public Currency getCurrency() {
         return currency;
     }
 
+    @NonNull
     public State getState() {
         return state;
     }
 
+    @Nullable
     public TransactionCompletionResponse getResponse() {
         return response;
     }
 
+    @NonNull
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
@@ -91,7 +98,7 @@ public final class TransactionCompletion {
 
         private TransactionCompletionResponse response;
 
-        public Builder(List<LineItem> lineItems) {
+        public Builder(@NonNull List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
 
@@ -99,7 +106,7 @@ public final class TransactionCompletion {
          * Copy ctor
          * @param transaction
          */
-        public Builder(TransactionCompletion transaction) {
+        public Builder(@NonNull TransactionCompletion transaction) {
             this.lineItems = new ArrayList<>(transaction.lineItems);
             this.reserveReference = transaction.reserveReference;
             this.currency = transaction.currency;
@@ -107,38 +114,44 @@ public final class TransactionCompletion {
             this.response = transaction.response;
         }
 
+        @NonNull
         public List<LineItem> getLineItems() {
             return lineItems;
         }
 
-        public Builder setLineItems(List<LineItem> lineItems) {
+        @NonNull
+        public Builder setLineItems(@NonNull List<LineItem> lineItems) {
             this.lineItems = lineItems;
             return this;
         }
 
-        public Builder setReserveReference(Long reserveReference) {
+        @NonNull
+        public Builder setReserveReference(@NonNull Long reserveReference) {
             this.reserveReference = reserveReference;
             return this;
         }
 
-        public Builder setCurrency(Currency currency) {
+        @NonNull
+        public Builder setCurrency(@NonNull Currency currency) {
             this.currency = currency;
             return this;
         }
 
-        public Builder setState(State state) {
+        @NonNull
+        public Builder setState(@NonNull State state) {
             this.state = state;
             return this;
         }
 
-        public Builder setResponse(TransactionCompletionResponse response) {
+        @NonNull
+        public Builder setResponse(@Nullable TransactionCompletionResponse response) {
             this.response = response;
             return this;
         }
 
+        @NonNull
         public TransactionCompletion build() {
-            TransactionCompletion transaction = new TransactionCompletion(this.lineItems, this.reserveReference, this.currency, this.state, this.response);
-            return transaction;
+            return new TransactionCompletion(this.lineItems, this.reserveReference, this.currency, this.state, this.response);
         }
     }
 }
