@@ -7,11 +7,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.wallee.android.till.sdk.data.Cancelation;
+import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransactionCompletionResponse;
+import com.wallee.android.till.sdk.data.TransactionResponse;
+import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 import com.wallee.android.till.sdk.data.TransactionVoid;
 
@@ -35,20 +38,20 @@ public abstract class ResponseHandler extends Handler {
         Log.d("HandleReply", "" + msg.arg1);
         if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            Transaction transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_JSON), Transaction.class);
-            authorizeTransactionReply(transaction);
+            TransactionResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_RESPONSE_JSON), TransactionResponse.class);
+            authorizeTransactionReply(response);
         } else if (msg.arg1 == ApiMessageType.COMPLETE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransactionCompletion transaction = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_COMPLETION_JSON), TransactionCompletion.class);
-            completeTransactionReply(transaction);
-        } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal()) {
-            Bundle bundle = msg.getData();
-            Cancelation cancelation = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELATION_JSON), Cancelation.class);
-            cancelLastTransactionOperationReply(cancelation);
+            TransactionCompletionResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_COMPLETION_RESPONSE_JSON), TransactionCompletionResponse.class);
+            completeTransactionReply(response);
         } else if (msg.arg1 == ApiMessageType.VOID_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransactionVoid transactionVoid = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_VOID_JSON), TransactionVoid.class);
-            voidTransactionReply(transactionVoid);
+            TransactionVoidResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_VOID_RESPONSE_JSON), TransactionVoidResponse.class);
+            voidTransactionReply(response);
+        } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            CancelationResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELATION_RESULT_JSON), CancelationResult.class);
+            cancelLastTransactionOperationReply(result);
         } else if (msg.arg1 == ApiMessageType.EXECUTE_SUBMISSION.ordinal()) {
             Bundle bundle = msg.getData();
             SubmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_SUBMISSION_RESULT_JSON), SubmissionResult.class);
@@ -68,42 +71,42 @@ public abstract class ResponseHandler extends Handler {
 
     /**
      * The response from an {@link ApiClient#authorizeTransaction(Transaction)} call.
-     * @param transaction the transaction as it was processed.
+     * @param response the transaction as it was processed.
      */
-    public abstract void authorizeTransactionReply(Transaction transaction);
+    public abstract void authorizeTransactionReply(TransactionResponse response);
 
     /**
      * The response from an {@link ApiClient#completeTransaction(TransactionCompletion)} call.
-     * @param transaction the transaction as it was processed.
+     * @param response the transaction as it was processed.
      */
-    public abstract void completeTransactionReply(TransactionCompletion transaction);
-
-    /**
-     * The response from an {@link ApiClient#cancelLastTransactionOperation()} call.
-     * @param cancelation the cancelation as it was processed.
-     */
-    public abstract void cancelLastTransactionOperationReply(Cancelation cancelation);
+    public abstract void completeTransactionReply(TransactionCompletionResponse response);
 
     /**
      * The response from an {@link ApiClient#voidTransaction(TransactionVoid)} call.
-     * @param transactionVoid the void as it was processed.
+     * @param response the void as it was processed.
      */
-    public abstract void voidTransactionReply(TransactionVoid transactionVoid);
+    public abstract void voidTransactionReply(TransactionVoidResponse response);
 
     /**
-     * The response from an {@link ApiClient#executeSubmission()} call.
+     * The result from an {@link ApiClient#cancelLastTransactionOperation()} call.
+     * @param result the cancelation as it was processed.
+     */
+    public abstract void cancelLastTransactionOperationReply(CancelationResult result);
+
+    /**
+     * The result from an {@link ApiClient#executeSubmission()} call.
      * @param result the submission as it was processed.
      */
     public abstract void executeSubmissionReply(SubmissionResult result);
 
     /**
-     * The response from an {@link ApiClient#executeTransmission()} call.
+     * The result from an {@link ApiClient#executeTransmission()} call.
      * @param result the transmission as it was processed.
      */
     public abstract void executeTransmissionReply(TransmissionResult result);
 
     /**
-     * The response from an {@link ApiClient#executeFinalBalance()} call.
+     * The result from an {@link ApiClient#executeFinalBalance()} call.
      * @param result the final balance as it was processed.
      */
     public abstract void executeFinalBalanceReply(FinalBalanceResult result);

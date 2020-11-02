@@ -29,17 +29,14 @@ public final class Transaction {
     private final Address billingAddress;
     private final Address shippingAddress;
 
-    private final State state;
     private final TransactionProcessingBehavior transactionProcessingBehavior;
 
     private final Map<String, String> metaData;
 
-    private final TransactionResponse response;
-
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, State state, Map<String, String> metaData, TransactionResponse response) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -50,11 +47,6 @@ public final class Transaction {
         this.shippingAddress = shippingAddress;
         this.transactionProcessingBehavior = requireNonNull(transactionProcessingBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
-
-        // FIXME: For read only properties we need a solution to prevent public modification
-        this.state = requireNonNull(state, "state");
-        this.response = response;
-
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
@@ -96,20 +88,12 @@ public final class Transaction {
         return shippingAddress;
     }
 
-    public State getState() {
-        return state;
-    }
-
     public TransactionProcessingBehavior getTransactionProcessingBehavior() {
         return transactionProcessingBehavior;
     }
 
     public Map<String, String> getMetaData() {
         return metaData;
-    }
-
-    public TransactionResponse getResponse() {
-        return response;
     }
 
     public BigDecimal getTotalAmountIncludingTax() {
@@ -141,12 +125,9 @@ public final class Transaction {
         private Address billingAddress;
         private Address shippingAddress;
 
-        private State state = State.PENDING;
         private TransactionProcessingBehavior transactionProcessingBehavior = TransactionProcessingBehavior.COMPLETE_IMMEDIATELY;
 
         private Map<String, String> metaData = new HashMap<>();
-
-        private TransactionResponse response;
 
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -165,10 +146,8 @@ public final class Transaction {
             this.customerEmailAddress = transaction.customerEmailAddress;
             this.billingAddress = transaction.billingAddress;
             this.shippingAddress = transaction.shippingAddress;
-            this.state = transaction.state;
             this.transactionProcessingBehavior = transaction.transactionProcessingBehavior;
             this.metaData = new HashMap<>(transaction.metaData);
-            this.response = transaction.response;
         }
 
         public List<LineItem> getLineItems() {
@@ -225,11 +204,6 @@ public final class Transaction {
             return this;
         }
 
-        protected Builder setState(State state) {
-            this.state = state;
-            return this;
-        }
-
         public Builder setTransactionProcessingBehavior(TransactionProcessingBehavior transactionProcessingBehavior) {
             this.transactionProcessingBehavior = transactionProcessingBehavior;
             return this;
@@ -240,13 +214,8 @@ public final class Transaction {
             return this;
         }
 
-        public Builder setResponse(TransactionResponse response) {
-            this.response = response;
-            return this;
-        }
-
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.state, this.metaData, this.response);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData);
         }
     }
 }

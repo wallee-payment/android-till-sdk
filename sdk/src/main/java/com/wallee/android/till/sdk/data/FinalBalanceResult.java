@@ -12,12 +12,19 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
  * The final balance result data for {@link ApiClient#executeFinalBalance()} API call.
  */
 public final class FinalBalanceResult {
+    private final State state;
     private final ResultCode resultCode;
     private final List<Receipt> receipts;
 
-    public FinalBalanceResult(@NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
+    public FinalBalanceResult(@NonNull State state, @NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
+        this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.receipts = requireNonNull(receipts, "receipts");
+    }
+
+    @NonNull
+    public State getState() {
+        return state;
     }
 
     @NonNull

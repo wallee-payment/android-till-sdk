@@ -7,11 +7,14 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.wallee.android.till.sdk.data.Cancelation;
+import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransactionCompletionResponse;
+import com.wallee.android.till.sdk.data.TransactionResponse;
+import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 import com.wallee.android.till.sdk.data.TransactionVoid;
 
@@ -20,9 +23,12 @@ public class Utils {
 
     public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     public static final String KEY_TRANSACTION_JSON = "transaction";
+    public static final String KEY_TRANSACTION_RESPONSE_JSON = "transactionResponse";
     public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
-    public static final String KEY_CANCELATION_JSON = "cancelation";
+    public static final String KEY_TRANSACTION_COMPLETION_RESPONSE_JSON = "transactionCompletionResponse";
     public static final String KEY_TRANSACTION_VOID_JSON = "transactionVoid";
+    public static final String KEY_TRANSACTION_VOID_RESPONSE_JSON = "transactionVoidResponse";
+    public static final String KEY_CANCELATION_RESULT_JSON = "cancelationResult";
     public static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
     public static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
     public static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
@@ -32,19 +38,34 @@ public class Utils {
         return GSON.fromJson(json, Transaction.class);
     }
 
+    public static TransactionResponse getTransactionResponse(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSACTION_RESPONSE_JSON);
+        return GSON.fromJson(json, TransactionResponse.class);
+    }
+
     public static TransactionCompletion getTransactionCompletion(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_COMPLETION_JSON);
         return GSON.fromJson(json, TransactionCompletion.class);
     }
 
-    public static Cancelation getCancelation(Intent intent) {
-        String json = intent.getStringExtra(KEY_CANCELATION_JSON);
-        return GSON.fromJson(json, Cancelation.class);
+    public static TransactionCompletionResponse getTransactionCompletionResponse(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSACTION_COMPLETION_RESPONSE_JSON);
+        return GSON.fromJson(json, TransactionCompletionResponse.class);
     }
 
     public static TransactionVoid getTransactionVoid(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSACTION_VOID_JSON);
         return GSON.fromJson(json, TransactionVoid.class);
+    }
+
+    public static TransactionVoidResponse getTransactionVoidResponse(Intent intent) {
+        String json = intent.getStringExtra(KEY_TRANSACTION_VOID_RESPONSE_JSON);
+        return GSON.fromJson(json, TransactionVoidResponse.class);
+    }
+
+    public static CancelationResult getCancelationResult(Intent intent) {
+        String json = intent.getStringExtra(KEY_CANCELATION_RESULT_JSON);
+        return GSON.fromJson(json, CancelationResult.class);
     }
 
     public static SubmissionResult getSubmission(Intent intent) {
@@ -94,7 +115,6 @@ public class Utils {
             return transaction;
         }
     }
-
 
     public interface TransactionProcessor {
         Transaction process(Transaction t);

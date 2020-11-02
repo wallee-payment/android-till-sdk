@@ -12,12 +12,15 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.wallee.android.till.sdk.data.Cancelation;
+import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
+import com.wallee.android.till.sdk.data.TransactionResponse;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransactionCompletionResponse;
 import com.wallee.android.till.sdk.data.TransactionVoid;
+import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 
 /**
@@ -82,7 +85,7 @@ public class ApiClient {
 
     /**
      * Authorize a transaction. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(Transaction)} method will be called,
+     * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(TransactionResponse)} method will be called,
      * and the caller application will receive focus back.
      * @param transaction the transaction that should be authorized.
      * @throws RemoteException any errors while communicating with the API server.
@@ -100,7 +103,7 @@ public class ApiClient {
 
     /**
      * Complete a reserved transaction. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#completeTransactionReply(TransactionCompletion)} method will be called,
+     * When the operation will be finished a {@link ResponseHandler#completeTransactionReply(TransactionCompletionResponse)} method will be called,
      * and the caller application will receive focus back.
      * @param transaction the transaction that should be completed.
      * @throws RemoteException any errors while communicating with the API server.
@@ -117,22 +120,8 @@ public class ApiClient {
     }
 
     /**
-     * Cancel last authorized transaction. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(Cancelation)} method will be called,
-     * and the caller application will receive focus back.
-     * @throws RemoteException any errors while communicating with the API server.
-     */
-    public void cancelLastTransactionOperation() throws RemoteException {
-        Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
-
-        msg.replyTo = callback;
-        myService.send(msg);
-    }
-
-    /**
      * Void a reserved transaction. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#voidTransactionReply(TransactionVoid)} method will be called,
+     * When the operation will be finished a {@link ResponseHandler#voidTransactionReply(TransactionVoidResponse)} method will be called,
      * and the caller application will receive focus back.
      * @param transactionVoid the void that should be processed.
      * @throws RemoteException any errors while communicating with the API server.
@@ -144,6 +133,20 @@ public class ApiClient {
         bundle.putString(Utils.KEY_TRANSACTION_VOID_JSON, Utils.GSON.toJson(transactionVoid));
 
         msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Cancel last authorized transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(CancelationResult)} method will be called,
+     * and the caller application will receive focus back.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void cancelLastTransactionOperation() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
+
         msg.replyTo = callback;
         myService.send(msg);
     }

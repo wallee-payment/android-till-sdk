@@ -3,13 +3,19 @@ package com.wallee.android.till.sdk.data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.wallee.android.till.sdk.ApiClient;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
-public final class CancelationResponse {
+/**
+ * The cancelation result data for {@link ApiClient#cancelLastTransactionOperation()} API call.
+ */
+public final class CancelationResult {
+    private final State state;
     private final ResultCode resultCode;
     private final String terminalId;
     private final Long sequenceCount;
@@ -17,13 +23,19 @@ public final class CancelationResponse {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public CancelationResponse(@NonNull ResultCode resultCode, @NonNull String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @NonNull String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+        this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.terminalId = requireNonNull(terminalId, "terminalId");
         this.sequenceCount = sequenceCount;
         this.cancelledSequenceCount = cancelledSequenceCount;
         this.transactionTime = requireNonNull(transactionTime, "transactionTime");
         this.receipts = receipts;
+    }
+
+    @NonNull
+    public State getState() {
+        return state;
     }
 
     @NonNull

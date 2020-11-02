@@ -9,7 +9,13 @@ import java.util.List;
 
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
+/**
+ * The transaction completion response data from {@link com.wallee.android.till.sdk.ApiClient#completeTransaction(TransactionCompletion)} API call.
+ */
 public final class TransactionCompletionResponse {
+    private final TransactionCompletion transactionCompletion;
+
+    private final State state;
     private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
@@ -17,13 +23,25 @@ public final class TransactionCompletionResponse {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public TransactionCompletionResponse(@NonNull ResultCode resultCode, @Nullable String authorizationCode, @NonNull String terminalId, @Nullable Long sequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @NonNull String terminalId, @Nullable Long sequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+        this.transactionCompletion = requireNonNull(transactionCompletion, "transactionCompletion");
+        this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.authorizationCode = authorizationCode;
         this.terminalId = requireNonNull(terminalId, "terminalId");
         this.sequenceCount = sequenceCount;
         this.transactionTime = requireNonNull(transactionTime, "transactionTime");
         this.receipts = receipts;
+    }
+
+    @NonNull
+    public TransactionCompletion getTransactionCompletion() {
+        return transactionCompletion;
+    }
+
+    @NonNull
+    public State getState() {
+        return state;
     }
 
     @NonNull
