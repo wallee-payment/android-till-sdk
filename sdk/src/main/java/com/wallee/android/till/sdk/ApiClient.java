@@ -12,12 +12,20 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.wallee.android.till.sdk.data.CancelationResult;
+import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
+import com.wallee.android.till.sdk.data.TransactionResponse;
+import com.wallee.android.till.sdk.data.TransactionCompletion;
+import com.wallee.android.till.sdk.data.TransactionCompletionResponse;
+import com.wallee.android.till.sdk.data.TransactionVoid;
+import com.wallee.android.till.sdk.data.TransactionVoidResponse;
+import com.wallee.android.till.sdk.data.TransmissionResult;
 
 /**
  * The public interface to the service API.
- * The activity that uses this class should call 'bind' in onCreate and 'unbind' in onDestroy.
- * Currently the only API call is 'authorizeTransaction'.
+ * The activity that uses this class should call {@link ApiClient#bind(Activity)} in onCreate and {@link ApiClient#unbind(Activity)} in onDestroy.
  */
 public class ApiClient {
     private static final String TAG = "ApiClient";
@@ -48,7 +56,7 @@ public class ApiClient {
     };
 
     /**
-     * Instantiate an ApiClient with the given ResponseHandler.
+     * Instantiate an {@link ApiClient} with the given {@link ResponseHandler}.
      * @param handler the handler for any responses from the API server.
      */
     public ApiClient(ResponseHandler handler) {
@@ -57,26 +65,28 @@ public class ApiClient {
     }
 
     /**
-     * Bind the API server to the given Activity. This will initialize the API server and enable calling API methods.
-     * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this Activity.
+     * Bind the API server to the given {@link Activity}. This will initialize the API server and enable calling API methods.
+     * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this {@link Activity}.
      */
     public void bind(Activity activity) {
         Intent intent = new Intent()
-                .setClassName("com.wallee.android.till.apiapp", "com.wallee.android.till.apiapp.ApiService");
+                .setClassName("com.wallee.android", "com.wallee.android.ApiService");
         boolean started = activity.bindService(intent, this.con, Context.BIND_AUTO_CREATE);
         Log.d(TAG, "Service started: "+started);
     }
 
     /**
-     * Unbind the API server from the given Activity.
-     * @param activity the activity the service will get unbound from. Must be the same activity that was passed into 'bind'.
+     * Unbind the API server from the given {@link Activity}.
+     * @param activity the activity the service will get unbound from. Must be the same activity that was passed into {@link ApiClient#bind(Activity)}.
      */
     public void unbind(Activity activity) {
         activity.unbindService(this.con);
     }
 
     /**
-     * Authorize a transaction.
+     * Authorize a transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(TransactionResponse)} method will be called,
+     * and the caller application will receive focus back.
      * @param transaction the transaction that should be authorized.
      * @throws RemoteException any errors while communicating with the API server.
      */
@@ -91,4 +101,92 @@ public class ApiClient {
         myService.send(msg);
     }
 
+    /**
+     * Complete a reserved transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#completeTransactionReply(TransactionCompletionResponse)} method will be called,
+     * and the caller application will receive focus back.
+     * @param transaction the transaction that should be completed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void completeTransaction(TransactionCompletion transaction) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.COMPLETE_TRANSACTION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_JSON, Utils.GSON.toJson(transaction));
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Void a reserved transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#voidTransactionReply(TransactionVoidResponse)} method will be called,
+     * and the caller application will receive focus back.
+     * @param transactionVoid the void that should be processed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void voidTransaction(TransactionVoid transactionVoid) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.VOID_TRANSACTION.ordinal();
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_VOID_JSON, Utils.GSON.toJson(transactionVoid));
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Cancel last authorized transaction. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(CancelationResult)} method will be called,
+     * and the caller application will receive focus back.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void cancelLastTransactionOperation() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Start a submission operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeSubmissionReply(SubmissionResult)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeSubmission() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.EXECUTE_SUBMISSION.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Start a transmission operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeTransmissionReply(TransmissionResult)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeTransmission() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.EXECUTE_TRANSMISSION.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
+     * Start a final balance operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeFinalBalanceReply(FinalBalanceResult)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeFinalBalance() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal();
+
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
 }
