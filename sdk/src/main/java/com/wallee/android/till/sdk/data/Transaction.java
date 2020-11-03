@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,7 @@ public final class Transaction {
     private final String invoiceReference;
 
     private final String customerId;
-    private final Currency currency;
+    private final CurrencyType currency;
 
     private final String customerEmailAddress;
     private final Address billingAddress;
@@ -36,7 +35,7 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, CurrencyType currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -50,13 +49,13 @@ public final class Transaction {
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
-            if (lineItem.getTotalAmountIncludingTax().scale() > currency.getDefaultFractionDigits()) {
-                throw new IllegalArgumentException("The lineItem with id '" + lineItem.getId() + "' has a totalAmountIncludingTax that has more fractional decimals '" + lineItem.getTotalAmountIncludingTax() + "'than the currency " + currency + " default: '" + currency.getDefaultFractionDigits() + "'");
+            if (lineItem.getTotalAmountIncludingTax().scale() > currency.exponent) {
+                throw new IllegalArgumentException("The lineItem with id '" + lineItem.getId() + "' has a totalAmountIncludingTax that has more fractional decimals '" + lineItem.getTotalAmountIncludingTax() + "'than the currency " + currency + " default: '" + currency.exponent + "'");
             }
         }
     }
 
-    public Currency getCurrency() {
+    public CurrencyType getCurrency() {
         return currency;
     }
 
@@ -119,7 +118,7 @@ public final class Transaction {
         private String invoiceReference;
 
         private String customerId;
-        private Currency currency = Currency.getInstance("CHF");
+        private CurrencyType currency = CurrencyType.CHF;
 
         private String customerEmailAddress;
         private Address billingAddress;
@@ -185,7 +184,7 @@ public final class Transaction {
             this.customerId = customerId;
             return this;
         }
-        public Builder setCurrency(Currency currency) {
+        public Builder setCurrency(CurrencyType currency) {
             this.currency = currency;
             return this;
         }
