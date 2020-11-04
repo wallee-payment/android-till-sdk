@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
@@ -17,20 +18,20 @@ public final class TransactionCompletion {
 
     private final Long reserveReference;
 
-    private final CurrencyType currency;
+    private final Currency currency;
 
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull Long reserveReference, @NonNull CurrencyType currency) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull Long reserveReference, @NonNull Currency currency) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.reserveReference = requireNonNull(reserveReference, "reserveReference");
         this.currency = requireNonNull(currency, "currency");
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
-            if (lineItem.getTotalAmountIncludingTax().scale() > currency.exponent) {
-                throw new IllegalArgumentException("The lineItem with id '" + lineItem.getId() + "' has a totalAmountIncludingTax that has more fractional decimals '" + lineItem.getTotalAmountIncludingTax() + "'than the currency " + currency + " default: '" + currency.exponent + "'");
+            if (lineItem.getTotalAmountIncludingTax().scale() > currency.getDefaultFractionDigits()) {
+                throw new IllegalArgumentException("The lineItem with id '" + lineItem.getId() + "' has a totalAmountIncludingTax that has more fractional decimals '" + lineItem.getTotalAmountIncludingTax() + "'than the currency " + currency + " default: '" + currency.getDefaultFractionDigits() + "'");
             }
         }
     }
@@ -46,7 +47,7 @@ public final class TransactionCompletion {
     }
 
     @NonNull
-    public CurrencyType getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
@@ -71,7 +72,7 @@ public final class TransactionCompletion {
 
         private Long reserveReference;
 
-        private CurrencyType currency = CurrencyType.CHF;
+        private Currency currency = Currency.getInstance("CHF");
 
         public Builder(@NonNull List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -105,7 +106,7 @@ public final class TransactionCompletion {
         }
 
         @NonNull
-        public Builder setCurrency(@NonNull CurrencyType currency) {
+        public Builder setCurrency(@NonNull Currency currency) {
             this.currency = currency;
             return this;
         }
