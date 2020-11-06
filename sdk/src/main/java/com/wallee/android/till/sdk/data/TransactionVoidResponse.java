@@ -22,13 +22,13 @@ public final class TransactionVoidResponse {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public TransactionVoidResponse(@NonNull TransactionVoid transactionVoid, @NonNull State state, @NonNull ResultCode resultCode, @NonNull String terminalId, @Nullable Long sequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+    public TransactionVoidResponse(@NonNull TransactionVoid transactionVoid, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable List<Receipt> receipts) {
         this.transactionVoid = requireNonNull(transactionVoid, "transactionVoid");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.terminalId = requireNonNull(terminalId, "terminalId");
+        this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
-        this.transactionTime = requireNonNull(transactionTime, "transactionTime");
+        this.transactionTime = transactionTime;
         this.receipts = receipts;
     }
 
@@ -47,7 +47,7 @@ public final class TransactionVoidResponse {
         return resultCode;
     }
 
-    @NonNull
+    @Nullable
     public String getTerminalId() {
         return terminalId;
     }
@@ -57,7 +57,7 @@ public final class TransactionVoidResponse {
         return sequenceCount;
     }
 
-    @NonNull
+    @Nullable
     public String getTransactionTime() {
         return transactionTime;
     }
@@ -67,7 +67,6 @@ public final class TransactionVoidResponse {
         return receipts;
     }
 
-    @NonNull
     public Date getParsedTransactionTime() throws ParseException {
         return Utils.parseTime(transactionTime, "transactionTime");
     }

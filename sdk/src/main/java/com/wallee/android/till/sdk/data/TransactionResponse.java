@@ -24,14 +24,14 @@ public final class TransactionResponse {
     private final Long reserveReference;
     private final List<Receipt> receipts;
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @NonNull String terminalId, @Nullable Long sequenceCount, @NonNull String transactionTime, @Nullable Long reserveReference, @Nullable List<Receipt> receipts) {
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable List<Receipt> receipts) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.authorizationCode = authorizationCode;
-        this.terminalId = requireNonNull(terminalId, "terminalId");
+        this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
-        this.transactionTime = requireNonNull(transactionTime, "transactionTime");
+        this.transactionTime = transactionTime;
         this.reserveReference = reserveReference;
         this.receipts = receipts;
     }
@@ -56,7 +56,7 @@ public final class TransactionResponse {
         return authorizationCode;
     }
 
-    @NonNull
+    @Nullable
     public String getTerminalId() {
         return terminalId;
     }
@@ -66,7 +66,7 @@ public final class TransactionResponse {
         return sequenceCount;
     }
 
-    @NonNull
+    @Nullable
     public String getTransactionTime() {
         return transactionTime;
     }
@@ -81,7 +81,6 @@ public final class TransactionResponse {
         return receipts;
     }
 
-    @NonNull
     public Date getParsedTransactionTime() throws ParseException {
         return Utils.parseTime(transactionTime, "transactionTime");
     }

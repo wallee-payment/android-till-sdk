@@ -23,13 +23,13 @@ public final class CancelationResult {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @NonNull String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @NonNull String transactionTime, @Nullable List<Receipt> receipts) {
+    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @Nullable String transactionTime, @Nullable List<Receipt> receipts) {
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.terminalId = requireNonNull(terminalId, "terminalId");
+        this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.cancelledSequenceCount = cancelledSequenceCount;
-        this.transactionTime = requireNonNull(transactionTime, "transactionTime");
+        this.transactionTime = transactionTime;
         this.receipts = receipts;
     }
 
@@ -43,7 +43,7 @@ public final class CancelationResult {
         return resultCode;
     }
 
-    @NonNull
+    @Nullable
     public String getTerminalId() {
         return terminalId;
     }
@@ -58,7 +58,7 @@ public final class CancelationResult {
         return cancelledSequenceCount;
     }
 
-    @NonNull
+    @Nullable
     public String getTransactionTime() {
         return transactionTime;
     }
@@ -68,7 +68,6 @@ public final class CancelationResult {
         return receipts;
     }
 
-    @NonNull
     public Date getParsedTransactionTime() throws ParseException {
         return Utils.parseTime(transactionTime, "transactionTime");
     }

@@ -70,7 +70,7 @@ public class ApiClient {
      */
     public void bind(Activity activity) {
         Intent intent = new Intent()
-                .setClassName("com.wallee.android", "com.wallee.android.ApiService");
+                .setClassName("com.wallee.vsd.paydroid", "com.wallee.android.ApiService");
         boolean started = activity.bindService(intent, this.con, Context.BIND_AUTO_CREATE);
         Log.d(TAG, "Service started: "+started);
     }
