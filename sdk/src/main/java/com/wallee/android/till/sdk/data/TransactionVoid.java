@@ -11,7 +11,7 @@ public final class TransactionVoid {
 
     private final Long reserveReference;
 
-    private TransactionVoid(@NonNull Long reserveReference) {
+    public TransactionVoid(@NonNull Long reserveReference) {
         this.reserveReference = requireNonNull(reserveReference, "reserveReference");
     }
 
