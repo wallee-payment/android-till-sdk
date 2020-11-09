@@ -22,9 +22,10 @@ public final class TransactionResponse {
     private final Long sequenceCount;
     private final String transactionTime;
     private final Long reserveReference;
+    private final String acquirerId;
     private final List<Receipt> receipts;
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable List<Receipt> receipts) {
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @Nullable List<Receipt> receipts) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -33,6 +34,7 @@ public final class TransactionResponse {
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
         this.reserveReference = reserveReference;
+        this.acquirerId = acquirerId;
         this.receipts = receipts;
     }
 
@@ -74,6 +76,11 @@ public final class TransactionResponse {
     @Nullable
     public Long getReserveReference() {
         return reserveReference;
+    }
+
+    @Nullable
+    public String getAcquirerId() {
+        return acquirerId;
     }
 
     @Nullable

@@ -1,6 +1,7 @@
 package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.wallee.android.till.sdk.ApiClient;
 
@@ -16,10 +17,10 @@ public final class FinalBalanceResult {
     private final ResultCode resultCode;
     private final List<Receipt> receipts;
 
-    public FinalBalanceResult(@NonNull State state, @NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
+    public FinalBalanceResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable List<Receipt> receipts) {
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.receipts = requireNonNull(receipts, "receipts");
+        this.receipts = receipts;
     }
 
     @NonNull
@@ -32,7 +33,7 @@ public final class FinalBalanceResult {
         return resultCode;
     }
 
-    @NonNull
+    @Nullable
     public List<Receipt> getReceipts() {
         return receipts;
     }

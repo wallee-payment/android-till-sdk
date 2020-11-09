@@ -138,9 +138,8 @@ public class ApiClient {
     }
 
     /**
-     * Cancel last authorized transaction. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(CancelationResult)} method will be called,
-     * and the caller application will receive focus back.
+     * Cancel last authorized transaction operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#cancelLastTransactionOperationReply(CancelationResult)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void cancelLastTransactionOperation() throws RemoteException {
