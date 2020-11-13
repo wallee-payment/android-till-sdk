@@ -22,14 +22,14 @@ public final class TransactionVoidResponse {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public TransactionVoidResponse(@NonNull TransactionVoid transactionVoid, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable List<Receipt> receipts) {
+    public TransactionVoidResponse(@NonNull TransactionVoid transactionVoid, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
         this.transactionVoid = requireNonNull(transactionVoid, "transactionVoid");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
-        this.receipts = receipts;
+        this.receipts = requireNonNull(receipts, "receipts");
     }
 
     @NonNull
@@ -62,7 +62,7 @@ public final class TransactionVoidResponse {
         return transactionTime;
     }
 
-    @Nullable
+    @NonNull
     public List<Receipt> getReceipts() {
         return receipts;
     }

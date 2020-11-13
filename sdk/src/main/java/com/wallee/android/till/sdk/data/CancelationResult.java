@@ -23,14 +23,14 @@ public final class CancelationResult {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @Nullable String transactionTime, @Nullable List<Receipt> receipts) {
+    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.cancelledSequenceCount = cancelledSequenceCount;
         this.transactionTime = transactionTime;
-        this.receipts = receipts;
+        this.receipts = requireNonNull(receipts, "receipts");
     }
 
     @NonNull
@@ -63,7 +63,7 @@ public final class CancelationResult {
         return transactionTime;
     }
 
-    @Nullable
+    @NonNull
     public List<Receipt> getReceipts() {
         return receipts;
     }

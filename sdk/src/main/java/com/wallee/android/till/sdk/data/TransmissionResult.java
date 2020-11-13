@@ -17,10 +17,10 @@ public final class TransmissionResult {
     private final ResultCode resultCode;
     private final List<Receipt> receipts;
 
-    public TransmissionResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable List<Receipt> receipts) {
+    public TransmissionResult(@NonNull State state, @NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.receipts = receipts;
+        this.receipts = requireNonNull(receipts, "receipts");
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public final class TransmissionResult {
         return resultCode;
     }
 
-    @Nullable
+    @NonNull
     public List<Receipt> getReceipts() {
         return receipts;
     }
