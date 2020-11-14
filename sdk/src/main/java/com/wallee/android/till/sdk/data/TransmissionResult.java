@@ -1,6 +1,7 @@
 package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.wallee.android.till.sdk.ApiClient;
 

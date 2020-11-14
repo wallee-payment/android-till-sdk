@@ -68,12 +68,12 @@ public class Utils {
         return GSON.fromJson(json, CancelationResult.class);
     }
 
-    public static SubmissionResult getSubmission(Intent intent) {
+    public static SubmissionResult getSubmissionResult(Intent intent) {
         String json = intent.getStringExtra(KEY_SUBMISSION_RESULT_JSON);
         return GSON.fromJson(json, SubmissionResult.class);
     }
 
-    public static TransmissionResult getTransmission(Intent intent) {
+    public static TransmissionResult getTransmissionResult(Intent intent) {
         String json = intent.getStringExtra(KEY_TRANSMISSION_RESULT_JSON);
         return GSON.fromJson(json, TransmissionResult.class);
     }

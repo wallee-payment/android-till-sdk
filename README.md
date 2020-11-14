@@ -47,6 +47,22 @@ public class MainActivity extends AppCompatActivity {
         }
 ```
 
+## Kiosk mode
+
+For merchants who want to limit device access to their application only, there is a possibility to configure device to such setting. The merchant application would require to define additional parameters in `AndroidManifest.xml`:
+
+```
+<activity
+    android:name="com.wallee.android.till.YourLaunchActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <action android:name="com.wallee.android.TILL_APPLICATION" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+
 ## How to get it
 
 Copy and paste this inside your build.gradle dependencies block.

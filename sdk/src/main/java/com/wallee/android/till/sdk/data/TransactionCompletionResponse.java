@@ -23,7 +23,7 @@ public final class TransactionCompletionResponse {
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable List<Receipt> receipts) {
+    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
         this.transactionCompletion = requireNonNull(transactionCompletion, "transactionCompletion");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -31,7 +31,7 @@ public final class TransactionCompletionResponse {
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
-        this.receipts = receipts;
+        this.receipts = requireNonNull(receipts, "receipts");
     }
 
     @NonNull
@@ -69,7 +69,7 @@ public final class TransactionCompletionResponse {
         return transactionTime;
     }
 
-    @Nullable
+    @NonNull
     public List<Receipt> getReceipts() {
         return receipts;
     }
