@@ -38,31 +38,31 @@ public abstract class ResponseHandler extends Handler {
         Log.d("HandleReply", "" + msg.arg1);
         if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransactionResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_RESPONSE_JSON), TransactionResponse.class);
+            TransactionResponse response = Utils.getTransactionResponse(bundle);
             authorizeTransactionReply(response);
         } else if (msg.arg1 == ApiMessageType.COMPLETE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransactionCompletionResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_COMPLETION_RESPONSE_JSON), TransactionCompletionResponse.class);
+            TransactionCompletionResponse response = Utils.getTransactionCompletionResponse(bundle);
             completeTransactionReply(response);
         } else if (msg.arg1 == ApiMessageType.VOID_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransactionVoidResponse response = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSACTION_VOID_RESPONSE_JSON), TransactionVoidResponse.class);
+            TransactionVoidResponse response = Utils.getTransactionVoidResponse(bundle);
             voidTransactionReply(response);
         } else if (msg.arg1 == ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal()) {
             Bundle bundle = msg.getData();
-            CancelationResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_CANCELATION_RESULT_JSON), CancelationResult.class);
+            CancelationResult result = Utils.getCancelationResult(bundle);
             cancelLastTransactionOperationReply(result);
         } else if (msg.arg1 == ApiMessageType.EXECUTE_SUBMISSION.ordinal()) {
             Bundle bundle = msg.getData();
-            SubmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_SUBMISSION_RESULT_JSON), SubmissionResult.class);
+            SubmissionResult result = Utils.getSubmissionResult(bundle);
             executeSubmissionReply(result);
         } else if (msg.arg1 == ApiMessageType.EXECUTE_TRANSMISSION.ordinal()) {
             Bundle bundle = msg.getData();
-            TransmissionResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_TRANSMISSION_RESULT_JSON), TransmissionResult.class);
+            TransmissionResult result = Utils.getTransmissionResult(bundle);
             executeTransmissionReply(result);
         } else if (msg.arg1 == ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal()) {
             Bundle bundle = msg.getData();
-            FinalBalanceResult result = Utils.GSON.fromJson(bundle.getString(Utils.KEY_FINAL_BALANCE_RESULT_JSON), FinalBalanceResult.class);
+            FinalBalanceResult result = Utils.getFinalBalanceResult(bundle);
             executeFinalBalanceReply(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);

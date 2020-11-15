@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         ResponseHandler responseHandler = new ResponseHandler() {
             @Override
             public void authorizeTransactionReply(Transaction transaction) {
-                Log.i("Main", "authorizeTransactionReply:  + transaction;
+                Log.i("Main", "authorizeTransactionReply:  + transaction");
             }
         };
 
@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         ApiClient client = new ApiClient(responseHandler);
         //and establish connection to API service
         client.bind(this);
-        
+
         //create your Transaction object
         BigDecimal amount = new BigDecimal("12.34");
         List<LineItem> lineItems = new LineItem.ListBuilder("Widget A", amount).build();
         Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference("IREF-123").setMerchantReference("MREF-123").build();
-        
+
         //and call the API service with your Transaction
         try {
             client.authorizeTransaction(transaction);
@@ -61,6 +61,54 @@ For merchants who want to limit device access to their application only, there i
         <category android:name="android.intent.category.LAUNCHER" />
     </intent-filter>
 </activity>
+```
+
+## Transactions interception
+
+For third party applications which want to modify transaction before or after it is fully processed, there is a posibility to do so. Such application would require to define additional parameters in `AndroidManifest.xml`.
+
+For intercepting transaction before it is processed:
+
+```
+<activity
+    android:name="com.wallee.android.till.YourActivityThatModifiesTransactionBeforeProcessing">
+    <intent-filter>
+        <action android:name="com.wallee.android.AUTHORIZE_TRANSACTION_BEFORE" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+```
+
+For intercepting transaction after it is processed:
+
+```
+<activity
+    android:name="com.wallee.android.till.YourActivityThatModifiesTransactionAfterProcessing">
+    <intent-filter>
+        <action android:name="com.wallee.android.AUTHORIZE_TRANSACTION_AFTER" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+```
+
+Such activity would get the transaction object with `Intent`. The object can be retrieved with the help of `Utils` class, by using extras from this `Intent`.
+
+The activity will be started by the SDK itself, when appropriate processing step will occur.
+
+The activity would also require to send result back.
+
+In case of success:
+
+```
+setResult(Activity.RESULT_OK, intentWithBundle);
+finish();
+```
+
+And in case of error:
+
+```
+setResult(Activity.RESULT_CANCELED);
+finish();
 ```
 
 ## How to get it

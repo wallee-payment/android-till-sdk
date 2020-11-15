@@ -93,8 +93,7 @@ public class ApiClient {
     public void authorizeTransaction(Transaction transaction) throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.AUTHORIZE_TRANSACTION.ordinal();
-        Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_TRANSACTION_JSON, Utils.GSON.toJson(transaction));
+        Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
         msg.replyTo = callback;
@@ -111,8 +110,7 @@ public class ApiClient {
     public void completeTransaction(TransactionCompletion transaction) throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.COMPLETE_TRANSACTION.ordinal();
-        Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_JSON, Utils.GSON.toJson(transaction));
+        Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
         msg.replyTo = callback;
@@ -129,8 +127,7 @@ public class ApiClient {
     public void voidTransaction(TransactionVoid transactionVoid) throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.VOID_TRANSACTION.ordinal();
-        Bundle bundle = new Bundle();
-        bundle.putString(Utils.KEY_TRANSACTION_VOID_JSON, Utils.GSON.toJson(transactionVoid));
+        Bundle bundle = Utils.toBundle(transactionVoid);
 
         msg.setData(bundle);
         msg.replyTo = callback;
