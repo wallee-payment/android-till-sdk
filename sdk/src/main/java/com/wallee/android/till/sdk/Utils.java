@@ -1,12 +1,9 @@
 package com.wallee.android.till.sdk;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -14,113 +11,130 @@ import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
 import com.wallee.android.till.sdk.data.TransactionCompletionResponse;
 import com.wallee.android.till.sdk.data.TransactionResponse;
+import com.wallee.android.till.sdk.data.TransactionVoid;
 import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
-import com.wallee.android.till.sdk.data.TransactionVoid;
 
 public class Utils {
-    private static final String TAG = "Utils";
+    private static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
+    private static final String KEY_TRANSACTION_JSON = "transaction";
+    private static final String KEY_TRANSACTION_RESPONSE_JSON = "transactionResponse";
+    private static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
+    private static final String KEY_TRANSACTION_COMPLETION_RESPONSE_JSON = "transactionCompletionResponse";
+    private static final String KEY_TRANSACTION_VOID_JSON = "transactionVoid";
+    private static final String KEY_TRANSACTION_VOID_RESPONSE_JSON = "transactionVoidResponse";
+    private static final String KEY_CANCELATION_RESULT_JSON = "cancelationResult";
+    private static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
+    private static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
+    private static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
 
-    public static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
-    public static final String KEY_TRANSACTION_JSON = "transaction";
-    public static final String KEY_TRANSACTION_RESPONSE_JSON = "transactionResponse";
-    public static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
-    public static final String KEY_TRANSACTION_COMPLETION_RESPONSE_JSON = "transactionCompletionResponse";
-    public static final String KEY_TRANSACTION_VOID_JSON = "transactionVoid";
-    public static final String KEY_TRANSACTION_VOID_RESPONSE_JSON = "transactionVoidResponse";
-    public static final String KEY_CANCELATION_RESULT_JSON = "cancelationResult";
-    public static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
-    public static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
-    public static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
-
-    public static Transaction getTransaction(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_JSON);
+    public static Transaction getTransaction(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_JSON);
         return GSON.fromJson(json, Transaction.class);
     }
 
-    public static TransactionResponse getTransactionResponse(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_RESPONSE_JSON);
+    public static Bundle toBundle(Transaction transaction) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_JSON, Utils.GSON.toJson(transaction));
+        return bundle;
+    }
+
+    public static TransactionResponse getTransactionResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_RESPONSE_JSON);
         return GSON.fromJson(json, TransactionResponse.class);
     }
 
-    public static TransactionCompletion getTransactionCompletion(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_COMPLETION_JSON);
+    public static Bundle toBundle(TransactionResponse transaction) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        return bundle;
+    }
+
+    public static TransactionCompletion getTransactionCompletion(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_COMPLETION_JSON);
         return GSON.fromJson(json, TransactionCompletion.class);
     }
 
-    public static TransactionCompletionResponse getTransactionCompletionResponse(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_COMPLETION_RESPONSE_JSON);
+    public static Bundle toBundle(TransactionCompletion transaction) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_JSON, Utils.GSON.toJson(transaction));
+        return bundle;
+    }
+
+    public static TransactionCompletionResponse getTransactionCompletionResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_COMPLETION_RESPONSE_JSON);
         return GSON.fromJson(json, TransactionCompletionResponse.class);
     }
 
-    public static TransactionVoid getTransactionVoid(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_VOID_JSON);
+    public static Bundle toBundle(TransactionCompletionResponse transaction) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        return bundle;
+    }
+
+    public static TransactionVoid getTransactionVoid(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_VOID_JSON);
         return GSON.fromJson(json, TransactionVoid.class);
     }
 
-    public static TransactionVoidResponse getTransactionVoidResponse(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSACTION_VOID_RESPONSE_JSON);
+    public static Bundle toBundle(TransactionVoid transactionVoid) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_VOID_JSON, Utils.GSON.toJson(transactionVoid));
+        return bundle;
+    }
+
+    public static TransactionVoidResponse getTransactionVoidResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSACTION_VOID_RESPONSE_JSON);
         return GSON.fromJson(json, TransactionVoidResponse.class);
     }
 
-    public static CancelationResult getCancelationResult(Intent intent) {
-        String json = intent.getStringExtra(KEY_CANCELATION_RESULT_JSON);
+    public static Bundle toBundle(TransactionVoidResponse transaction) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSACTION_VOID_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        return bundle;
+    }
+
+    public static CancelationResult getCancelationResult(Bundle bundle) {
+        String json = bundle.getString(KEY_CANCELATION_RESULT_JSON);
         return GSON.fromJson(json, CancelationResult.class);
     }
 
-    public static SubmissionResult getSubmissionResult(Intent intent) {
-        String json = intent.getStringExtra(KEY_SUBMISSION_RESULT_JSON);
+    public static Bundle toBundle(CancelationResult result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_CANCELATION_RESULT_JSON, Utils.GSON.toJson(result));
+        return bundle;
+    }
+
+    public static SubmissionResult getSubmissionResult(Bundle bundle) {
+        String json = bundle.getString(KEY_SUBMISSION_RESULT_JSON);
         return GSON.fromJson(json, SubmissionResult.class);
     }
 
-    public static TransmissionResult getTransmissionResult(Intent intent) {
-        String json = intent.getStringExtra(KEY_TRANSMISSION_RESULT_JSON);
+    public static Bundle toBundle(SubmissionResult result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_SUBMISSION_RESULT_JSON, Utils.GSON.toJson(result));
+        return bundle;
+    }
+
+    public static TransmissionResult getTransmissionResult(Bundle bundle) {
+        String json = bundle.getString(KEY_TRANSMISSION_RESULT_JSON);
         return GSON.fromJson(json, TransmissionResult.class);
     }
 
-    public static FinalBalanceResult getFinalBalanceResult(Intent intent) {
-        String json = intent.getStringExtra(KEY_FINAL_BALANCE_RESULT_JSON);
+    public static Bundle toBundle(TransmissionResult result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_TRANSMISSION_RESULT_JSON, Utils.GSON.toJson(result));
+        return bundle;
+    }
+
+    public static FinalBalanceResult getFinalBalanceResult(Bundle bundle) {
+        String json = bundle.getString(KEY_FINAL_BALANCE_RESULT_JSON);
         return GSON.fromJson(json, FinalBalanceResult.class);
     }
 
-    /**
-     * Check whether a certain transaction is processable. Should be called in onCreate.
-     * @param a the 3rd party activity that is being checked.
-     * @param checker SAM-type interface to do the check. If the check returns false the activity will be terminated without processing the Transaction.
-     */
-    public static void checkTransaction(Activity a, TransactionChecker checker) {
-        Transaction transaction = getTransaction(a.getIntent());
-        if (! checker.check(transaction)) {
-            a.setResult(ReturnCode.NOT_PROCESSED.ordinal());
-            a.finish();
-        }
-    }
-
-    /**
-     * 3rd party processing of a Transaction.
-     * @param a the 3rd party activity
-     * @param p SAM-type interface for processing the activity.
-     */
-    public static Transaction processTransaction(Activity a, TransactionProcessor p) {
-        Transaction transaction = getTransaction(a.getIntent());
-        try {
-            Transaction processedTransaction = p.process(transaction);
-            a.setResult(ReturnCode.OK.ordinal(), new Intent().putExtra(KEY_TRANSACTION_JSON, GSON.toJson(processedTransaction)));
-            a.finish();
-            return processedTransaction;
-        } catch (Exception ex) {
-            Log.e(TAG, "Transaction failed", ex);
-            a.setResult(ReturnCode.ERROR.ordinal());
-            a.finish();
-            return transaction;
-        }
-    }
-
-    public interface TransactionProcessor {
-        Transaction process(Transaction t);
-    }
-
-    public interface TransactionChecker {
-        boolean check(Transaction t);
+    public static Bundle toBundle(FinalBalanceResult result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_FINAL_BALANCE_RESULT_JSON, Utils.GSON.toJson(result));
+        return bundle;
     }
 }
