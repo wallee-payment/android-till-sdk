@@ -28,10 +28,13 @@ import com.wallee.android.till.sdk.data.TransmissionResult;
  * The activity that uses this class should call {@link ApiClient#bind(Activity)} in onCreate and {@link ApiClient#unbind(Activity)} in onDestroy.
  */
 public class ApiClient {
+    public static final int VERSION = 1;
+
     private static final String TAG = "ApiClient";
+
     private Messenger myService;
+
     private final Messenger callback;
-    private final ResponseHandler handler;
     private final ServiceConnection con = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -60,7 +63,6 @@ public class ApiClient {
      * @param handler the handler for any responses from the API server.
      */
     public ApiClient(ResponseHandler handler) {
-        this.handler = handler;
         callback = new Messenger(handler);
     }
 
@@ -84,6 +86,21 @@ public class ApiClient {
     }
 
     /**
+     * Gets the SDK version number from the service API.
+     * For this SDK version number, check {@link ApiClient#VERSION}.
+     * When the operation will be finished a {@link ResponseHandler#getServiceApiSdkVersionReply(Integer)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void getServiceApiSdkVersion() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal();
+
+        msg.arg2 = VERSION;
+        msg.replyTo = callback;
+        myService.send(msg);
+    }
+
+    /**
      * Authorize a transaction. A dedicated transaction application will take the focus after calling this function.
      * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(TransactionResponse)} method will be called,
      * and the caller application will receive focus back.
@@ -96,6 +113,7 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -113,6 +131,7 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -130,6 +149,7 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transactionVoid);
 
         msg.setData(bundle);
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -143,6 +163,7 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
 
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -156,6 +177,7 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_SUBMISSION.ordinal();
 
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -169,6 +191,7 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_TRANSMISSION.ordinal();
 
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -182,6 +205,7 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal();
 
+        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }

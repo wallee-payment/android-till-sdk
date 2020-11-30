@@ -36,7 +36,11 @@ public abstract class ResponseHandler extends Handler {
     public final void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
-        if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
+        if (msg.arg1 == ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal()) {
+            getServiceApiSdkVersionReply(msg.arg2);
+        } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
+            serviceApiSdkVersionNotSupportedReply((String) msg.obj);
+        } else if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             TransactionResponse response = Utils.getTransactionResponse(bundle);
             authorizeTransactionReply(response);
@@ -68,6 +72,18 @@ public abstract class ResponseHandler extends Handler {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
     }
+
+    /**
+     * The response from an {@link ApiClient#getServiceApiSdkVersion()} call.
+     * @param version the SDK version number from the service API.
+     */
+    public abstract void getServiceApiSdkVersionReply(Integer version);
+
+    /**
+     * The response from the API in case if the current SDK version is not supported by the API service.
+     * @param message the detailed message with an explanation.
+     */
+    public abstract void serviceApiSdkVersionNotSupportedReply(String message);
 
     /**
      * The response from an {@link ApiClient#authorizeTransaction(Transaction)} call.
