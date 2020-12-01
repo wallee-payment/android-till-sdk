@@ -77,53 +77,53 @@ public abstract class ResponseHandler extends Handler {
      * The response from an {@link ApiClient#getServiceApiSdkVersion()} call.
      * @param version the SDK version number from the service API.
      */
-    public abstract void getServiceApiSdkVersionReply(Integer version);
+    public void getServiceApiSdkVersionReply(Integer version) {}
 
     /**
      * The response from the API in case if the current SDK version is not supported by the API service.
      * @param message the detailed message with an explanation.
      */
-    public abstract void serviceApiSdkVersionNotSupportedReply(String message);
+    public void serviceApiSdkVersionNotSupportedReply(String message) {}
 
     /**
      * The response from an {@link ApiClient#authorizeTransaction(Transaction)} call.
      * @param response the transaction as it was processed.
      */
-    public abstract void authorizeTransactionReply(TransactionResponse response);
+    public void authorizeTransactionReply(TransactionResponse response) {}
 
     /**
      * The response from an {@link ApiClient#completeTransaction(TransactionCompletion)} call.
      * @param response the transaction as it was processed.
      */
-    public abstract void completeTransactionReply(TransactionCompletionResponse response);
+    public void completeTransactionReply(TransactionCompletionResponse response) {}
 
     /**
      * The response from an {@link ApiClient#voidTransaction(TransactionVoid)} call.
      * @param response the void as it was processed.
      */
-    public abstract void voidTransactionReply(TransactionVoidResponse response);
+    public void voidTransactionReply(TransactionVoidResponse response) {}
 
     /**
      * The result from an {@link ApiClient#cancelLastTransactionOperation()} call.
      * @param result the cancelation as it was processed.
      */
-    public abstract void cancelLastTransactionOperationReply(CancelationResult result);
+    public void cancelLastTransactionOperationReply(CancelationResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeSubmission()} call.
      * @param result the submission as it was processed.
      */
-    public abstract void executeSubmissionReply(SubmissionResult result);
+    public void executeSubmissionReply(SubmissionResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeTransmission()} call.
      * @param result the transmission as it was processed.
      */
-    public abstract void executeTransmissionReply(TransmissionResult result);
+    public void executeTransmissionReply(TransmissionResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeFinalBalance()} call.
      * @param result the final balance as it was processed.
      */
-    public abstract void executeFinalBalanceReply(FinalBalanceResult result);
+    public void executeFinalBalanceReply(FinalBalanceResult result) {}
 }
