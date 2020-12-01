@@ -95,7 +95,6 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal();
 
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -113,7 +112,6 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -131,7 +129,6 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -149,7 +146,6 @@ public class ApiClient {
         Bundle bundle = Utils.toBundle(transactionVoid);
 
         msg.setData(bundle);
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -163,7 +159,6 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
 
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -177,7 +172,6 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_SUBMISSION.ordinal();
 
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -191,7 +185,6 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_TRANSMISSION.ordinal();
 
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -205,7 +198,6 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal();
 
-        msg.arg2 = VERSION;
         msg.replyTo = callback;
         myService.send(msg);
     }

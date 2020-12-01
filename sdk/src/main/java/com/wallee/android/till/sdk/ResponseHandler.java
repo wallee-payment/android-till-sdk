@@ -37,7 +37,7 @@ public abstract class ResponseHandler extends Handler {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
         if (msg.arg1 == ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal()) {
-            getServiceApiSdkVersionReply(msg.arg2);
+            getServiceApiSdkVersionReply((Integer) msg.obj);
         } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
             serviceApiSdkVersionNotSupportedReply((String) msg.obj);
         } else if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {

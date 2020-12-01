@@ -17,6 +17,7 @@ import com.wallee.android.till.sdk.data.TransmissionResult;
 
 public class Utils {
     private static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
+    private static final String KEY_SDK_VERSION = "sdkVersion";
     private static final String KEY_TRANSACTION_JSON = "transaction";
     private static final String KEY_TRANSACTION_RESPONSE_JSON = "transactionResponse";
     private static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
@@ -28,6 +29,10 @@ public class Utils {
     private static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
     private static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
 
+    public static int getSdkVersion(Bundle bundle) {
+        return bundle.getInt(KEY_SDK_VERSION);
+    }
+
     public static Transaction getTransaction(Bundle bundle) {
         String json = bundle.getString(KEY_TRANSACTION_JSON);
         return GSON.fromJson(json, Transaction.class);
@@ -36,6 +41,7 @@ public class Utils {
     public static Bundle toBundle(Transaction transaction) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_JSON, Utils.GSON.toJson(transaction));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -47,6 +53,7 @@ public class Utils {
     public static Bundle toBundle(TransactionResponse transaction) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -58,6 +65,7 @@ public class Utils {
     public static Bundle toBundle(TransactionCompletion transaction) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_JSON, Utils.GSON.toJson(transaction));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -69,6 +77,7 @@ public class Utils {
     public static Bundle toBundle(TransactionCompletionResponse transaction) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_COMPLETION_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -80,6 +89,7 @@ public class Utils {
     public static Bundle toBundle(TransactionVoid transactionVoid) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_VOID_JSON, Utils.GSON.toJson(transactionVoid));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -91,6 +101,7 @@ public class Utils {
     public static Bundle toBundle(TransactionVoidResponse transaction) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSACTION_VOID_RESPONSE_JSON, Utils.GSON.toJson(transaction));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -102,6 +113,7 @@ public class Utils {
     public static Bundle toBundle(CancelationResult result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_CANCELATION_RESULT_JSON, Utils.GSON.toJson(result));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -113,6 +125,7 @@ public class Utils {
     public static Bundle toBundle(SubmissionResult result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_SUBMISSION_RESULT_JSON, Utils.GSON.toJson(result));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -124,6 +137,7 @@ public class Utils {
     public static Bundle toBundle(TransmissionResult result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_TRANSMISSION_RESULT_JSON, Utils.GSON.toJson(result));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 
@@ -135,6 +149,7 @@ public class Utils {
     public static Bundle toBundle(FinalBalanceResult result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_FINAL_BALANCE_RESULT_JSON, Utils.GSON.toJson(result));
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
 }
