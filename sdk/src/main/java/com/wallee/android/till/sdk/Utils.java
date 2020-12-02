@@ -15,9 +15,12 @@ import com.wallee.android.till.sdk.data.TransactionVoid;
 import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 
+import java.io.Serializable;
+
 public class Utils {
     private static final Gson GSON = new GsonBuilder().setVersion(1.0).create();
     private static final String KEY_SDK_VERSION = "sdkVersion";
+    private static final String KEY_SERIALIZABLE = "serializable";
     private static final String KEY_TRANSACTION_JSON = "transaction";
     private static final String KEY_TRANSACTION_RESPONSE_JSON = "transactionResponse";
     private static final String KEY_TRANSACTION_COMPLETION_JSON = "transactionCompletion";
@@ -31,6 +34,17 @@ public class Utils {
 
     public static int getSdkVersion(Bundle bundle) {
         return bundle.getInt(KEY_SDK_VERSION);
+    }
+
+    public static Serializable getSerializable(Bundle bundle) {
+        return bundle.getSerializable(KEY_SERIALIZABLE);
+    }
+
+    public static Bundle toBundle(Serializable data) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Utils.KEY_SERIALIZABLE, data);
+        bundle.putInt(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
     }
 
     public static Transaction getTransaction(Bundle bundle) {

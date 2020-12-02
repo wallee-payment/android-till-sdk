@@ -94,6 +94,7 @@ public class ApiClient {
     public void checkApiServiceCompatibility() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal();
+        msg.arg2 = VERSION;
 
         msg.replyTo = callback;
         myService.send(msg);

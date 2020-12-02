@@ -37,9 +37,14 @@ public abstract class ResponseHandler extends Handler {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
         if (msg.arg1 == ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal()) {
-            checkApiServiceCompatibilityReply((Boolean) msg.obj, msg.arg2);
+            Bundle bundle = msg.getData();
+            Boolean isCompatible = (Boolean) Utils.getSerializable(bundle);
+            int apiServiceVersion = Utils.getSdkVersion(bundle);
+            checkApiServiceCompatibilityReply(isCompatible, apiServiceVersion);
         } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
-            serviceApiSdkVersionNotSupportedReply((String) msg.obj);
+            Bundle bundle = msg.getData();
+            String message = (String) Utils.getSerializable(bundle);
+            serviceApiSdkVersionNotSupportedReply(message);
         } else if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             TransactionResponse response = Utils.getTransactionResponse(bundle);
