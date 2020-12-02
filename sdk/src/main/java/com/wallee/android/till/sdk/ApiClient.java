@@ -86,14 +86,14 @@ public class ApiClient {
     }
 
     /**
-     * Gets the SDK version number from the service API.
-     * For this SDK version number, check {@link ApiClient#VERSION}.
-     * When the operation will be finished a {@link ResponseHandler#getServiceApiSdkVersionReply(Integer)} method will be called.
+     * Checks if the current SDK version {@link ApiClient#VERSION} is compatible with the service API.
+     * When the operation will be finished a {@link ResponseHandler#checkApiServiceCompatibilityReply(Boolean, Integer)} method
+     * will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
-    public void getServiceApiSdkVersion() throws RemoteException {
+    public void checkApiServiceCompatibility() throws RemoteException {
         Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal();
+        msg.arg1 = ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal();
 
         msg.replyTo = callback;
         myService.send(msg);

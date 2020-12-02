@@ -36,8 +36,8 @@ public abstract class ResponseHandler extends Handler {
     public final void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
-        if (msg.arg1 == ApiMessageType.GET_SERVICE_API_SDK_VERSION.ordinal()) {
-            getServiceApiSdkVersionReply((Integer) msg.obj);
+        if (msg.arg1 == ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal()) {
+            checkApiServiceCompatibilityReply((Boolean) msg.obj, msg.arg2);
         } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
             serviceApiSdkVersionNotSupportedReply((String) msg.obj);
         } else if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
@@ -74,10 +74,11 @@ public abstract class ResponseHandler extends Handler {
     }
 
     /**
-     * The response from an {@link ApiClient#getServiceApiSdkVersion()} call.
-     * @param version the SDK version number from the service API.
+     * The response from an {@link ApiClient#checkApiServiceCompatibility()} call.
+     * @param isCompatible is the current SDK is compatible with the service API, or not.
+     * @param apiServiceVersion the SDK version number from the service API.
      */
-    public void getServiceApiSdkVersionReply(Integer version) {}
+    public void checkApiServiceCompatibilityReply(Boolean isCompatible, Integer apiServiceVersion) {}
 
     /**
      * The response from the API in case if the current SDK version is not supported by the API service.
