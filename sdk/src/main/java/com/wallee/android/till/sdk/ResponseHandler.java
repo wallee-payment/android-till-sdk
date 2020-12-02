@@ -39,7 +39,7 @@ public abstract class ResponseHandler extends Handler {
         if (msg.arg1 == ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal()) {
             Bundle bundle = msg.getData();
             Boolean isCompatible = (Boolean) Utils.getSerializable(bundle);
-            int apiServiceVersion = Utils.getSdkVersion(bundle);
+            String apiServiceVersion = Utils.getSdkVersion(bundle);
             checkApiServiceCompatibilityReply(isCompatible, apiServiceVersion);
         } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
             Bundle bundle = msg.getData();
@@ -83,7 +83,7 @@ public abstract class ResponseHandler extends Handler {
      * @param isCompatible is the current SDK is compatible with the service API, or not.
      * @param apiServiceVersion the SDK version number from the service API.
      */
-    public void checkApiServiceCompatibilityReply(Boolean isCompatible, Integer apiServiceVersion) {}
+    public void checkApiServiceCompatibilityReply(Boolean isCompatible, String apiServiceVersion) {}
 
     /**
      * The response from the API in case if the current SDK version is not supported by the API service.

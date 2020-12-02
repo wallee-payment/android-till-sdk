@@ -23,12 +23,14 @@ import com.wallee.android.till.sdk.data.TransactionVoid;
 import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 
+import java.io.Serializable;
+
 /**
  * The public interface to the service API.
  * The activity that uses this class should call {@link ApiClient#bind(Activity)} in onCreate and {@link ApiClient#unbind(Activity)} in onDestroy.
  */
 public class ApiClient {
-    public static final int VERSION = 1;
+    public static final String VERSION = "0.9.11";
 
     private static final String TAG = "ApiClient";
 
@@ -87,15 +89,15 @@ public class ApiClient {
 
     /**
      * Checks if the current SDK version {@link ApiClient#VERSION} is compatible with the service API.
-     * When the operation will be finished a {@link ResponseHandler#checkApiServiceCompatibilityReply(Boolean, Integer)} method
-     * will be called.
+     * When the operation will be finished a {@link ResponseHandler#checkApiServiceCompatibilityReply(Boolean, String)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void checkApiServiceCompatibility() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal();
-        msg.arg2 = VERSION;
+        Bundle bundle = Utils.toBundle((Serializable) null);
 
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -159,7 +161,9 @@ public class ApiClient {
     public void cancelLastTransactionOperation() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.CANCEL_LAST_TRANSACTION_OPERATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
 
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -172,7 +176,9 @@ public class ApiClient {
     public void executeSubmission() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_SUBMISSION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
 
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -185,7 +191,9 @@ public class ApiClient {
     public void executeTransmission() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_TRANSMISSION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
 
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }
@@ -198,7 +206,9 @@ public class ApiClient {
     public void executeFinalBalance() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_FINAL_BALANCE.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
 
+        msg.setData(bundle);
         msg.replyTo = callback;
         myService.send(msg);
     }
