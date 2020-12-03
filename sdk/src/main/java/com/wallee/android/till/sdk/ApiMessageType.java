@@ -4,6 +4,8 @@ package com.wallee.android.till.sdk;
  * The type of message being sent.
  */
 public enum ApiMessageType {
+    CHECK_API_SERVICE_COMPATIBILITY,
+    SDK_VERSION_NOT_SUPPORTED_REPLY,
     AUTHORIZE_TRANSACTION,
     COMPLETE_TRANSACTION,
     CANCEL_LAST_TRANSACTION_OPERATION,

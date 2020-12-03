@@ -1,3 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wallee.android.till.sdk">
+
+  <application>
+
+    <meta-data
+        android:name="com.wallee.android.till.sdk.VERSION"
+        android:value="${sdkVersion}"/>
+
+  </application>
+
 </manifest>

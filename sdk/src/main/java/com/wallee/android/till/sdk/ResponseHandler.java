@@ -36,7 +36,16 @@ public abstract class ResponseHandler extends Handler {
     public final void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         Log.d("HandleReply", "" + msg.arg1);
-        if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
+        if (msg.arg1 == ApiMessageType.CHECK_API_SERVICE_COMPATIBILITY.ordinal()) {
+            Bundle bundle = msg.getData();
+            Boolean isCompatible = (Boolean) Utils.getSerializable(bundle);
+            String apiServiceVersion = Utils.getSdkVersion(bundle);
+            checkApiServiceCompatibilityReply(isCompatible, apiServiceVersion);
+        } else if (msg.arg1 == ApiMessageType.SDK_VERSION_NOT_SUPPORTED_REPLY.ordinal()) {
+            Bundle bundle = msg.getData();
+            String message = (String) Utils.getSerializable(bundle);
+            serviceApiSdkVersionNotSupportedReply(message);
+        } else if (msg.arg1 == ApiMessageType.AUTHORIZE_TRANSACTION.ordinal()) {
             Bundle bundle = msg.getData();
             TransactionResponse response = Utils.getTransactionResponse(bundle);
             authorizeTransactionReply(response);
@@ -70,44 +79,57 @@ public abstract class ResponseHandler extends Handler {
     }
 
     /**
+     * The response from an {@link ApiClient#checkApiServiceCompatibility()} call.
+     * @param isCompatible is the current SDK is compatible with the service API, or not.
+     * @param apiServiceVersion the SDK version number from the service API.
+     */
+    public void checkApiServiceCompatibilityReply(Boolean isCompatible, String apiServiceVersion) {}
+
+    /**
+     * The response from the API in case if the current SDK version is not supported by the API service.
+     * @param message the detailed message with an explanation.
+     */
+    public void serviceApiSdkVersionNotSupportedReply(String message) {}
+
+    /**
      * The response from an {@link ApiClient#authorizeTransaction(Transaction)} call.
      * @param response the transaction as it was processed.
      */
-    public abstract void authorizeTransactionReply(TransactionResponse response);
+    public void authorizeTransactionReply(TransactionResponse response) {}
 
     /**
      * The response from an {@link ApiClient#completeTransaction(TransactionCompletion)} call.
      * @param response the transaction as it was processed.
      */
-    public abstract void completeTransactionReply(TransactionCompletionResponse response);
+    public void completeTransactionReply(TransactionCompletionResponse response) {}
 
     /**
      * The response from an {@link ApiClient#voidTransaction(TransactionVoid)} call.
      * @param response the void as it was processed.
      */
-    public abstract void voidTransactionReply(TransactionVoidResponse response);
+    public void voidTransactionReply(TransactionVoidResponse response) {}
 
     /**
      * The result from an {@link ApiClient#cancelLastTransactionOperation()} call.
      * @param result the cancelation as it was processed.
      */
-    public abstract void cancelLastTransactionOperationReply(CancelationResult result);
+    public void cancelLastTransactionOperationReply(CancelationResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeSubmission()} call.
      * @param result the submission as it was processed.
      */
-    public abstract void executeSubmissionReply(SubmissionResult result);
+    public void executeSubmissionReply(SubmissionResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeTransmission()} call.
      * @param result the transmission as it was processed.
      */
-    public abstract void executeTransmissionReply(TransmissionResult result);
+    public void executeTransmissionReply(TransmissionResult result) {}
 
     /**
      * The result from an {@link ApiClient#executeFinalBalance()} call.
      * @param result the final balance as it was processed.
      */
-    public abstract void executeFinalBalanceReply(FinalBalanceResult result);
+    public void executeFinalBalanceReply(FinalBalanceResult result) {}
 }
