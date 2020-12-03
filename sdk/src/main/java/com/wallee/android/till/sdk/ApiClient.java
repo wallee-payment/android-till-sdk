@@ -30,7 +30,7 @@ import java.io.Serializable;
  * The activity that uses this class should call {@link ApiClient#bind(Activity)} in onCreate and {@link ApiClient#unbind(Activity)} in onDestroy.
  */
 public class ApiClient {
-    public static final String VERSION = "0.9.11";
+    public static final String VERSION = BuildConfig.SDK_VERSION;
 
     private static final String TAG = "ApiClient";
 
