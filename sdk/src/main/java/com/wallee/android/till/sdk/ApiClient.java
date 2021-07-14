@@ -24,6 +24,7 @@ import com.wallee.android.till.sdk.data.TransactionVoidResponse;
 import com.wallee.android.till.sdk.data.TransmissionResult;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * The public interface to the service API.
@@ -35,19 +36,22 @@ public class ApiClient {
     private static final String TAG = "ApiClient";
 
     private Messenger myService;
+    private ArrayList<Message> waitingMassages;
 
     private final Messenger callback;
-    private final ServiceConnection con = new ServiceConnection() {
+    private ServiceConnection con = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d(TAG, "Connected");
             myService = new Messenger(service);
+            executeWaitingMessages();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.d(TAG, "Disconnected");
             myService = null;
+            waitingMassages.clear();
         }
         @Override
         public void onBindingDied(ComponentName name) {
@@ -66,6 +70,7 @@ public class ApiClient {
      */
     public ApiClient(ResponseHandler handler) {
         callback = new Messenger(handler);
+        this.waitingMassages = new ArrayList<>();
     }
 
     /**
@@ -99,7 +104,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -116,7 +121,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -133,7 +138,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -150,7 +155,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -165,7 +170,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -180,7 +185,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -195,7 +200,7 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
     }
 
     /**
@@ -210,6 +215,25 @@ public class ApiClient {
 
         msg.setData(bundle);
         msg.replyTo = callback;
-        myService.send(msg);
+        sendMessage(msg);
+    }
+
+    private void sendMessage(Message msg) throws RemoteException {
+        if (myService != null) {
+            myService.send(msg);
+        } else {
+            waitingMassages.add(msg);
+        }
+    }
+
+    private void executeWaitingMessages() {
+        try {
+            for (Message message: waitingMassages) {
+                myService.send(message);
+                waitingMassages.remove(message);
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "Failed to send message: ", e);
+        }
     }
 }
