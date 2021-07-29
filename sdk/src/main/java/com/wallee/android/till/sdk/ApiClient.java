@@ -36,7 +36,7 @@ public class ApiClient {
     private static final String TAG = "ApiClient";
 
     private Messenger myService;
-    private ArrayList<Message> waitingMassages;
+    private ArrayList<Message> waitingMessages;
 
     private final Messenger callback;
     private ServiceConnection con = new ServiceConnection() {
@@ -51,7 +51,7 @@ public class ApiClient {
         public void onServiceDisconnected(ComponentName name) {
             Log.d(TAG, "Disconnected");
             myService = null;
-            waitingMassages.clear();
+            waitingMessages.clear();
         }
         @Override
         public void onBindingDied(ComponentName name) {
@@ -70,7 +70,7 @@ public class ApiClient {
      */
     public ApiClient(ResponseHandler handler) {
         callback = new Messenger(handler);
-        this.waitingMassages = new ArrayList<>();
+        this.waitingMessages = new ArrayList<>();
     }
 
     /**
@@ -221,16 +221,19 @@ public class ApiClient {
     private void sendMessage(Message msg) throws RemoteException {
         if (myService != null) {
             myService.send(msg);
+            Log.d(TAG, "Message was sent successfully");
         } else {
-            waitingMassages.add(msg);
+            waitingMessages.add(msg);
+            Log.d(TAG, "Client not connected. Message queued for later delivery.");
         }
     }
 
     private void executeWaitingMessages() {
         try {
-            for (Message message: waitingMassages) {
+            for (Message message: waitingMessages) {
                 myService.send(message);
-                waitingMassages.remove(message);
+                Log.d(TAG, "Message was sent successfully");
+                waitingMessages.remove(message);
             }
         } catch (RemoteException e) {
             Log.e(TAG, "Failed to send message: ", e);
