@@ -16,35 +16,66 @@ and allows for easy payment processing with wallee.
 ## Example
 
 ```
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transaction"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 public class MainActivity extends AppCompatActivity {
+
+    public final static String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         //dummy example implementation of an API response handler
         ResponseHandler responseHandler = new ResponseHandler() {
+
             @Override
-            public void authorizeTransactionReply(Transaction transaction) {
+            public void authorizeTransactionReply(TransactionResponse response) {
                 Log.i("Main", "authorizeTransactionReply:  + transaction");
             }
         };
 
         //create the client with a reference to the response handler
-        ApiClient client = new ApiClient(responseHandler);
+        final ApiClient client = new ApiClient(responseHandler);
         //and establish connection to API service
         client.bind(this);
 
-        //create your Transaction object
-        BigDecimal amount = new BigDecimal("12.34");
-        List<LineItem> lineItems = new LineItem.ListBuilder("Widget A", amount).build();
-        Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference("IREF-123").setMerchantReference("MREF-123").build();
 
-        //and call the API service with your Transaction
-        try {
-            client.authorizeTransaction(transaction);
-        } catch(RemoteException ex) {
-            Log.e(TAG, "API call failed", ex);
-        }
+        final Button btnTransaction = findViewById(R.id.btnTransaction);
+        btnTransaction.setOnClickListener(v -> {
+            Currency currency = Currency.getInstance("CHF");
+            BigDecimal amount = new BigDecimal("15.00");
+            List<LineItem> lineItems = new LineItem.ListBuilder("Widget A", amount).build();
+            Transaction transaction = new Transaction.Builder(lineItems).setInvoiceReference("IREF-123").setMerchantReference("MREF-123").setCurrency(currency).build();
+            try {
+                client.authorizeTransaction(transaction);
+            } catch (RemoteException ex) {
+                Log.e(TAG, "API call failed", ex);
+            }
+        });
+
+    }
+}
 ```
 
 ## Kiosk mode
@@ -117,7 +148,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.7'
+    implementation 'com.wallee.android.till:sdk:0.9.12'
 }
 ```
 
