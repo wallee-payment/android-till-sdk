@@ -1,5 +1,7 @@
 package com.wallee.android.till.sdk;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
@@ -31,6 +33,9 @@ public class Utils {
     private static final String KEY_SUBMISSION_RESULT_JSON = "submissionResult";
     private static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
     private static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
+    public static final String  PACKAGE = "com.wallee.android.pinpad";
+    private static final String TEXT_PLAIN = "text/plain";
+    private static final String SETTINGS = "settings";
 
     public static String getSdkVersion(Bundle bundle) {
         return bundle.getString(KEY_SDK_VERSION);
@@ -165,5 +170,15 @@ public class Utils {
         bundle.putString(Utils.KEY_FINAL_BALANCE_RESULT_JSON, Utils.GSON.toJson(result));
         bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
+    }
+
+    public static void openSettings(Context context) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setPackage(PACKAGE);
+        intent.setType(TEXT_PLAIN);
+        intent.putExtra(Intent.EXTRA_TEXT, SETTINGS);
+        if (intent.resolveActivity(context.getPackageManager()) != null)
+            context.startActivity(intent);
+
     }
 }
