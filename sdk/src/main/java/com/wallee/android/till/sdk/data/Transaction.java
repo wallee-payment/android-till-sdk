@@ -33,10 +33,12 @@ public final class Transaction {
 
     private final Map<String, String> metaData;
 
+    private final String customText;
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -47,6 +49,7 @@ public final class Transaction {
         this.shippingAddress = shippingAddress;
         this.transactionProcessingBehavior = requireNonNull(transactionProcessingBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
+        this.customText = customText;
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
@@ -129,6 +132,8 @@ public final class Transaction {
 
         private Map<String, String> metaData = new HashMap<>();
 
+        private String customText;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -147,6 +152,7 @@ public final class Transaction {
             this.billingAddress = transaction.billingAddress;
             this.shippingAddress = transaction.shippingAddress;
             this.transactionProcessingBehavior = transaction.transactionProcessingBehavior;
+            this.customText = transaction.customText;
             this.metaData = new HashMap<>(transaction.metaData);
         }
 
@@ -165,6 +171,8 @@ public final class Transaction {
         public Map<String, String> getMetaData() {
             return metaData;
         }
+
+        public String getCustomText() { return customText; }
 
         public Builder setLineItems(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -214,8 +222,13 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setCustomText(String customText) {
+            this.customText = customText;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText);
         }
     }
 }
