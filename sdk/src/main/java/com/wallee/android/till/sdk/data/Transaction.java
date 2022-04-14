@@ -129,6 +129,8 @@ public final class Transaction {
 
         private Map<String, String> metaData = new HashMap<>();
 
+        private String customText;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -165,6 +167,8 @@ public final class Transaction {
         public Map<String, String> getMetaData() {
             return metaData;
         }
+
+        public String getCustomText() { return customText; }
 
         public Builder setLineItems(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -211,6 +215,11 @@ public final class Transaction {
 
         public Builder putMetaData(String key, String value) {
             this.metaData.put(key, value);
+            return this;
+        }
+
+        public Builder setCustomText(String customText) {
+            this.customText = customText;
             return this;
         }
 
