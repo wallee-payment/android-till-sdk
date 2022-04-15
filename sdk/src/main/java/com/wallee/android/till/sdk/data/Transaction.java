@@ -99,6 +99,8 @@ public final class Transaction {
         return metaData;
     }
 
+    public String getCustomText() { return customText; }
+
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
