@@ -25,8 +25,9 @@ public final class TransactionResponse {
     private final String acquirerId;
     private final String cardNumber;
     private final List<Receipt> receipts;
+    private final String cardIssuingCountry;
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts) {
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardIssuingCountry) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -38,9 +39,10 @@ public final class TransactionResponse {
         this.acquirerId = acquirerId;
         this.receipts = requireNonNull(receipts, "receipts");
         this.cardNumber = "";
+        this.cardIssuingCountry = cardIssuingCountry;
     }
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardNumber) {
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardNumber, @Nullable String cardIssuingCountry) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -52,6 +54,7 @@ public final class TransactionResponse {
         this.acquirerId = acquirerId;
         this.receipts = requireNonNull(receipts, "receipts");
         this.cardNumber = cardNumber;
+        this.cardIssuingCountry = cardIssuingCountry;
     }
 
     @NonNull
@@ -109,4 +112,6 @@ public final class TransactionResponse {
     }
 
     public String getCardNumber() { return cardNumber; }
+
+    public String getCardIssuingCountry() { return cardIssuingCountry; }
 }
