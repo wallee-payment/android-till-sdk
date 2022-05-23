@@ -26,6 +26,9 @@ public final class TransactionResponse {
     private final String cardNumber;
     private final List<Receipt> receipts;
     private String cardIssuingCountry;
+    private String cardAppLabel;
+    private String cardAppId;
+    private String amountTip;
 
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts) {
         this.transaction = requireNonNull(transaction, "transaction");
@@ -60,6 +63,14 @@ public final class TransactionResponse {
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardNumber, @Nullable String cardIssuingCountry) {
         this(transaction, state, resultCode, authorizationCode,terminalId, sequenceCount, transactionTime, reserveReference, acquirerId, receipts, cardNumber);
         this.cardIssuingCountry = cardIssuingCountry;
+    }
+
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts,
+                               @Nullable String cardNumber, @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,@Nullable String  cardAppId, @Nullable String amountTip) {
+        this(transaction, state, resultCode, authorizationCode,terminalId, sequenceCount, transactionTime, reserveReference, acquirerId, receipts, cardNumber, cardIssuingCountry);
+        this.cardAppLabel = cardAppLabel;
+        this.cardAppId = cardAppId;
+        this.amountTip = amountTip;
     }
 
     @NonNull
@@ -119,4 +130,16 @@ public final class TransactionResponse {
     public String getCardNumber() { return cardNumber; }
 
     public String getCardIssuingCountry() { return cardIssuingCountry; }
+
+    public String getCardAppLabel() {
+        return cardAppLabel;
+    }
+
+    public String getCardAppId() {
+        return cardAppId;
+    }
+
+    public String getAmountTip() {
+        return amountTip;
+    }
 }
