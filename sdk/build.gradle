@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 //apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-def sdkVersion = "0.9.20"
+def sdkVersion = "0.9.21"
 
 android {
     compileSdkVersion 29
@@ -43,13 +43,16 @@ dependencies {
 
 }
 afterEvaluate {
+    def currentGitBranch = getCurrentGitBranch()
     publishing {
         publications {
-            release(MavenPublication) {
-                from components.release
-                groupId 'com.wallee.android.till'
-                artifactId 'sdk'
-                version sdkVersion
+            if (currentGitBranch.equalsIgnoreCase("master")) {
+                release(MavenPublication) {
+                    from components.release
+                    groupId 'com.wallee.android.till'
+                    artifactId 'sdk'
+                    version sdkVersion
+                }
             }
             dev(MavenPublication) {
                 from components.debug
@@ -75,4 +78,16 @@ afterEvaluate {
             }
         }
     }
+}
+def getCurrentGitBranch() {
+    def gitBranch = "Unknown branch"
+    try {
+        def workingDir = new File("${project.projectDir}")
+        def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
+        result.waitFor()
+        if (result.exitValue() == 0) {
+            gitBranch = result.text.trim()
+        }
+    } catch (e) { }
+    return gitBranch
 }
