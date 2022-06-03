@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 //apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-def sdkVersion = "0.9.19"
+def sdkVersion = "0.9.20"
 
 android {
     compileSdkVersion 29
@@ -52,7 +52,7 @@ afterEvaluate {
                 version sdkVersion
             }
             dev(MavenPublication) {
-                from components.release
+                from components.debug
                 groupId 'com.wallee.android.till'
                 artifactId 'sdk-dev'
                 version sdkVersion
