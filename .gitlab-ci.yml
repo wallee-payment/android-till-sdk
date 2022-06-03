@@ -31,3 +31,4 @@ deploy:
     - ./gradlew publish
   only:
     - master
+    - dev
