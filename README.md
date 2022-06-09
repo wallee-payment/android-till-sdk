@@ -148,7 +148,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.19'
+    implementation 'com.wallee.android.till:sdk:0.9.16'
 }
 ```
 
