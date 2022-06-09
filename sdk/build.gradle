@@ -63,8 +63,7 @@ afterEvaluate {
         }
         repositories {
             maven {
-                //TODO: Change back to 21028526
-                url "https://gitlab.com/api/v4/projects/36735275/packages/maven"
+                url "https://gitlab.com/api/v4/projects/21028526/packages/maven"
                 name "GitLab"
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
