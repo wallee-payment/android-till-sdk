@@ -25,27 +25,18 @@ public final class TransactionResponse {
     private final String acquirerId;
     private final String cardNumber;
     private final List<Receipt> receipts;
-    private String cardIssuingCountry;
-    private String cardAppLabel;
-    private String cardAppId;
-    private String amountTip;
+    private final String cardIssuingCountry;
+    private final String cardAppLabel;
+    private final String cardAppId;
+    private final String amountTip;
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts) {
-        this.transaction = requireNonNull(transaction, "transaction");
-        this.state = requireNonNull(state, "state");
-        this.resultCode = requireNonNull(resultCode, "resultCode");
-        this.authorizationCode = authorizationCode;
-        this.terminalId = terminalId;
-        this.sequenceCount = sequenceCount;
-        this.transactionTime = transactionTime;
-        this.reserveReference = reserveReference;
-        this.acquirerId = acquirerId;
-        this.receipts = requireNonNull(receipts, "receipts");
-        this.cardNumber = "";
-        this.cardIssuingCountry = "";
-    }
-
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardNumber) {
+    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
+                               @Nullable String authorizationCode, @Nullable String terminalId,
+                               @Nullable Long sequenceCount, @Nullable String transactionTime,
+                               @Nullable Long reserveReference, @Nullable String acquirerId,
+                               @NonNull List<Receipt> receipts, @Nullable String cardNumber,
+                               @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
+                               @Nullable String  cardAppId, @Nullable String amountTip) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -57,17 +48,7 @@ public final class TransactionResponse {
         this.acquirerId = acquirerId;
         this.receipts = requireNonNull(receipts, "receipts");
         this.cardNumber = cardNumber;
-        this.cardIssuingCountry = "";
-    }
-
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts, @Nullable String cardNumber, @Nullable String cardIssuingCountry) {
-        this(transaction, state, resultCode, authorizationCode,terminalId, sequenceCount, transactionTime, reserveReference, acquirerId, receipts, cardNumber);
         this.cardIssuingCountry = cardIssuingCountry;
-    }
-
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @Nullable Long reserveReference, @Nullable String acquirerId, @NonNull List<Receipt> receipts,
-                               @Nullable String cardNumber, @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,@Nullable String  cardAppId, @Nullable String amountTip) {
-        this(transaction, state, resultCode, authorizationCode,terminalId, sequenceCount, transactionTime, reserveReference, acquirerId, receipts, cardNumber, cardIssuingCountry);
         this.cardAppLabel = cardAppLabel;
         this.cardAppId = cardAppId;
         this.amountTip = amountTip;
@@ -141,5 +122,188 @@ public final class TransactionResponse {
 
     public String getAmountTip() {
         return amountTip;
+    }
+
+    public static class Builder {
+        private @NonNull Transaction transaction;
+        private @NonNull State state;
+        private @NonNull ResultCode resultCode;
+        private String authorizationCode;
+        private String terminalId;
+        private Long sequenceCount;
+        private String transactionTime;
+        private Long reserveReference;
+        private String acquirerId;
+        private String cardNumber;
+        private @NonNull List<Receipt> receipts;
+        private String cardIssuingCountry;
+        private String cardAppLabel;
+        private String cardAppId;
+        private String amountTip;
+
+        public Builder(TransactionResponse transactionResponse) {
+            this.transaction = requireNonNull(transactionResponse.transaction, "transaction");
+            this.state = requireNonNull(transactionResponse.state, "transaction");
+            this.resultCode = requireNonNull(transactionResponse.resultCode, "transaction");
+            this.authorizationCode = transactionResponse.authorizationCode;
+            this.terminalId = transactionResponse.terminalId;
+            this.sequenceCount = transactionResponse.sequenceCount;
+            this.transactionTime = transactionResponse.transactionTime;
+            this.reserveReference = transactionResponse.reserveReference;
+            this.acquirerId = transactionResponse.acquirerId;
+            this.receipts = requireNonNull(transactionResponse.receipts, "transaction");
+            this.cardNumber = transactionResponse.cardNumber;
+            this.cardIssuingCountry = transactionResponse.cardIssuingCountry;
+            this.cardAppLabel = transactionResponse.cardAppLabel;
+            this.cardAppId = transactionResponse.cardAppId;
+            this.amountTip = transactionResponse.amountTip;
+        }
+
+        // Every Transaction Response must have at least those 4 parameters!
+        public Builder(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
+            this.transaction = transaction;
+            this.state = state;
+            this.resultCode = resultCode;
+            this.receipts = receipts;
+        }
+
+        public Builder setTransaction(@NonNull Transaction transaction) {
+            this.transaction = transaction;
+            return this;
+        }
+
+        public Builder setState(@NonNull State state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder setResultCode(@NonNull ResultCode resultCode) {
+            this.resultCode = resultCode;
+            return this;
+        }
+
+        public Builder setAuthorizationCode(String authorizationCode) {
+            this.authorizationCode = authorizationCode;
+            return this;
+        }
+
+        public Builder setTerminalId(String terminalId) {
+            this.terminalId = terminalId;
+            return this;
+        }
+
+        public Builder setSequenceCount(Long sequenceCount) {
+            this.sequenceCount = sequenceCount;
+            return this;
+        }
+
+        public Builder setTransactionTime(String transactionTime) {
+            this.transactionTime = transactionTime;
+            return this;
+        }
+
+        public Builder setReserveReference(Long reserveReference) {
+            this.reserveReference = reserveReference;
+            return this;
+        }
+
+        public Builder setAcquirerId(String acquirerId) {
+            this.acquirerId = acquirerId;
+            return this;
+        }
+
+        public Builder setCardNumber(String cardNumber) {
+            this.cardNumber = cardNumber;
+            return this;
+        }
+
+        public Builder setReceipts(@NonNull List<Receipt> receipts) {
+            this.receipts = receipts;
+            return this;
+        }
+
+        public Builder setCardIssuingCountry(String cardIssuingCountry) {
+            this.cardIssuingCountry = cardIssuingCountry;
+            return this;
+        }
+
+        public Builder setCardAppLabel(String cardAppLabel) {
+            this.cardAppLabel = cardAppLabel;
+            return this;
+        }
+
+        public Builder setCardAppId(String cardAppId) {
+            this.cardAppId = cardAppId;
+            return this;
+        }
+
+        public Builder setAmountTip(String amountTip) {
+            this.amountTip = amountTip;
+            return this;
+        }
+
+        public Transaction getTransaction() {
+            return transaction;
+        }
+
+        public State getState() {
+            return state;
+        }
+
+        public ResultCode getResultCode() {
+            return resultCode;
+        }
+
+        public String getAuthorizationCode() {
+            return authorizationCode;
+        }
+
+        public String getTerminalId() {
+            return terminalId;
+        }
+
+        public Long getSequenceCount() {
+            return sequenceCount;
+        }
+
+        public String getTransactionTime() {
+            return transactionTime;
+        }
+
+        public Long getReserveReference() {
+            return reserveReference;
+        }
+
+        public String getAcquirerId() {
+            return acquirerId;
+        }
+
+        public String getCardNumber() {
+            return cardNumber;
+        }
+
+        public List<Receipt> getReceipts() {
+            return receipts;
+        }
+
+        public String getCardIssuingCountry() {
+            return cardIssuingCountry;
+        }
+
+        public String getCardAppLabel() {
+            return cardAppLabel;
+        }
+
+        public String getCardAppId() {
+            return cardAppId;
+        }
+
+        public String getAmountTip() {
+            return amountTip;
+        }
+
+        public TransactionResponse build() {
+            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip);
+        }
     }
 }
