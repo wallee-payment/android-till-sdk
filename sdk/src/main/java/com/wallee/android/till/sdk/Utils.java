@@ -36,6 +36,8 @@ public class Utils {
     public static final String  PACKAGE = "com.wallee.android.pinpad";
     private static final String TEXT_PLAIN = "text/plain";
     private static final String SETTINGS = "settings";
+    public static final String LOG_TYPE = "LogType";
+    public static final String LOG_MESSAGE = "LogMessage";
 
     public static String getSdkVersion(Bundle bundle) {
         return bundle.getString(KEY_SDK_VERSION);
@@ -168,6 +170,14 @@ public class Utils {
     public static Bundle toBundle(FinalBalanceResult result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_FINAL_BALANCE_RESULT_JSON, Utils.GSON.toJson(result));
+        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
+    }
+
+    public static Bundle logToBundle(int logType, String logMessage) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Utils.LOG_TYPE, logType);
+        bundle.putString(Utils.LOG_MESSAGE, logMessage);
         bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
