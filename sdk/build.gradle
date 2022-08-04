@@ -44,6 +44,7 @@ dependencies {
 }
 afterEvaluate {
     def currentGitBranch = getCurrentGitBranch()
+    println("Current Branch: " + currentGitBranch)
     publishing {
         publications {
             if (currentGitBranch.equalsIgnoreCase("master")) {
