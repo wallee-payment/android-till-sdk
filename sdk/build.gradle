@@ -47,14 +47,14 @@ afterEvaluate {
     println("Current Branch: " + currentGitBranch)
     publishing {
         publications {
-            if (currentGitBranch.equalsIgnoreCase("master")) {
+//            if (currentGitBranch.equalsIgnoreCase("master")) {
                 release(MavenPublication) {
                     from components.release
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
                     version sdkVersion
                 }
-            }
+//            }
             dev(MavenPublication) {
                 from components.debug
                 groupId 'com.wallee.android.till'
