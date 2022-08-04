@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 def sdkVersion = "0.9.16"
+def currentGitBranch = getCurrentGitBranch()
 
 android {
     compileSdkVersion 29
@@ -43,7 +44,6 @@ dependencies {
 
 }
 afterEvaluate {
-    def currentGitBranch = getCurrentGitBranch()
     println("Current Branch: " + currentGitBranch)
     publishing {
         publications {
