@@ -13,4 +13,5 @@ public enum ApiMessageType {
     EXECUTE_SUBMISSION,
     EXECUTE_TRANSMISSION,
     EXECUTE_FINAL_BALANCE,
+    SEND_LOG_LINE,
 }
