@@ -148,7 +148,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.15'
+    implementation 'com.wallee.android.till:sdk:0.9.16'
 }
 ```
 
@@ -178,4 +178,18 @@ allprojects {
   @com.google.gson.annotations.SerializedName <fields>;
 }
 -keep class com.wallee.android.till.sdk.data.** { *; }
+```
+
+
+## Send logs to Paydroid VSD
+
+```
+Bind for the logs:
+TillLog.getInstance().bind(this);
+
+Unbind for the logs:
+TillLog.getInstance().unbind(this);
+
+TillLog.debug("VSD Start Transaction of amount  -> " + amountString);
+TillLog class supports all tpes of logs (Debug, Verbose, Warning etc).
 ```
