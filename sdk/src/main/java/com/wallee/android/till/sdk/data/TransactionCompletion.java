@@ -16,14 +16,14 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 public final class TransactionCompletion {
     private final List<LineItem> lineItems;
 
-    private final Long reserveReference;
+    private final String reserveReference;
 
     private final Currency currency;
 
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull Long reserveReference, @NonNull Currency currency) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull String reserveReference, @NonNull Currency currency) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.reserveReference = requireNonNull(reserveReference, "reserveReference");
         this.currency = requireNonNull(currency, "currency");
@@ -42,7 +42,7 @@ public final class TransactionCompletion {
     }
 
     @NonNull
-    public Long getReserveReference() {
+    public String getReserveReference() {
         return reserveReference;
     }
 
@@ -70,7 +70,7 @@ public final class TransactionCompletion {
     public static class Builder {
         private List<LineItem> lineItems;
 
-        private Long reserveReference;
+        private String reserveReference;
 
         private Currency currency = Currency.getInstance("CHF");
 
@@ -100,7 +100,7 @@ public final class TransactionCompletion {
         }
 
         @NonNull
-        public Builder setReserveReference(@NonNull Long reserveReference) {
+        public Builder setReserveReference(@NonNull String reserveReference) {
             this.reserveReference = reserveReference;
             return this;
         }
