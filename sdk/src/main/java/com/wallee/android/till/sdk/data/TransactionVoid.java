@@ -9,16 +9,16 @@ import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
  */
 public final class TransactionVoid {
 
-    private final Long reserveReference;
+    private final String reserveReference;
     private final String acquirerId;
 
-    public TransactionVoid(@NonNull Long reserveReference, @NonNull String acquirerId) {
+    public TransactionVoid(@NonNull String reserveReference, @NonNull String acquirerId) {
         this.reserveReference = requireNonNull(reserveReference, "reserveReference");
         this.acquirerId = requireNonNull(acquirerId, "acquirerId");
     }
 
     @NonNull
-    public Long getReserveReference() {
+    public String getReserveReference() {
         return reserveReference;
     }
 
