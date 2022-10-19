@@ -21,7 +21,7 @@ public final class TransactionResponse {
     private final String terminalId;
     private final Long sequenceCount;
     private final String transactionTime;
-    private final Long reserveReference;
+    private final String reserveReference;
     private final String acquirerId;
     private final String cardNumber;
     private final List<Receipt> receipts;
@@ -33,7 +33,7 @@ public final class TransactionResponse {
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
                                @Nullable String authorizationCode, @Nullable String terminalId,
                                @Nullable Long sequenceCount, @Nullable String transactionTime,
-                               @Nullable Long reserveReference, @Nullable String acquirerId,
+                               @Nullable String reserveReference, @Nullable String acquirerId,
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
                                @Nullable String  cardAppId, @Nullable String amountTip) {
@@ -90,7 +90,7 @@ public final class TransactionResponse {
     }
 
     @Nullable
-    public Long getReserveReference() {
+    public String getReserveReference() {
         return reserveReference;
     }
 
@@ -132,7 +132,7 @@ public final class TransactionResponse {
         private String terminalId;
         private Long sequenceCount;
         private String transactionTime;
-        private Long reserveReference;
+        private String reserveReference;
         private String acquirerId;
         private String cardNumber;
         private @NonNull List<Receipt> receipts;
@@ -202,7 +202,7 @@ public final class TransactionResponse {
             return this;
         }
 
-        public Builder setReserveReference(Long reserveReference) {
+        public Builder setReserveReference(String reserveReference) {
             this.reserveReference = reserveReference;
             return this;
         }
@@ -270,7 +270,7 @@ public final class TransactionResponse {
             return transactionTime;
         }
 
-        public Long getReserveReference() {
+        public String getReserveReference() {
             return reserveReference;
         }
 
