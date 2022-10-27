@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -73,6 +74,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             FinalBalanceResult result = Utils.getFinalBalanceResult(bundle);
             executeFinalBalanceReply(result);
+        } else if (msg.arg1 == ApiMessageType.GENERATE_PANTOKEN.ordinal()) {
+            Bundle bundle = msg.getData();
+            GeneratePanTokenResponse result = Utils.getGeneratePanTokenResponse(bundle);
+            executeGeneratePanTokenResponse(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -132,4 +137,10 @@ public abstract class ResponseHandler extends Handler {
      * @param result the final balance as it was processed.
      */
     public void executeFinalBalanceReply(FinalBalanceResult result) {}
+
+    /**
+     * The result from an {@link ApiClient#executeGeneratePanToken()} call.
+     * @param result the panToken as it was processed.
+     */
+    public void executeGeneratePanTokenResponse(GeneratePanTokenResponse result) {}
 }
