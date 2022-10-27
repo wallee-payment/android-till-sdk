@@ -14,4 +14,5 @@ public enum ApiMessageType {
     EXECUTE_TRANSMISSION,
     EXECUTE_FINAL_BALANCE,
     SEND_LOG_LINE,
+    GENERATE_PANTOKEN,
 }

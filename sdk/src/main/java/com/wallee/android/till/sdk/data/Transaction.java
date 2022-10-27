@@ -37,10 +37,12 @@ public final class Transaction {
 
     private final String language;
 
+    private final Boolean generatePanToken;
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -52,6 +54,7 @@ public final class Transaction {
         this.transactionProcessingBehavior = requireNonNull(transactionProcessingBehavior, "transactionCompletionBehavior");
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
         this.customText = customText;
+        this.generatePanToken = generatePanToken;
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
@@ -108,6 +111,8 @@ public final class Transaction {
         return language;
     }
 
+    public Boolean getGeneratePanToken() { return generatePanToken; }
+
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
@@ -145,6 +150,8 @@ public final class Transaction {
 
         private String language;
 
+        private Boolean generatePanToken;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -165,6 +172,7 @@ public final class Transaction {
             this.transactionProcessingBehavior = transaction.transactionProcessingBehavior;
             this.customText = transaction.customText;
             this.language = transaction.language;
+            this.generatePanToken = transaction.generatePanToken;
             this.metaData = new HashMap<>(transaction.metaData);
         }
 
@@ -248,8 +256,13 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setGeneratePanToken(Boolean generatePanToken) {
+            this.generatePanToken = generatePanToken;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken);
         }
     }
 }

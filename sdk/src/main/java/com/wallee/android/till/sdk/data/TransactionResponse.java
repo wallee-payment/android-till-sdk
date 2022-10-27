@@ -29,6 +29,7 @@ public final class TransactionResponse {
     private final String cardAppLabel;
     private final String cardAppId;
     private final String amountTip;
+    private final String panToken;
 
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
                                @Nullable String authorizationCode, @Nullable String terminalId,
@@ -36,7 +37,7 @@ public final class TransactionResponse {
                                @Nullable String reserveReference, @Nullable String acquirerId,
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
-                               @Nullable String  cardAppId, @Nullable String amountTip) {
+                               @Nullable String  cardAppId, @Nullable String amountTip, @Nullable String panToken) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -52,6 +53,7 @@ public final class TransactionResponse {
         this.cardAppLabel = cardAppLabel;
         this.cardAppId = cardAppId;
         this.amountTip = amountTip;
+        this.panToken = panToken;
     }
 
     @NonNull
@@ -124,6 +126,8 @@ public final class TransactionResponse {
         return amountTip;
     }
 
+    public String getPanToken() { return panToken; }
+
     public static class Builder {
         private @NonNull Transaction transaction;
         private @NonNull State state;
@@ -140,6 +144,7 @@ public final class TransactionResponse {
         private String cardAppLabel;
         private String cardAppId;
         private String amountTip;
+        private String panToken;
 
         public Builder(TransactionResponse transactionResponse) {
             this.transaction = requireNonNull(transactionResponse.transaction, "transaction");
@@ -157,6 +162,7 @@ public final class TransactionResponse {
             this.cardAppLabel = transactionResponse.cardAppLabel;
             this.cardAppId = transactionResponse.cardAppId;
             this.amountTip = transactionResponse.amountTip;
+            this.panToken = transactionResponse.panToken;
         }
 
         // Every Transaction Response must have at least those 4 parameters!
@@ -242,6 +248,11 @@ public final class TransactionResponse {
             return this;
         }
 
+        public Builder setPanToken(String panToken) {
+            this.panToken = panToken;
+            return this;
+        }
+
         public Transaction getTransaction() {
             return transaction;
         }
@@ -302,8 +313,10 @@ public final class TransactionResponse {
             return amountTip;
         }
 
+        public String getPanToken() { return panToken; }
+
         public TransactionResponse build() {
-            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip);
+            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken);
         }
     }
 }
