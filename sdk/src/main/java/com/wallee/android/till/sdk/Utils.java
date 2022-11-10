@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -35,6 +36,7 @@ public class Utils {
     private static final String KEY_TRANSMISSION_RESULT_JSON = "transmissionResult";
     private static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
     private static final String KEY_GENERATE_PANTOKEN_RESPONSE_JSON = "generatePanTokenResponse";
+    private static final String KEY_GET_CONFIG_INFO_RESPONSE_JSON = "pinpadInformationResponse";
     public static final String  PACKAGE = "com.wallee.android.pinpad";
     private static final String TEXT_PLAIN = "text/plain";
     private static final String SETTINGS = "settings";
@@ -180,10 +182,20 @@ public class Utils {
         String json = bundle.getString(KEY_GENERATE_PANTOKEN_RESPONSE_JSON);
         return GSON.fromJson(json, GeneratePanTokenResponse.class);
     }
+    public static GetPinpadInformationResponse getPinpadInformationResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_GET_CONFIG_INFO_RESPONSE_JSON);
+        return GSON.fromJson(json, GetPinpadInformationResponse.class);
+    }
 
     public static Bundle toBundle(GeneratePanTokenResponse result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_GENERATE_PANTOKEN_RESPONSE_JSON, Utils.GSON.toJson(result));
+        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
+    }
+    public static Bundle toBundle(GetPinpadInformationResponse result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_GET_CONFIG_INFO_RESPONSE_JSON, Utils.GSON.toJson(result));
         bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
