@@ -15,4 +15,5 @@ public enum ApiMessageType {
     EXECUTE_FINAL_BALANCE,
     SEND_LOG_LINE,
     GENERATE_PANTOKEN,
+    GET_PINPAD_INFORMATION
 }

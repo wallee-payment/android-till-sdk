@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -78,7 +79,12 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             GeneratePanTokenResponse result = Utils.getGeneratePanTokenResponse(bundle);
             executeGeneratePanTokenResponse(result);
-        } else {
+        } else if (msg.arg1 == ApiMessageType.GET_PINPAD_INFORMATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            GetPinpadInformationResponse result = Utils.getPinpadInformationResponse(bundle);
+            executeGetConfigInfoResponse(result);
+        }
+        else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
     }
@@ -143,4 +149,12 @@ public abstract class ResponseHandler extends Handler {
      * @param result the panToken as it was processed.
      */
     public void executeGeneratePanTokenResponse(GeneratePanTokenResponse result) {}
+
+    /**
+     * The result from an {@link ApiClient#getPinPadInformation()} call.
+     * @param result the pinpadinformation as it was processed.
+     */
+    public void executeGetConfigInfoResponse(GetPinpadInformationResponse result) {}
+
+
 }
