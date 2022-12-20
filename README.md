@@ -193,3 +193,10 @@ TillLog.getInstance().unbind(this);
 TillLog.debug("VSD Start Transaction of amount  -> " + amountString);
 TillLog class supports all tpes of logs (Debug, Verbose, Warning etc).
 ```
+## Open Settings Menu
+
+```
+Call method:
+Utils.openSettings(getApplicationContext());
+
+```
