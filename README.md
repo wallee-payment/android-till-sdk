@@ -148,7 +148,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.17'
+    implementation 'com.wallee.android.till:sdk:0.9.18'
 }
 ```
 
@@ -192,4 +192,11 @@ TillLog.getInstance().unbind(this);
 
 TillLog.debug("VSD Start Transaction of amount  -> " + amountString);
 TillLog class supports all tpes of logs (Debug, Verbose, Warning etc).
+```
+## Open Settings Menu
+
+```
+Call method:
+Utils.openSettings(getApplicationContext());
+
 ```

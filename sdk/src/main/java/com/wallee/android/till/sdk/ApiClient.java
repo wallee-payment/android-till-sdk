@@ -14,6 +14,8 @@ import android.util.Log;
 
 import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
+import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionResponse;
@@ -218,6 +220,34 @@ public class ApiClient {
         sendMessage(msg);
     }
 
+    /**
+     * Start a generate pantoken operation. This will initiate payment trx for 0 amount in order to read card data and extract pan.
+     * When the operation will be finished a {@link ResponseHandler#executeGeneratePanTokenResponse(GeneratePanTokenResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeGeneratePanToken() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GENERATE_PANTOKEN.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Start an operation to get the pinpadinformation
+     * When the operation will be finished a {@link ResponseHandler#executeGetConfigInfoResponse(GetPinpadInformationResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void getPinPadInformation() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GET_PINPAD_INFORMATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
     private void sendMessage(Message msg) throws RemoteException {
         if (myService != null) {
             myService.send(msg);
