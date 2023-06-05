@@ -200,3 +200,4 @@ Call method:
 Utils.openSettings(getApplicationContext());
 
 ```
+## Please find the error codes in ERRORCODE.md
