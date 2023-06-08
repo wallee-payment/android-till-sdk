@@ -148,7 +148,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.18'
+    implementation 'com.wallee.android.till:sdk:0.9.19'
 }
 ```
 
@@ -200,3 +200,4 @@ Call method:
 Utils.openSettings(getApplicationContext());
 
 ```
+## Please find the error codes in ERRORCODE.md
