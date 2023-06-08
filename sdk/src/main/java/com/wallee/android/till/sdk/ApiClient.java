@@ -79,11 +79,12 @@ public class ApiClient {
      * Bind the API server to the given {@link Activity}. This will initialize the API server and enable calling API methods.
      * @param activity the activity the service will get bound to. I.e. the lifecycle of the API service will be the same as this {@link Activity}.
      */
-    public void bind(Activity activity) {
+    public boolean bind(Activity activity) {
         Intent intent = new Intent()
                 .setClassName("com.wallee.android.pinpad", "com.wallee.android.ApiService");
-        boolean started = activity.bindService(intent, this.con, Context.BIND_AUTO_CREATE);
+       boolean started = activity.bindService(intent, this.con, Context.BIND_AUTO_CREATE);
         Log.d(TAG, "Service started: "+started);
+     return started;
     }
 
     /**
