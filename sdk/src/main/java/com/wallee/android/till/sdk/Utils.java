@@ -217,4 +217,10 @@ public class Utils {
             context.startActivity(intent);
 
     }
+     public static void handleFailedToConnectVpj(Context context) {
+         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.wallee.android.pinpad");
+         if (launchIntent != null) {
+             context.startActivity(launchIntent);
+         }
+     }
 }
