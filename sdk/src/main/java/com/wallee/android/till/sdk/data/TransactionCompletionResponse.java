@@ -19,11 +19,11 @@ public final class TransactionCompletionResponse {
     private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
-    private final Long sequenceCount;
+    private final String sequenceCount;
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
+    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable String sequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
         this.transactionCompletion = requireNonNull(transactionCompletion, "transactionCompletion");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -60,7 +60,7 @@ public final class TransactionCompletionResponse {
     }
 
     @Nullable
-    public Long getSequenceCount() {
+    public String getSequenceCount() {
         return sequenceCount;
     }
 
