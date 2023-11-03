@@ -19,7 +19,7 @@ public final class TransactionResponse {
     private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
-    private final Long sequenceCount;
+    private final String sequenceCount;
     private final String transactionTime;
     private final String reserveReference;
     private final String acquirerId;
@@ -33,7 +33,7 @@ public final class TransactionResponse {
 
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
                                @Nullable String authorizationCode, @Nullable String terminalId,
-                               @Nullable Long sequenceCount, @Nullable String transactionTime,
+                               @Nullable String sequenceCount, @Nullable String transactionTime,
                                @Nullable String reserveReference, @Nullable String acquirerId,
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
@@ -82,7 +82,7 @@ public final class TransactionResponse {
     }
 
     @Nullable
-    public Long getSequenceCount() {
+    public String getSequenceCount() {
         return sequenceCount;
     }
 
@@ -134,7 +134,7 @@ public final class TransactionResponse {
         private @NonNull ResultCode resultCode;
         private String authorizationCode;
         private String terminalId;
-        private Long sequenceCount;
+        private String sequenceCount;
         private String transactionTime;
         private String reserveReference;
         private String acquirerId;
@@ -198,7 +198,7 @@ public final class TransactionResponse {
             return this;
         }
 
-        public Builder setSequenceCount(Long sequenceCount) {
+        public Builder setSequenceCount(String sequenceCount) {
             this.sequenceCount = sequenceCount;
             return this;
         }
@@ -273,7 +273,7 @@ public final class TransactionResponse {
             return terminalId;
         }
 
-        public Long getSequenceCount() {
+        public String getSequenceCount() {
             return sequenceCount;
         }
 
