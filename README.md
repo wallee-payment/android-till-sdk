@@ -201,3 +201,5 @@ Utils.openSettings(getApplicationContext());
 
 ```
 ## Please find the error codes in ERRORCODE.md
+
+## Change Sequence count from Long to string
