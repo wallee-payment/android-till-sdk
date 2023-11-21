@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 //apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-def sdkVersion = "0.9.21"
+def sdkVersion = "0.9.22"
 def currentGitBranch = getCurrentGitBranch()
 
 android {
