@@ -13,9 +13,11 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.wallee.android.till.sdk.data.CancelationResult;
+import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
+import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionResponse;
@@ -249,6 +251,35 @@ public class ApiClient {
         msg.replyTo = callback;
         sendMessage(msg);
     }
+
+    /**
+     * Start a configuration operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeConfigurationReply(ConfigurationResult)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeConfiguration() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.EXECUTE_CONFIGURATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Start a initialization operation. The operation will be processed in background.
+     * When the operation will be finished a {@link ResponseHandler#executeInitialisationReply(InitialisationResult)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void executeInitialisation() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.EXECUTE_INITIALISATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
     private void sendMessage(Message msg) throws RemoteException {
         if (myService != null) {
             myService.send(msg);

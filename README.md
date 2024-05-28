@@ -34,6 +34,8 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 - **executeFinalBalance**: Perform final balance.
 - **executeGeneratePanToken**: Generate a card PAN token.
 - **getPinPadInformation**: Retrieve pinpad information (terminal ID, device serial number, space ID, merchant ID, and name).
+- **executeConfiguration**: Initiate configuration request (siConfigRequest) .
+- **executeInitialisation**: Initiate initialisation request (siInitRequest).
 
 ## How to use the Android Till Interface SDK
 
@@ -313,6 +315,8 @@ At the current state, the Android Till Interface SDK supports only a subset of a
 - [beFinalBalanceRequest](https://lti.docs.wallee.com/lti_2.46/#befinalbalance-message)
 - [generatePanTokenRequest](https://lti.docs.wallee.com/lti_2.46/#generatepantoken-message)
 - [pinpadInformationRequest](https://lti.docs.wallee.com/lti_2.46/#pinpadinformation-message)
+- [siConfigRequest](https://lti.docs.wallee.com/lti_2.46/#siconfig-message)
+- [siInitRequest](https://lti.docs.wallee.com/lti_2.46/#siinit-message)
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
