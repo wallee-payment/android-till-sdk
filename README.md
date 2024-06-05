@@ -221,7 +221,7 @@ Copy and paste this inside your build.gradle dependencies block.
 
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.22'
+    implementation 'com.wallee.android.till:sdk:0.9.23'
 }
 ```
 
@@ -266,11 +266,20 @@ TillLog.getInstance().unbind(this);
 TillLog.debug("VSD Start Transaction of amount  -> " + amountString);
 TillLog class supports all types of logs (Debug, Verbose, Warning etc).
 ```
-## Open Settings Menu
+### Invoke Wallee Settings Menu
 
 ```
 Call method:
 Utils.openSettings(getApplicationContext());
+```
+
+### Enable and Disable System Navigation Bar
+
+```
+Call methods:
+Utils.enableSystemBar(getApplicationContext());
+
+Utils.disableSystemBar(getApplicationContext());
 ```
 
 ## Overlay Permission for Android 10 Devices
@@ -320,3 +329,4 @@ At the current state, the Android Till Interface SDK supports only a subset of a
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
+
