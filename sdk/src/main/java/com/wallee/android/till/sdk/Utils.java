@@ -42,10 +42,11 @@ public class Utils {
     private static final String KEY_CONFIGURATION_RESULT_JSON = "configurationResult";
     private static final String KEY_INITIALISATION_RESULT_JSON = "initialisationResult";
     public static final String  PACKAGE = "com.wallee.android.pinpad";
-    private static final String TEXT_PLAIN = "text/plain";
-    private static final String SETTINGS = "settings";
     public static final String LOG_TYPE = "LogType";
     public static final String LOG_MESSAGE = "LogMessage";
+    public static final String ATI_EVENT = "com.wallee.android.ATI_EVENT";
+    public static final String ATI_EVENT_ID = "action_type";
+
 
     public static String getSdkVersion(Bundle bundle) {
         return bundle.getString(KEY_SDK_VERSION);
@@ -235,18 +236,28 @@ public class Utils {
     }
 
     public static void openSettings(Context context) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setPackage(PACKAGE);
-        intent.setType(TEXT_PLAIN);
-        intent.putExtra(Intent.EXTRA_TEXT, SETTINGS);
-        if (intent.resolveActivity(context.getPackageManager()) != null)
-            context.startActivity(intent);
-
+        Intent intent = new Intent();
+        intent.setAction(ATI_EVENT);
+        intent.putExtra(ATI_EVENT_ID, AtiEvent.WALLEE_SETTINGS_MENU);
+        context.sendBroadcast(intent);
     }
      public static void handleFailedToConnectVpj(Context context) {
-         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.wallee.android.pinpad");
+         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(PACKAGE);
          if (launchIntent != null) {
              context.startActivity(launchIntent);
          }
      }
+    public static void enableSystemBar(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(ATI_EVENT);
+        intent.putExtra(ATI_EVENT_ID, AtiEvent.ENABLE_SYSTEM_BAR);
+        context.sendBroadcast(intent);
+    }
+
+    public static void disableSystemBar(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(ATI_EVENT);
+        intent.putExtra(ATI_EVENT_ID, AtiEvent.DISABLE_SYSTEM_BAR);
+        context.sendBroadcast(intent);
+    }
 }
