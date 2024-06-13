@@ -294,6 +294,14 @@ To implement overlay permission in your Android app:
 2. Call this method before initiating any transactions in your Android app.
 3. Once the permission is granted, your app is ready to execute transactions.
 
+#### Manifest
+
+```xml
+<manifest>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+</manifest>
+```
+
 #### Code Snippet
 
 ```
