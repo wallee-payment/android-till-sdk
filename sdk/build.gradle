@@ -48,19 +48,25 @@ afterEvaluate {
     publishing {
         publications {
             if (currentGitBranch.equalsIgnoreCase("master")) {
+                println 'publishing for master'
+                /*
                 release(MavenPublication) {
                     from components.release
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
                     version sdkVersion
                 }
+                 */
             }
+            println 'publishing for dev'
+            /*
             dev(MavenPublication) {
                 from components.debug
                 groupId 'com.wallee.android.till'
                 artifactId 'sdk-dev'
                 version sdkVersion
             }
+            */
         }
         repositories {
             maven {
@@ -69,9 +75,6 @@ afterEvaluate {
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
                     value = System.getenv("CI_JOB_TOKEN")
-                    //name = 'Private-Token'
-                    //value = gitLabPrivateToken
-                    // the variable resides in ~/.gradle/gradle.properties
                 }
                 authentication {
                     header(HttpHeaderAuthentication)

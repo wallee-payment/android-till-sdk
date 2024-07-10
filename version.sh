@@ -12,7 +12,7 @@ echo "GITLAB_USER_EMAIL = ${GITLAB_USER_EMAIL}"
 
 COMMIT_MSG="TILL SDK VERSION -$1"
 
-if [ "$CI_COMMIT_BRANCH" == "master" ] || [ "$CI_COMMIT_REF_NAME" == "master" ]; then
+if [ "$CI_COMMIT_BRANCH" == "dev" ] || [ "$CI_COMMIT_REF_NAME" == "dev" ]; then
   echo "master branch";
   git config user.email "${GITLAB_USER_EMAIL}"
   git config user.name "${GITLAB_USER_NAME}"
