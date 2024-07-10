@@ -3,6 +3,7 @@ if [ $# -ne 2 ]; then
   echo "tag update stopped due missing script arguments";
   exit;
 fi
+
 echo "CI_COMMIT_REF_NAME = $CI_COMMIT_REF_NAME"
 echo "CI_COMMIT_BRANCH = $CI_COMMIT_BRANCH"
 echo "CI_PROJECT_URL = $CI_PROJECT_URL"
