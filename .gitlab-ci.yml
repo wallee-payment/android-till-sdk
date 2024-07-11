@@ -54,11 +54,11 @@ deploy:
   stage: deploy
   script:
     - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
-    - echo "publishing $SDK_VERSION"
-    - ./gradlew publish
+    - BRANCH=$CI_COMMIT_REF_NAME
+    - echo "publishing $SDK_VERSION for branch $BRANCH"
+    - ./gradlew publish -Pbranch=$BRANCH
     - echo "creating version tag for $SDK_VERSION"
-    - GITLAB_TOKEN="glpat-q8U_wyXsz11SqzjoWreV"
-    - ./version.sh $SDK_VERSION $GITLAB_TOKEN
+    - ./version.sh $BRANCH $SDK_VERSION
   only:
     - master
     - dev
