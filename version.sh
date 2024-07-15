@@ -6,12 +6,11 @@ fi
 
 COMMIT_MSG="TILL SDK VERSION -$2"
 
-if [ "$1" == "dev" ]; then
+if [ "$1" == "master" ]; then
   echo "creating version tag for master branch";
-  #git config user.email "${GITLAB_USER_EMAIL}"
-  #git config user.name "${GITLAB_USER_NAME}"
-  #git remote set-url origin https://oauth2:"$PROJECT_ACCESS_TOKEN"@"${CI_PROJECT_URL:8}".git
-  #ssh git@gitlab.com && \
+  git config user.email "${GITLAB_USER_EMAIL}"
+  git config user.name "${GITLAB_USER_NAME}"
+  git remote set-url origin https://oauth2:"$PROJECT_ACCESS_TOKEN"@"${CI_PROJECT_URL:8}".git
   git tag -fa -m "${COMMIT_MSG}" "$2" && \
   git push --force origin "$2" && \
   echo "tag $2 added to repository";
