@@ -53,14 +53,13 @@ pages:
 deploy:
   stage: deploy
   before_script:
+    - export ANDROID_SDK_ROOT="/sdk"
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - touch ~/.ssh/id_rsa
     - chmod 700 ~/.ssh/id_rsa
-    #- echo $SSH_ACCESS_KEY | tr -d '\r' > ~/.ssh/id_rsa
     - echo $GITLAB_SSH_DEPLOYMENT_KEY | base64 --decode > ~/.ssh/id_rsa
     - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    - cat ~/.ssh/id_rsa
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
