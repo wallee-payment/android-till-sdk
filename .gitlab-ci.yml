@@ -58,6 +58,6 @@ deploy:
   stage: deploy
   script:
     - ./gradlew publish
-  only:
-    - master
-    - dev
+  #  only:
+  #   - master
+   #  - dev
