@@ -77,12 +77,13 @@ create_tag:
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
   script:
-    - echo "Listing current directory"
-    - ls -l
-    - echo "Listing sdk directory"
-    - ls -l sdk
-    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
-    - echo "Creating tag with SDK version: ${SDK_VERSION}"
-    - git tag -a "v${SDK_VERSION}" -m "Release ${SDK_VERSION}"
-    - git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${SDK_VERSION}"
+    - |
+      sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
+      echo "Creating tag with SDK version: ${sdkVersion}"
+      git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
+      git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${sdkVersion}"
+      "
   dependencies: []
+
+
+
