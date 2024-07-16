@@ -71,6 +71,6 @@ deploy:
     - ./gradlew publish -Pbranch=$BRANCH
     - echo "creating version tag for $SDK_VERSION"
     - ./version.sh $BRANCH $SDK_VERSION
-  only:
-    - master
-    - dev
+#  only:
+#    - master
+#    - dev
