@@ -56,7 +56,6 @@ pages:
 deploy:
   stage: deploy
   before_script:
-    - export ANDROID_SDK_ROOT=$CI_PROJECT_DIR/android-sdk-linux
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - touch ~/.ssh/id_rsa
