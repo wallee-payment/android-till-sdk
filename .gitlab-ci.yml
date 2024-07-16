@@ -77,17 +77,20 @@ create_tag:
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
   script:
-    - |
-      if [ ! -f sdk/build.gradle ]; then
-        echo "Error: build.gradle file not found"
+    - echo "Listing current directory"
+    - ls -l
+    - echo "Listing sdk directory"
+    - ls -l sdk
+    - if [ ! -f sdk/build.gradle ]; then
+        echo "Error: sdk/build.gradle file not found"
         exit 1
       fi
-      sdkVersion=$(grep -oP '(?<=def sdkVersion = ")[^"]*' build.gradle)
-      if [ -z "$sdkVersion" ]; then
-        echo "Error: sdkVersion not found in build.gradle"
+    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
+    - if [ -z "$SDK_VERSION" ]; then
+        echo "Error: sdkVersion not found in sdk/build.gradle"
         exit 1
       fi
-      echo "Creating tag with SDK version: ${sdkVersion}"
-      git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
-      git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${sdkVersion}"
+    - echo "Creating tag with SDK version: ${SDK_VERSION}"
+    - git tag -a "v${SDK_VERSION}" -m "Release ${SDK_VERSION}"
+    - git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${SDK_VERSION}"
   dependencies: []
