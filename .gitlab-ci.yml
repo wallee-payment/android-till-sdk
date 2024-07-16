@@ -78,7 +78,7 @@ create_tag:
     - git config --global user.name "${GITLAB_USER_NAME}"
   script:
     - |
-      if [ ! -f build.gradle ]; then
+      if [ ! -f sdk/build.gradle ]; then
         echo "Error: build.gradle file not found"
         exit 1
       fi
