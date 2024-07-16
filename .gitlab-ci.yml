@@ -26,6 +26,7 @@ before_script:
 stages:
   - build
   - deploy
+  - tag
 
 # Job to build Javadoc
 build_javadoc:
@@ -54,7 +55,17 @@ pages:
 
 # Original deploy job
 deploy:
+  #image: gradle:6.5-jdk11
   stage: deploy
+  script:
+    - ./gradlew publish
+    only:
+     - master
+     - dev
+
+# Job to create a Git tag with the SDK version
+create_tag:
+  stage: tag
   before_script:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
@@ -65,18 +76,12 @@ deploy:
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
-    - echo "ANDROID_SDK_ROOT is set to $ANDROID_SDK_ROOT"
-    - echo "Listing android-sdk-linux directory"
-    - ls -l $CI_PROJECT_DIR/android-sdk-linux
   script:
-    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
-    - BRANCH=$CI_COMMIT_REF_NAME
-    - echo "publishing $SDK_VERSION for branch $BRANCH"
-    - ./gradlew publish -Pbranch=$BRANCH
-    - echo "creating version tag for $SDK_VERSION"
-    - git tag -a "v$SDK_VERSION" -m "Release version $SDK_VERSION"
-    - git push origin "v$SDK_VERSION"
-#   only:
-#     - master
-#     - dev
-#
+    - sdkVersion=$(grep -oP '(?<=def sdkVersion = ")[^"]*' build.gradle)
+    - echo "Creating tag with SDK version: ${sdkVersion}"
+    - git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
+    - git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${sdkVersion}"
+  only:
+  #    - master
+  #    - dev
+  dependencies: []
