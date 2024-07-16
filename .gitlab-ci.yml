@@ -24,44 +24,9 @@ before_script:
   - set -o pipefail
 
 stages:
-  - build
-  - deploy
   - tag
 
-# Job to build Javadoc
-build_javadoc:
-  stage: build
-  script:
-    - ./gradlew javadoc
-  artifacts:
-    paths:
-      - sdk/build/docs/javadoc
 
-# Job to deploy Javadoc to GitLab Pages
-pages:
-  stage: deploy
-  script:
-    - echo "Listing current directory"
-    - ls -l
-    - echo "Listing build/docs/javadoc directory"
-    - ls -l sdk/build/docs/javadoc
-    - mkdir -p public
-    - cp -r sdk/build/docs/javadoc/* public/
-    - echo "Listing public directory"
-    - ls -l public
-  artifacts:
-    paths:
-      - public
-
-# Original deploy job
-deploy:
-  #image: gradle:6.5-jdk11
-  stage: deploy
-  script:
-    - ./gradlew publish
-  only:
-    - master
-    - dev
 
 # Job to create a Git tag with the SDK version
 create_tag:
@@ -81,6 +46,6 @@ create_tag:
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
       echo "Creating tag with SDK version: ${sdkVersion}"
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
-      git remote set-url origin git@gitlab.com:${CI_PROJECT_PATH}.git
+      git remote set-url origin git@gitlab.com:$CI_PROJECT_PATH
       git push origin "v${sdkVersion}"
   dependencies: []
