@@ -81,7 +81,7 @@ create_tag:
     - echo "Creating tag with SDK version: ${sdkVersion}"
     - git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
     - git push git@gitlab.com:${CI_PROJECT_PATH}.git "v${sdkVersion}"
-  only:
+#       only:
   #    - master
   #    - dev
   dependencies: []
