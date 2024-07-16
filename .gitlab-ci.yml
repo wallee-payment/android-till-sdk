@@ -68,9 +68,9 @@ deploy:
     - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
     - BRANCH=$CI_COMMIT_REF_NAME
     - echo "publishing $SDK_VERSION for branch $BRANCH"
-    - ./gradlew publish -Pbranch=$BRANCH
-    - echo "creating version tag for $SDK_VERSION"
-    - ./version.sh $BRANCH $SDK_VERSION
+    - ./gradlew publish 
+ #    - echo "creating version tag for $SDK_VERSION"
+ #    - ./version.sh $BRANCH $SDK_VERSION
 #  only:
 #    - master
 #    - dev
