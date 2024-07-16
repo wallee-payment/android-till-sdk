@@ -24,8 +24,8 @@ before_script:
   - set -o pipefail
 
 stages:
-  #  - build
-   # - deploy
+  - build
+  - deploy
   - tag
 
 # Job to build Javadoc
