@@ -54,10 +54,30 @@ pages:
 
 # Original deploy job
 deploy:
-  #image: gradle:6.5-jdk11
   stage: deploy
+  before_script:
+    - export ANDROID_SDK_ROOT=$CI_PROJECT_DIR/android-sdk-linux
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - touch ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - echo $GITLAB_SSH_DEPLOYMENT_KEY | base64 --decode > ~/.ssh/id_rsa
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - echo "ANDROID_SDK_ROOT is set to $ANDROID_SDK_ROOT"
+    - echo "Listing android-sdk-linux directory"
+    - ls -l $CI_PROJECT_DIR/android-sdk-linux
   script:
-    - ./gradlew publish
-  #  only:
-  #   - master
-   #  - dev
+    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
+    - BRANCH=$CI_COMMIT_REF_NAME
+    - echo "publishing $SDK_VERSION for branch $BRANCH"
+    - ./gradlew publish -Pbranch=$BRANCH
+    - echo "creating version tag for $SDK_VERSION"
+    - git tag -a "v$SDK_VERSION" -m "Release version $SDK_VERSION"
+    - git push origin "v$SDK_VERSION"
+#   only:
+#     - master
+#     - dev
+#
