@@ -88,10 +88,12 @@ create_tag:
     - |
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
       echo "Creating tag with SDK version: ${sdkVersion}"
+      git fetch
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
       echo "CI project path: ${CI_PROJECT_PATH}"
-      git remote -v
-      git remote set-url origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git remote show origin
+      git remote set-url --push origin git@gitlab.com:$CI_PROJECT_PATH
+      git remote show origin
       git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
