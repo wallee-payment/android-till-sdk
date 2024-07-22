@@ -85,9 +85,7 @@ create_tag:
     - |
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
       echo "Creating tag with SDK version: ${sdkVersion}"
-      git remote remove origin
-      git remote add origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
-      git fetch origin
+      git remote set-url origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
       git push origin "v${sdkVersion}"
   dependencies: []
