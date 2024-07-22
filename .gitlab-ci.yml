@@ -88,6 +88,8 @@ create_tag:
       echo "Creating tag with SDK version: ${sdkVersion}"
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
       echo "CI project path: ${CI_PROJECT_PATH}"
+      git remote -v
       git remote set-url origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
