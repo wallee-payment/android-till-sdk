@@ -91,7 +91,8 @@ create_tag:
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
       echo "CI project path: ${CI_PROJECT_PATH}"
       git remote -v
-      git remote set-url origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git remote set-url origin git@gitlab.com:${GITLAB_USER_NAME}@wallee-payment/device-software/com.wallee.android.till.sdk.git
+      
       git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
