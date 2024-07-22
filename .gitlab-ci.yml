@@ -73,13 +73,10 @@ create_tag:
   before_script:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - touch ~/.ssh/id_rsa
-    - chmod 700 ~/.ssh/id_rsa
     - echo "$GITLAB_SSH_DEPLOYMENT_KEY" | base64 --decode > ~/.ssh/id_rsa
-    - cat ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
     - ssh-add ~/.ssh/id_rsa
     - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - echo "Checking SSH connection to GitLab"
@@ -88,12 +85,9 @@ create_tag:
     - |
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
       echo "Creating tag with SDK version: ${sdkVersion}"
-      git fetch
+      git remote remove origin
+      git remote add origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git fetch origin
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
-      echo "CI project path: ${CI_PROJECT_PATH}"
-      git remote show origin
-      git remote set-url --push origin git@gitlab.com:$CI_PROJECT_PATH
-      git remote show origin
-      git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
