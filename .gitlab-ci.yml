@@ -6,6 +6,7 @@ variables:
   ANDROID_SDK_TOOLS: "4333796"
   ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk-linux"
   ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/android-sdk-linux"
+  PROJECT_ACCESS_TOKEN: "$PROJECT_ACCESS_TOKEN"
 
 before_script:
   - apt-get --quiet update --yes
@@ -71,21 +72,15 @@ deploy:
 create_tag:
   stage: tag
   before_script:
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$GITLAB_SSH_DEPLOYMENT_KEY" | base64 --decode > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-add ~/.ssh/id_rsa
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
-    - echo "Checking SSH connection to GitLab"
-    - ssh -T git@gitlab.com || exit 1
   script:
     - |
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
       echo "Creating tag with SDK version: ${sdkVersion}"
-      git remote set-url origin git@gitlab.com:wallee-payment/device-software/com.wallee.android.till.sdk.git
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
+      git remote -v
+      git remote set-url origin https://${PROJECT_ACCESS_TOKEN}@gitlab.com/wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
