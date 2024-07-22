@@ -80,7 +80,7 @@ create_tag:
       echo "Creating tag with SDK version: ${sdkVersion}"
       git tag -a "v${sdkVersion}" -m "Release ${sdkVersion}"
       git remote -v
-      git remote set-url origin https://${PROJECT_ACCESS_TOKEN}@gitlab.com/wallee-payment/device-software/com.wallee.android.till.sdk.git
+      git remote set-url origin https://oauth2:"$PROJECT_ACCESS_TOKEN"@"${CI_PROJECT_URL:8}".git
       git remote -v
       git push origin "v${sdkVersion}"
   dependencies: []
