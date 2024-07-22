@@ -82,6 +82,8 @@ create_tag:
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
+    - echo "Checking SSH connection to GitLab"
+    - ssh -T git@gitlab.com || exit 1
   script:
     - |
       sdkVersion=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
