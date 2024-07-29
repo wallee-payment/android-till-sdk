@@ -4,6 +4,9 @@ variables:
   ANDROID_COMPILE_SDK: "29"
   ANDROID_BUILD_TOOLS: "29.0.3"
   ANDROID_SDK_TOOLS: "4333796"
+  ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk-linux"
+  ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/android-sdk-linux"
+  PROJECT_ACCESS_TOKEN: "$PROJECT_ACCESS_TOKEN"
 
 before_script:
   - apt-get --quiet update --yes
@@ -13,8 +16,7 @@ before_script:
   - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
   - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
   - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
+  - export PATH=$PATH:$CI_PROJECT_DIR/android-sdk-linux/platform-tools/
   - chmod +x ./gradlew
   - set +o pipefail
   - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
@@ -23,6 +25,7 @@ before_script:
 stages:
   - build
   - deploy
+  - tag
 
 # Job to build Javadoc
 build_javadoc:
@@ -32,12 +35,17 @@ build_javadoc:
   artifacts:
     paths:
       - sdk/build/docs/javadoc
+  only:
+    - master
+    - dev
+  except:
+    - tags
 
 # Job to deploy Javadoc to GitLab Pages
 pages:
   stage: deploy
   script:
-    - echo Listing current directory
+    - echo "Listing current directory"
     - ls -l
     - echo "Listing build/docs/javadoc directory"
     - ls -l sdk/build/docs/javadoc
@@ -48,28 +56,36 @@ pages:
   artifacts:
     paths:
       - public
+  only:
+    - master
+    - dev
+  except:
+    - tags
 
 # Original deploy job
 deploy:
   stage: deploy
-  before_script:
-    - export ANDROID_SDK_ROOT="/sdk"
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - touch ~/.ssh/id_rsa
-    - chmod 700 ~/.ssh/id_rsa
-    - echo $GITLAB_SSH_DEPLOYMENT_KEY | base64 --decode > ~/.ssh/id_rsa
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - git config --global user.email "${GITLAB_USER_EMAIL}"
-    - git config --global user.name "${GITLAB_USER_NAME}"
   script:
     - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
+    - echo "Publishing $SDK_VERSION for branch $CI_COMMIT_REF_NAME"
+    - ./gradlew publish -Pbranch=$CI_COMMIT_REF_NAME
+  only:
+    - master
+    - dev
+  except:
+    - tags
+
+# Job to create a Git tag with the SDK version
+create_tag:
+  stage: tag
+  script:
+    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
     - BRANCH=$CI_COMMIT_REF_NAME
-    - echo "publishing $SDK_VERSION for branch $BRANCH"
-    - ./gradlew publish -Pbranch=$BRANCH
     - echo "creating version tag for $SDK_VERSION"
     - ./version.sh $BRANCH $SDK_VERSION
   only:
     - master
     - dev
+  except:
+    - tags
+  dependencies: []
