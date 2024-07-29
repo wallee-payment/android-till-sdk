@@ -78,10 +78,12 @@ afterEvaluate {
         ext.branch = currentGitBranch
     }
     println("Current Branch: " + branch)
+    println("CI_JOB_TOKEN: " + System.getenv("CI_JOB_TOKEN"))
+
     publishing {
         publications {
             if (branch.equalsIgnoreCase("master")) {
-                println 'publishing for master'
+                println 'Publishing for master'
 
                 release(MavenPublication) {
                     from components.release
@@ -91,7 +93,7 @@ afterEvaluate {
                 }
 
             } else {
-                println 'publishing for dev'
+                println 'Publishing for dev'
 
                 dev(MavenPublication) {
                     from components.debug
@@ -99,7 +101,6 @@ afterEvaluate {
                     artifactId 'sdk-dev'
                     version sdkVersion
                 }
-
             }
         }
         repositories {
@@ -127,6 +128,8 @@ def getCurrentGitBranch() {
         if (result.exitValue() == 0) {
             gitBranch = result.text.trim()
         }
-    } catch (e) { }
+    } catch (e) {
+        println "Error getting git branch: ${e.message}"
+    }
     return gitBranch
 }

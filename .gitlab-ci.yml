@@ -7,6 +7,7 @@ variables:
   ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk-linux"
   ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/android-sdk-linux"
   PROJECT_ACCESS_TOKEN: "$PROJECT_ACCESS_TOKEN"
+  CI_JOB_TOKEN: "$CI_JOB_TOKEN"
 
 before_script:
   - apt-get --quiet update --yes
@@ -68,7 +69,7 @@ deploy:
   script:
     - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
     - echo "Publishing $SDK_VERSION for branch $CI_COMMIT_REF_NAME"
-    - ./gradlew publish -Pbranch=$CI_COMMIT_REF_NAME
+    - ./gradlew publish -Pbranch=$CI_COMMIT_REF_NAME --info
   only:
     - master
     - dev
