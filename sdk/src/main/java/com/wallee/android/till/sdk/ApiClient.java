@@ -16,6 +16,7 @@ import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetConfigDataResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -98,6 +99,29 @@ public class ApiClient {
     }
 
     /**
+     * Bind the API server to the given {@link Context}. This will initialize the API server and enable calling API methods.
+     * @param context the context the service will get bound to. Depending on the type of context provided (Application, Activity, or Service), the API service will have a different lifecycle:
+     *  Application context: The API service will have the same lifetime as the application and will persist across all activities and services.
+     *  Activity context: The API service will have the same lifetime as the activity and will be destroyed when the activity is destroyed.
+     *  Service context: The API service will have the same lifetime as the service and will be destroyed when the service is destroyed.
+     */
+    public boolean bind(Context context) {
+        Intent intent = new Intent()
+                .setClassName("com.wallee.android.pinpad", "com.wallee.android.ApiService");
+        boolean started = context.bindService(intent, this.con, Context.BIND_AUTO_CREATE);
+        Log.d(TAG, "Service started: " + started);
+        return started;
+    }
+
+    /**
+     * Unbind the API server from the given {@link Context}.
+     * @param context the context the service will get unbound from. Must be the same context that was passed into {@link ApiClient#bind(Context)}.
+     */
+    public void unbind(Context context) {
+        context.unbindService(this.con);
+    }
+
+    /**
      * Checks if the current SDK version {@link ApiClient#VERSION} is compatible with the service API.
      * When the operation will be finished a {@link ResponseHandler#checkApiServiceCompatibilityReply(Boolean, String)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
@@ -122,6 +146,23 @@ public class ApiClient {
     public void authorizeTransaction(Transaction transaction) throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.AUTHORIZE_TRANSACTION.ordinal();
+        Bundle bundle = Utils.toBundle(transaction);
+
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Adjust reservation. A dedicated transaction application will take the focus after calling this function.
+     * When the operation will be finished a {@link ResponseHandler#adjustReservationReply(TransactionResponse)} method will be called,
+     * and the caller application will receive focus back.
+     * @param transaction the reservation that should be adjusted.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void adjustReservation(Transaction transaction) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.ADJUST_RESERVATION.ordinal();
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
@@ -246,6 +287,20 @@ public class ApiClient {
     public void getPinPadInformation() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.GET_PINPAD_INFORMATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Start an operation to get the configuration data
+     * When the operation will be finished a {@link ResponseHandler#executeGetConfigDataResponse(GetConfigDataResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void getConfigData() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GET_CONFIG_DATA.ordinal();
         Bundle bundle = Utils.toBundle((Serializable) null);
         msg.setData(bundle);
         msg.replyTo = callback;

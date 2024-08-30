@@ -11,6 +11,7 @@ import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetConfigDataResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -93,6 +94,14 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             InitialisationResult result = Utils.getInitialisationResult(bundle);
             executeInitialisationReply(result);
+        } else if (msg.arg1 == ApiMessageType.ADJUST_RESERVATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            TransactionResponse result = Utils.getTransactionResponse(bundle);
+            adjustReservationReply(result);
+        } else if (msg.arg1 == ApiMessageType.GET_CONFIG_DATA.ordinal()){
+            Bundle bundle = msg.getData();
+            GetConfigDataResponse result = Utils.getConfigDataResponse(bundle);
+            executeGetConfigDataResponse(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -166,6 +175,12 @@ public abstract class ResponseHandler extends Handler {
     public void executeGetConfigInfoResponse(GetPinpadInformationResponse result) {}
 
     /**
+     * The result from an {@link ApiClient#getConfigData()} call.
+     * @param result the configdata as it was processed.
+     */
+    public void executeGetConfigDataResponse(GetConfigDataResponse result) {}
+
+    /**
      * The result from an {@link ApiClient#executeConfiguration()} ()} call.
      * @param result the configuration as it was processed.
      */
@@ -177,5 +192,10 @@ public abstract class ResponseHandler extends Handler {
      */
     public void executeInitialisationReply(InitialisationResult result) {}
 
+    /**
+     * The response from an {@link ApiClient#adjustReservation(Transaction)} call.
+     * @param response the transaction as it was processed.
+     */
+    public void adjustReservationReply(TransactionResponse response) {}
 
 }

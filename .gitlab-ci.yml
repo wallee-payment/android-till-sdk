@@ -1,9 +1,9 @@
-image: openjdk:8-jdk
+image: openjdk:11-jdk
 
 variables:
   ANDROID_COMPILE_SDK: "29"
   ANDROID_BUILD_TOOLS: "29.0.3"
-  ANDROID_SDK_TOOLS: "4333796"
+  ANDROID_SDK_TOOLS: "7583922"
   ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk-linux"
   ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/android-sdk-linux"
   PROJECT_ACCESS_TOKEN: "$PROJECT_ACCESS_TOKEN"
@@ -11,22 +11,44 @@ variables:
 
 before_script:
   - apt-get --quiet update --yes
-  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
-  - unzip -q -d android-sdk-linux android-sdk.zip
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
-  - export PATH=$PATH:$CI_PROJECT_DIR/android-sdk-linux/platform-tools/
-  - chmod +x ./gradlew
+  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 openjdk-11-jdk
+
+  - install -d $ANDROID_SDK_ROOT
+
+  # Download and unzip Android SDK command-line tools
+  - wget --output-document=$ANDROID_SDK_ROOT/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+  - pushd $ANDROID_SDK_ROOT
+  - unzip -d cmdline-tools cmdline-tools.zip
+  - pushd cmdline-tools
+
+  - mv cmdline-tools tools || true
+  - popd
+  - popd
+  - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/
+
+  # Install required Android SDK components
+  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+  - sdkmanager "platform-tools" >/dev/null
+  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
+
+  # Accept SDK licenses
   - set +o pipefail
-  - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
+  - yes | sdkmanager --licenses || true
   - set -o pipefail
+
+  # Install gradle
+  - wget https://services.gradle.org/distributions/gradle-7.5.1-bin.zip
+  - unzip gradle-7.5.1-bin.zip
+  - export PATH=$PATH:`pwd`/gradle-7.5.1/bin
+
+  # Make Gradle wrapper executable
+  - chmod +x ./gradlew
 
 stages:
   - build
   - deploy
   - tag
+  - sonarqube-check
 
 # Job to build Javadoc
 build_javadoc:
@@ -73,6 +95,7 @@ deploy:
   only:
     - master
     - dev
+    - release/0.9.23
   except:
     - tags
 
@@ -90,3 +113,6 @@ create_tag:
   except:
     - tags
   dependencies: []
+
+include:
+  - local: '.gitlab-ci-sonarqube.yml'

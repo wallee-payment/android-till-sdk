@@ -39,10 +39,14 @@ public final class Transaction {
 
     private final Boolean generatePanToken;
 
+    private final Integer transactionSyncNumber;
+
+    private final String transactionRefNumber;
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -55,6 +59,7 @@ public final class Transaction {
         this.metaData = Collections.unmodifiableMap(new HashMap<>(requireNonNull(metaData,"metaData")));
         this.customText = customText;
         this.generatePanToken = generatePanToken;
+        this.transactionRefNumber = transactionRefNumber;
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
@@ -63,6 +68,7 @@ public final class Transaction {
             }
         }
         this.language = language;
+        this.transactionSyncNumber = transactionSyncNumber;
     }
 
     public Currency getCurrency() {
@@ -111,7 +117,13 @@ public final class Transaction {
         return language;
     }
 
+    public Integer getTransactionSyncNumber() {
+        return transactionSyncNumber;
+    }
+
     public Boolean getGeneratePanToken() { return generatePanToken; }
+
+    public String getTransactionRefNumber() { return transactionRefNumber; }
 
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
@@ -152,6 +164,10 @@ public final class Transaction {
 
         private Boolean generatePanToken;
 
+        private Integer transactionSyncNumber;
+
+        private String transactionRefNumber;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -174,6 +190,8 @@ public final class Transaction {
             this.language = transaction.language;
             this.generatePanToken = transaction.generatePanToken;
             this.metaData = new HashMap<>(transaction.metaData);
+            this.transactionSyncNumber = transaction.transactionSyncNumber;
+            this.transactionRefNumber = transaction.transactionRefNumber;
         }
 
         public List<LineItem> getLineItems() {
@@ -196,6 +214,10 @@ public final class Transaction {
 
         public String getLanguage() {
             return language;
+        }
+
+        public Integer getTransactionSyncNumber() {
+            return transactionSyncNumber;
         }
 
         public Builder setLineItems(List<LineItem> lineItems) {
@@ -261,8 +283,18 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setTransactionSyncNumber(int trxSyncNumber) {
+            this.transactionSyncNumber = trxSyncNumber;
+            return this;
+        }
+
+        public Builder setTransactionRefNumber(String transactionRefNumber) {
+            this.transactionRefNumber = transactionRefNumber;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber);
         }
     }
 }
