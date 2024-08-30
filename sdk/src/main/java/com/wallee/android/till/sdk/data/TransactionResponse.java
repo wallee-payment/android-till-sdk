@@ -31,6 +31,8 @@ public final class TransactionResponse {
     private final String amountTip;
     private final String panToken;
     private final String merchantReference;
+    private final PaymentEntryMethod paymentEntryMethod;
+    private final Integer transactionSyncNumber;
 
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
                                @Nullable String authorizationCode, @Nullable String terminalId,
@@ -39,7 +41,8 @@ public final class TransactionResponse {
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
                                @Nullable String  cardAppId, @Nullable String amountTip,
-                               @Nullable String panToken, @Nullable String merchantReference) {
+                               @Nullable String panToken, @Nullable String merchantReference,
+                               @Nullable PaymentEntryMethod paymentEntryMethod, @Nullable Integer transactionSyncNumber) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -57,6 +60,8 @@ public final class TransactionResponse {
         this.amountTip = amountTip;
         this.panToken = panToken;
         this.merchantReference = merchantReference;
+        this.paymentEntryMethod = paymentEntryMethod;
+        this.transactionSyncNumber = transactionSyncNumber;
     }
 
     @NonNull
@@ -133,6 +138,15 @@ public final class TransactionResponse {
 
     public String getMerchantReference() { return merchantReference; }
 
+    @Nullable
+    public PaymentEntryMethod getPaymentEntryMethod() {
+        return paymentEntryMethod;
+    }
+
+    public Integer getTransactionSyncNumber() {
+        return transactionSyncNumber;
+    }
+
     public static class Builder {
         private @NonNull Transaction transaction;
         private @NonNull State state;
@@ -151,6 +165,8 @@ public final class TransactionResponse {
         private String amountTip;
         private String panToken;
         private String merchantReference;
+        private PaymentEntryMethod paymentEntryMethod;
+        private Integer transactionSyncNumber;
 
         public Builder(TransactionResponse transactionResponse) {
             this.transaction = requireNonNull(transactionResponse.transaction, "transaction");
@@ -170,6 +186,8 @@ public final class TransactionResponse {
             this.amountTip = transactionResponse.amountTip;
             this.panToken = transactionResponse.panToken;
             this.merchantReference = transactionResponse.merchantReference;
+            this.paymentEntryMethod = transactionResponse.paymentEntryMethod;
+            this.transactionSyncNumber = transactionResponse.transactionSyncNumber;
         }
 
         // Every Transaction Response must have at least those 4 parameters!
@@ -265,6 +283,16 @@ public final class TransactionResponse {
             return this;
         }
 
+        public Builder setPaymentEntryMethod(PaymentEntryMethod paymentEntryMethod) {
+            this.paymentEntryMethod = paymentEntryMethod;
+            return this;
+        }
+
+        public Builder setTransactionSyncNumber(Integer transactionSyncNumber) {
+            this.transactionSyncNumber = transactionSyncNumber;
+            return this;
+        }
+
         public Transaction getTransaction() {
             return transaction;
         }
@@ -326,10 +354,17 @@ public final class TransactionResponse {
         }
 
         public String getPanToken() { return panToken; }
+
         public String getMerchantReference() { return merchantReference; }
 
+        public PaymentEntryMethod getPaymentEntryMethod() {
+            return paymentEntryMethod;
+        }
+
+        public Integer getTransactionSyncNumber() { return transactionSyncNumber; }
+
         public TransactionResponse build() {
-            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken, this.merchantReference);
+            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken, this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber);
         }
     }
 }

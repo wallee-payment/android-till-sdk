@@ -4,6 +4,11 @@ apply plugin: 'maven-publish'
 def sdkVersion = "0.9.23"
 def currentGitBranch = getCurrentGitBranch()
 
+// Set versionName dynamically based on the branch
+def isSnapshot = !currentGitBranch.equalsIgnoreCase("master")
+def releaseVersionName = isSnapshot ? "${sdkVersion}-SNAPSHOT".toString() : sdkVersion.toString()
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -12,10 +17,10 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName releaseVersionName
 
         manifestPlaceholders = [sdkVersion: sdkVersion]
-        buildConfigField "String", "SDK_VERSION", "\"" + sdkVersion + "\""
+        buildConfigField "String", "SDK_VERSION", "\"" + releaseVersionName + "\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -85,21 +90,21 @@ afterEvaluate {
             if (branch.equalsIgnoreCase("master")) {
                 println 'Publishing for master'
 
-                release(MavenPublication) {
+                create("releasePublication", MavenPublication) {
                     from components.release
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
-                    version sdkVersion
+                    version releaseVersionName
                 }
 
             } else {
                 println 'Publishing for dev'
 
-                dev(MavenPublication) {
+                create("snapshotPublication", MavenPublication) {
                     from components.debug
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk-dev'
-                    version sdkVersion
+                    version releaseVersionName
                 }
             }
         }

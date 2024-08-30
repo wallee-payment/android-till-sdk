@@ -25,7 +25,7 @@ e.g. the [A920pro](https://terminal-shop.wallee.com/de/product/pax-a920pro-walle
 The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) class serves as the primary interface for performing till requests and checking SDK compatibility. Below are the available methods:
 
 - **checkApiServiceCompatibility**: Verify SDK compatibility.
-- **authorizeTransaction**: Perform purchase, credit, and reservation transactions.
+- **authorizeTransaction**: Perform purchase, credit, reservation and adjust reservation transactions.
 - **completeTransaction**: Complete reservations.
 - **voidTransaction**: Cancel reservations.
 - **cancelLastTransactionOperation**: Cancel the last transaction.
@@ -38,6 +38,11 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 - **executeInitialisation**: Initiate initialisation request (siInitRequest).
 
 ## How to use the Android Till Interface SDK
+
+## Documentation
+
+For more detailed information on using the SDK, please refer to the official SDK documentation. [Documentation](https://wallee-payment.gitlab.io/device-software/com.wallee.android.till.sdk/).
+
 
 ## Example Application
 
@@ -128,6 +133,7 @@ To handle responses, extend the `ResponseHandler` class from the Till SDK to rec
 - **FinalBalanceResult**:
 - **GeneratePanTokenResponse**:
 - **GetPinpadInformationResponse**:
+- **GetConfigDataResponse**:
 
 
 ##### Example
@@ -219,12 +225,21 @@ finish();
 
 Copy and paste this inside your build.gradle dependencies block.
 
+Replace {version} with the specific version number of the SDK you wish to use. 
+
 ```
 dependencies {
-    implementation 'com.wallee.android.till:sdk:0.9.23'
+    implementation 'com.wallee.android.till:sdk:{version}'
 }
 ```
 
+To include the snapshot version, use the following:
+
+```
+dependencies {
+    implementation 'com.wallee.android.till:sdk-dev:{version}'
+}
+```
 You will also need to add the SDK repository to your project build.gradle file.
 
 ```

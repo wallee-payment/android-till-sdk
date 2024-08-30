@@ -14,5 +14,11 @@ public enum TransactionProcessingBehavior {
     /**
      * Complete deferred.
      */
-    COMPLETE_DEFERRED
+    COMPLETE_DEFERRED,
+
+
+    /**
+     * Adjust reservation.
+     */
+    ADJUST_RESERVATION
 }

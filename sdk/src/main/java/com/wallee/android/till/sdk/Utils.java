@@ -10,6 +10,7 @@ import com.wallee.android.till.sdk.data.CancelationResult;
 import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetConfigDataResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -39,6 +40,7 @@ public class Utils {
     private static final String KEY_FINAL_BALANCE_RESULT_JSON = "finalBalanceResult";
     private static final String KEY_GENERATE_PANTOKEN_RESPONSE_JSON = "generatePanTokenResponse";
     private static final String KEY_GET_CONFIG_INFO_RESPONSE_JSON = "pinpadInformationResponse";
+    private static final String KEY_GET_CONFIG_DATA_RESPONSE_JSON = "configDataResponse";
     private static final String KEY_CONFIGURATION_RESULT_JSON = "configurationResult";
     private static final String KEY_INITIALISATION_RESULT_JSON = "initialisationResult";
     public static final String  PACKAGE = "com.wallee.android.pinpad";
@@ -192,6 +194,11 @@ public class Utils {
         return GSON.fromJson(json, GetPinpadInformationResponse.class);
     }
 
+    public static GetConfigDataResponse getConfigDataResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_GET_CONFIG_DATA_RESPONSE_JSON);
+        return GSON.fromJson(json, GetConfigDataResponse.class);
+    }
+
     public static Bundle toBundle(GeneratePanTokenResponse result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_GENERATE_PANTOKEN_RESPONSE_JSON, Utils.GSON.toJson(result));
@@ -201,6 +208,13 @@ public class Utils {
     public static Bundle toBundle(GetPinpadInformationResponse result) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_GET_CONFIG_INFO_RESPONSE_JSON, Utils.GSON.toJson(result));
+        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
+    }
+
+    public static Bundle toBundle(GetConfigDataResponse result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_GET_CONFIG_DATA_RESPONSE_JSON, Utils.GSON.toJson(result));
         bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
