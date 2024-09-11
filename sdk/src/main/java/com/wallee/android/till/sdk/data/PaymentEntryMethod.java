@@ -17,15 +17,15 @@ public enum PaymentEntryMethod {
             return NOT_APPLICABLE;
         }
         switch (value){
-            case "0":
+            case "MAGSTRIPE":
                 return MAGSTRIPE;
-            case "1":
+            case "ICC":
                 return ICC;
-            case "2":
+            case "CTLS":
                 return CTLS;
-            case "3":
+            case "QR":
                 return QR;
-            case "4":
+            case "MANUAL":
                 return MANUAL;
             default:
                 return null;
