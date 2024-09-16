@@ -140,29 +140,19 @@ public class ApiClient {
      * Authorize a transaction. A dedicated transaction application will take the focus after calling this function.
      * When the operation will be finished a {@link ResponseHandler#authorizeTransactionReply(TransactionResponse)} method will be called,
      * and the caller application will receive focus back.
+     * <p>
+     * Supported transaction types for authorization include:
+     * - Purchase
+     * - Credit
+     * - Reservation
+     * - Reservation Adjustment
+     *
      * @param transaction the transaction that should be authorized.
      * @throws RemoteException any errors while communicating with the API server.
      */
     public void authorizeTransaction(Transaction transaction) throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.AUTHORIZE_TRANSACTION.ordinal();
-        Bundle bundle = Utils.toBundle(transaction);
-
-        msg.setData(bundle);
-        msg.replyTo = callback;
-        sendMessage(msg);
-    }
-
-    /**
-     * Adjust reservation. A dedicated transaction application will take the focus after calling this function.
-     * When the operation will be finished a {@link ResponseHandler#adjustReservationReply(TransactionResponse)} method will be called,
-     * and the caller application will receive focus back.
-     * @param transaction the reservation that should be adjusted.
-     * @throws RemoteException any errors while communicating with the API server.
-     */
-    public void adjustReservation(Transaction transaction) throws RemoteException {
-        Message msg = Message.obtain();
-        msg.arg1 = ApiMessageType.ADJUST_RESERVATION.ordinal();
         Bundle bundle = Utils.toBundle(transaction);
 
         msg.setData(bundle);
