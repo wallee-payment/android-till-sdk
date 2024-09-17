@@ -94,10 +94,6 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             InitialisationResult result = Utils.getInitialisationResult(bundle);
             executeInitialisationReply(result);
-        } else if (msg.arg1 == ApiMessageType.ADJUST_RESERVATION.ordinal()) {
-            Bundle bundle = msg.getData();
-            TransactionResponse result = Utils.getTransactionResponse(bundle);
-            adjustReservationReply(result);
         } else if (msg.arg1 == ApiMessageType.GET_CONFIG_DATA.ordinal()){
             Bundle bundle = msg.getData();
             GetConfigDataResponse result = Utils.getConfigDataResponse(bundle);
@@ -191,11 +187,5 @@ public abstract class ResponseHandler extends Handler {
      * @param result the initialisation as it was processed.
      */
     public void executeInitialisationReply(InitialisationResult result) {}
-
-    /**
-     * The response from an {@link ApiClient#adjustReservation(Transaction)} call.
-     * @param response the transaction as it was processed.
-     */
-    public void adjustReservationReply(TransactionResponse response) {}
 
 }
