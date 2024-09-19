@@ -1,7 +1,5 @@
 package com.wallee.android.till.sdk.data;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
 /**
@@ -22,14 +20,5 @@ public class AcquirerData {
 
     public List<TerminalApplicationConfigData> getTerminalApplicationConfigDataList() {
         return terminalApplicationConfigDataList;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "AcquirerData{" +
-                "acquirerId='" + acquirerId + '\'' +
-                ", terminalApplicationConfigDataList=" + terminalApplicationConfigDataList +
-                '}';
     }
 }

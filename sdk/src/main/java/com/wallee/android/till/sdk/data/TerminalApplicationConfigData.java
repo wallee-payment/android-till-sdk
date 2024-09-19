@@ -1,14 +1,14 @@
 package com.wallee.android.till.sdk.data;
 
-import androidx.annotation.NonNull;
-
 public class TerminalApplicationConfigData {
     private final String aid;
     private final String brand;
+    private final String readerTechnology;
 
-    public TerminalApplicationConfigData(String aid, String brand) {
+    public TerminalApplicationConfigData(String aid, String brand, String readerTechnology) {
         this.aid = aid;
         this.brand = brand;
+        this.readerTechnology = readerTechnology;
 
     }
 
@@ -20,12 +20,8 @@ public class TerminalApplicationConfigData {
         return brand;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "TerminalApplicationConfigData{" +
-                "aid='" + aid + '\'' +
-                ", brand='" + brand + '\'' +
-                '}';
+    public String getReaderTechnology() {
+        return readerTechnology;
     }
+
 }

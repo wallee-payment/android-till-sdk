@@ -19,12 +19,4 @@ public class CurrencyItem {
         return currency;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "CurrencyItem{" +
-                "currencyType=" + currencyType +
-                ", currency='" + currency + '\'' +
-                '}';
-    }
 }

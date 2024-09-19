@@ -16,16 +16,14 @@ public class GetConfigDataResponse {
     private final Ep2TerminalConfigData ep2Tcd;
     private final String ep2Version;
     private final List<CurrencyItem> currencyList;
-    private final Brand brand;
 
-    public GetConfigDataResponse(@NonNull State state, @NonNull ResultCode resultCode, List<AcquirerData> acquirerDataList, Ep2TerminalConfigData ep2RTcd, String ep2Version, List<CurrencyItem> currencyList, Brand brand){
+    public GetConfigDataResponse(@NonNull State state, @NonNull ResultCode resultCode, List<AcquirerData> acquirerDataList, Ep2TerminalConfigData ep2RTcd, String ep2Version, List<CurrencyItem> currencyList){
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.acquirerDataList = acquirerDataList;
         this.ep2Tcd = ep2RTcd;
         this.ep2Version = ep2Version;
         this.currencyList = currencyList;
-        this.brand = brand;
     }
 
     @NonNull
@@ -52,23 +50,5 @@ public class GetConfigDataResponse {
 
     public List<CurrencyItem> getCurrencyList() {
         return currencyList;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "GetConfigDataResponse{" +
-                "state=" + state +
-                ", resultCode=" + resultCode +
-                ", acquirerDataList=" + acquirerDataList +
-                ", ep2Tcd=" + ep2Tcd +
-                ", ep2Version='" + ep2Version + '\'' +
-                ", currencyList=" + currencyList +
-                ", brand=" + brand +
-                '}';
     }
 }
