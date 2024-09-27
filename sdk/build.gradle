@@ -110,7 +110,7 @@ afterEvaluate {
         }
         repositories {
             maven {
-                url "https://gitlab.com/api/v4/projects/21028526/packages/maven"
+                url "https://gitlab.wallee.com/api/v4/projects/263/packages/maven"
                 name "GitLab"
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
