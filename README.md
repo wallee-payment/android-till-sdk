@@ -223,16 +223,15 @@ finish();
 
 ## How to get it
 
-Copy and paste this inside your build.gradle dependencies block.
+Copy and paste this inside your `build.gradle` dependencies block.
 
-Replace {version} with the specific version number of the SDK you wish to use. 
+Replace `{version}` with the specific version number of the SDK you wish to use.
 
 ```
 dependencies {
     implementation 'com.wallee.android.till:sdk:{version}'
 }
 ```
-
 To include the snapshot version, use the following:
 
 ```
@@ -240,14 +239,18 @@ dependencies {
     implementation 'com.wallee.android.till:sdk-dev:{version}'
 }
 ```
-You will also need to add the SDK repository to your project build.gradle file.
+## Adding the SDK Repository
+
+You need to update your project’s `build.gradle` to include the new package repository.
+
+Add the following to your `allprojects` section:
 
 ```
 allprojects {
     repositories {
         google()
         maven {
-            url "https://gitlab.com/api/v4/projects/21028526/packages/maven"
+            url "https://gitlab.wallee.com/api/v4/projects/263/packages/maven"
         }
     }
 }
