@@ -22,8 +22,13 @@ public final class TransactionCompletionResponse {
     private final String sequenceCount;
     private final String transactionTime;
     private final List<Receipt> receipts;
+    private Integer transactionSyncNumber;
 
-    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state, @NonNull ResultCode resultCode, @Nullable String authorizationCode, @Nullable String terminalId, @Nullable String sequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
+    public TransactionCompletionResponse(@NonNull TransactionCompletion transactionCompletion, @NonNull State state,
+                                         @NonNull ResultCode resultCode, @Nullable String authorizationCode,
+                                         @Nullable String terminalId, @Nullable String sequenceCount,
+                                         @Nullable String transactionTime, @NonNull List<Receipt> receipts,
+                                         @NonNull Integer transactionSyncNumber) {
         this.transactionCompletion = requireNonNull(transactionCompletion, "transactionCompletion");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -32,6 +37,7 @@ public final class TransactionCompletionResponse {
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
         this.receipts = requireNonNull(receipts, "receipts");
+        this.transactionSyncNumber = transactionSyncNumber;
     }
 
     @NonNull
@@ -72,6 +78,14 @@ public final class TransactionCompletionResponse {
     @NonNull
     public List<Receipt> getReceipts() {
         return receipts;
+    }
+
+    public Integer getTransactionSyncNumber() {
+        return transactionSyncNumber;
+    }
+
+    public void setTransactionSyncNumber(Integer transactionSyncNumber) {
+        this.transactionSyncNumber = transactionSyncNumber;
     }
 
     public Date getParsedTransactionTime() throws ParseException {
