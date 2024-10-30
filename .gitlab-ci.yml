@@ -1,34 +1,118 @@
-image: openjdk:8-jdk
+image: openjdk:11-jdk
 
 variables:
-  ANDROID_COMPILE_SDK: "28"
-  ANDROID_BUILD_TOOLS: "28.0.2"
-  ANDROID_SDK_TOOLS:   "4333796"
+  ANDROID_COMPILE_SDK: "29"
+  ANDROID_BUILD_TOOLS: "29.0.3"
+  ANDROID_SDK_TOOLS: "7583922"
+  ANDROID_HOME: "$CI_PROJECT_DIR/android-sdk-linux"
+  ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/android-sdk-linux"
+  PROJECT_ACCESS_TOKEN: "$PROJECT_ACCESS_TOKEN"
+  CI_JOB_TOKEN: "$CI_JOB_TOKEN"
 
 before_script:
   - apt-get --quiet update --yes
-  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
-  - unzip -q -d android-sdk-linux android-sdk.zip
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
-  - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
-  - chmod +x ./gradlew
-  # temporarily disable checking for EPIPE error and use yes to accept all licenses
+  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 openjdk-11-jdk
+
+  - install -d $ANDROID_SDK_ROOT
+
+  # Download and unzip Android SDK command-line tools
+  - wget --output-document=$ANDROID_SDK_ROOT/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+  - pushd $ANDROID_SDK_ROOT
+  - unzip -d cmdline-tools cmdline-tools.zip
+  - pushd cmdline-tools
+
+  - mv cmdline-tools tools || true
+  - popd
+  - popd
+  - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/
+
+  # Install required Android SDK components
+  - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+  - sdkmanager "platform-tools" >/dev/null
+  - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
+
+  # Accept SDK licenses
   - set +o pipefail
-  - yes | android-sdk-linux/tools/bin/sdkmanager --licenses
+  - yes | sdkmanager --licenses || true
   - set -o pipefail
 
-stages:
-  - deploy
+  # Install gradle
+  - wget https://services.gradle.org/distributions/gradle-7.5.1-bin.zip
+  - unzip gradle-7.5.1-bin.zip
+  - export PATH=$PATH:`pwd`/gradle-7.5.1/bin
 
-deploy:
-  #image: gradle:6.5-jdk11
-  stage: deploy
+  # Make Gradle wrapper executable
+  - chmod +x ./gradlew
+
+stages:
+  - build
+  - deploy
+  - tag
+  - sonarqube-check
+
+# Job to build Javadoc
+build_javadoc:
+  stage: build
   script:
-    - ./gradlew publish
+    - ./gradlew javadoc
+  artifacts:
+    paths:
+      - sdk/build/docs/javadoc
   only:
     - master
     - dev
+  except:
+    - tags
+
+# Job to deploy Javadoc to GitLab Pages
+pages:
+  stage: deploy
+  script:
+    - echo "Listing current directory"
+    - ls -l
+    - echo "Listing build/docs/javadoc directory"
+    - ls -l sdk/build/docs/javadoc
+    - mkdir -p public
+    - cp -r sdk/build/docs/javadoc/* public/
+    - echo "Listing public directory"
+    - ls -l public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - dev
+  except:
+    - tags
+
+# Original deploy job
+deploy:
+  stage: deploy
+  script:
+    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d "\"" -f2)
+    - echo "Publishing $SDK_VERSION for branch $CI_COMMIT_REF_NAME"
+    - ./gradlew publish -Pbranch=$CI_COMMIT_REF_NAME --info
+  only:
+    - master
+    - dev
+    - release/0.9.23
+  except:
+    - tags
+
+# Job to create a Git tag with the SDK version
+create_tag:
+  stage: tag
+  script:
+    - SDK_VERSION=$(grep -E "sdkVersion = " sdk/build.gradle | cut -d '"' -f2)
+    - BRANCH=$CI_COMMIT_REF_NAME
+    - echo "creating version tag for $SDK_VERSION"
+    - ./version.sh $BRANCH $SDK_VERSION
+  only:
+    - master
+    - dev
+  except:
+    - tags
+  dependencies: []
+
+include:
+  - local: '.gitlab-ci-sonarqube.yml'

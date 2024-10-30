@@ -8,9 +8,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.wallee.android.till.sdk.data.CancelationResult;
+import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
+import com.wallee.android.till.sdk.data.GetConfigDataResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
+import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -83,8 +86,19 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             GetPinpadInformationResponse result = Utils.getPinpadInformationResponse(bundle);
             executeGetConfigInfoResponse(result);
-        }
-        else {
+        } else if (msg.arg1 == ApiMessageType.EXECUTE_CONFIGURATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            ConfigurationResult result = Utils.getConfigurationResult(bundle);
+            executeConfigurationReply(result);
+        } else if (msg.arg1 == ApiMessageType.EXECUTE_INITIALISATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            InitialisationResult result = Utils.getInitialisationResult(bundle);
+            executeInitialisationReply(result);
+        } else if (msg.arg1 == ApiMessageType.GET_CONFIG_DATA.ordinal()){
+            Bundle bundle = msg.getData();
+            GetConfigDataResponse result = Utils.getConfigDataResponse(bundle);
+            executeGetConfigDataResponse(result);
+        } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
     }
@@ -156,5 +170,22 @@ public abstract class ResponseHandler extends Handler {
      */
     public void executeGetConfigInfoResponse(GetPinpadInformationResponse result) {}
 
+    /**
+     * The result from an {@link ApiClient#getConfigData()} call.
+     * @param result the configdata as it was processed.
+     */
+    public void executeGetConfigDataResponse(GetConfigDataResponse result) {}
+
+    /**
+     * The result from an {@link ApiClient#executeConfiguration()} ()} call.
+     * @param result the configuration as it was processed.
+     */
+    public void executeConfigurationReply(ConfigurationResult result) {}
+
+    /**
+     * The result from an {@link ApiClient#executeInitialisation()} ()} ()} call.
+     * @param result the initialisation as it was processed.
+     */
+    public void executeInitialisationReply(InitialisationResult result) {}
 
 }

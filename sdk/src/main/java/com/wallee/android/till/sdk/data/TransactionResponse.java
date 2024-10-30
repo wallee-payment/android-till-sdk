@@ -19,7 +19,7 @@ public final class TransactionResponse {
     private final ResultCode resultCode;
     private final String authorizationCode;
     private final String terminalId;
-    private final Long sequenceCount;
+    private final String sequenceCount;
     private final String transactionTime;
     private final String reserveReference;
     private final String acquirerId;
@@ -30,14 +30,19 @@ public final class TransactionResponse {
     private final String cardAppId;
     private final String amountTip;
     private final String panToken;
+    private final String merchantReference;
+    private final PaymentEntryMethod paymentEntryMethod;
+    private final Integer transactionSyncNumber;
 
     public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
                                @Nullable String authorizationCode, @Nullable String terminalId,
-                               @Nullable Long sequenceCount, @Nullable String transactionTime,
+                               @Nullable String sequenceCount, @Nullable String transactionTime,
                                @Nullable String reserveReference, @Nullable String acquirerId,
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
-                               @Nullable String  cardAppId, @Nullable String amountTip, @Nullable String panToken) {
+                               @Nullable String  cardAppId, @Nullable String amountTip,
+                               @Nullable String panToken, @Nullable String merchantReference,
+                               @Nullable PaymentEntryMethod paymentEntryMethod, @Nullable Integer transactionSyncNumber) {
         this.transaction = requireNonNull(transaction, "transaction");
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
@@ -54,6 +59,9 @@ public final class TransactionResponse {
         this.cardAppId = cardAppId;
         this.amountTip = amountTip;
         this.panToken = panToken;
+        this.merchantReference = merchantReference;
+        this.paymentEntryMethod = paymentEntryMethod;
+        this.transactionSyncNumber = transactionSyncNumber;
     }
 
     @NonNull
@@ -82,7 +90,7 @@ public final class TransactionResponse {
     }
 
     @Nullable
-    public Long getSequenceCount() {
+    public String getSequenceCount() {
         return sequenceCount;
     }
 
@@ -128,13 +136,24 @@ public final class TransactionResponse {
 
     public String getPanToken() { return panToken; }
 
+    public String getMerchantReference() { return merchantReference; }
+
+    @Nullable
+    public PaymentEntryMethod getPaymentEntryMethod() {
+        return paymentEntryMethod;
+    }
+
+    public Integer getTransactionSyncNumber() {
+        return transactionSyncNumber;
+    }
+
     public static class Builder {
         private @NonNull Transaction transaction;
         private @NonNull State state;
         private @NonNull ResultCode resultCode;
         private String authorizationCode;
         private String terminalId;
-        private Long sequenceCount;
+        private String sequenceCount;
         private String transactionTime;
         private String reserveReference;
         private String acquirerId;
@@ -145,6 +164,9 @@ public final class TransactionResponse {
         private String cardAppId;
         private String amountTip;
         private String panToken;
+        private String merchantReference;
+        private PaymentEntryMethod paymentEntryMethod;
+        private Integer transactionSyncNumber;
 
         public Builder(TransactionResponse transactionResponse) {
             this.transaction = requireNonNull(transactionResponse.transaction, "transaction");
@@ -163,6 +185,9 @@ public final class TransactionResponse {
             this.cardAppId = transactionResponse.cardAppId;
             this.amountTip = transactionResponse.amountTip;
             this.panToken = transactionResponse.panToken;
+            this.merchantReference = transactionResponse.merchantReference;
+            this.paymentEntryMethod = transactionResponse.paymentEntryMethod;
+            this.transactionSyncNumber = transactionResponse.transactionSyncNumber;
         }
 
         // Every Transaction Response must have at least those 4 parameters!
@@ -198,7 +223,7 @@ public final class TransactionResponse {
             return this;
         }
 
-        public Builder setSequenceCount(Long sequenceCount) {
+        public Builder setSequenceCount(String sequenceCount) {
             this.sequenceCount = sequenceCount;
             return this;
         }
@@ -253,6 +278,21 @@ public final class TransactionResponse {
             return this;
         }
 
+        public Builder setMerchantReference(String merchantReference) {
+            this.merchantReference = merchantReference;
+            return this;
+        }
+
+        public Builder setPaymentEntryMethod(PaymentEntryMethod paymentEntryMethod) {
+            this.paymentEntryMethod = paymentEntryMethod;
+            return this;
+        }
+
+        public Builder setTransactionSyncNumber(Integer transactionSyncNumber) {
+            this.transactionSyncNumber = transactionSyncNumber;
+            return this;
+        }
+
         public Transaction getTransaction() {
             return transaction;
         }
@@ -273,7 +313,7 @@ public final class TransactionResponse {
             return terminalId;
         }
 
-        public Long getSequenceCount() {
+        public String getSequenceCount() {
             return sequenceCount;
         }
 
@@ -315,8 +355,16 @@ public final class TransactionResponse {
 
         public String getPanToken() { return panToken; }
 
+        public String getMerchantReference() { return merchantReference; }
+
+        public PaymentEntryMethod getPaymentEntryMethod() {
+            return paymentEntryMethod;
+        }
+
+        public Integer getTransactionSyncNumber() { return transactionSyncNumber; }
+
         public TransactionResponse build() {
-            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken);
+            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken, this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber);
         }
     }
 }

@@ -18,12 +18,12 @@ public final class CancelationResult {
     private final State state;
     private final ResultCode resultCode;
     private final String terminalId;
-    private final Long sequenceCount;
-    private final Long cancelledSequenceCount;
+    private final String sequenceCount;
+    private final String cancelledSequenceCount;
     private final String transactionTime;
     private final List<Receipt> receipts;
 
-    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable Long sequenceCount, @Nullable Long cancelledSequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
+    public CancelationResult(@NonNull State state, @NonNull ResultCode resultCode, @Nullable String terminalId, @Nullable String sequenceCount, @Nullable String cancelledSequenceCount, @Nullable String transactionTime, @NonNull List<Receipt> receipts) {
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.terminalId = terminalId;
@@ -49,12 +49,12 @@ public final class CancelationResult {
     }
 
     @Nullable
-    public Long getSequenceCount() {
+    public String getSequenceCount() {
         return sequenceCount;
     }
 
     @Nullable
-    public Long getCancelledSequenceCount() {
+    public String getCancelledSequenceCount() {
         return cancelledSequenceCount;
     }
 
