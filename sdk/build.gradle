@@ -1,9 +1,13 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-def sdkVersion = "0.9.20"
+def sdkVersion = "0.9.23"
 def currentGitBranch = getCurrentGitBranch()
+
+// Set versionName dynamically based on the branch
+def isSnapshot = !currentGitBranch.equalsIgnoreCase("master")
+def releaseVersionName = isSnapshot ? "${sdkVersion}-SNAPSHOT".toString() : sdkVersion.toString()
+
 
 android {
     compileSdkVersion 29
@@ -13,10 +17,10 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName releaseVersionName
 
-        manifestPlaceholders = [sdkVersion:sdkVersion]
-        buildConfigField "String", "SDK_VERSION", "\"" + sdkVersion + "\""
+        manifestPlaceholders = [sdkVersion: sdkVersion]
+        buildConfigField "String", "SDK_VERSION", "\"" + releaseVersionName + "\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -34,44 +38,83 @@ android {
 }
 
 dependencies {
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
 }
+
+// Create a new resolvable configuration for Javadoc
+configurations {
+    javadocCompile {
+        extendsFrom implementation
+        canBeResolved = true
+    }
+}
+
+// Task to generate Javadocs
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.srcDirs
+    classpath += files(android.getBootClasspath().join(File.pathSeparator)) + configurations.javadocCompile
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.author = true
+    options.version = true
+    options.links("https://developer.android.com/reference/")
+}
+
+// Build a jar with Javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+}
+
 afterEvaluate {
-    println("Current Branch: " + currentGitBranch)
+    if (project.hasProperty("branch")) {
+        ext.branch = project.getProperty("branch")
+    } else {
+        ext.branch = currentGitBranch
+    }
+    println("Current Branch: " + branch)
+    println("CI_JOB_TOKEN: " + System.getenv("CI_JOB_TOKEN"))
+
     publishing {
         publications {
-            //if (currentGitBranch.equalsIgnoreCase("master")) {
-                release(MavenPublication) {
+            if (branch.equalsIgnoreCase("master")) {
+                println 'Publishing for master'
+
+                create("releasePublication", MavenPublication) {
                     from components.release
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
-                    version sdkVersion
+                    version releaseVersionName
                 }
-            //}
-            dev(MavenPublication) {
-                from components.debug
-                groupId 'com.wallee.android.till'
-                artifactId 'sdk-dev'
-                version sdkVersion
+
+            } else {
+                println 'Publishing for dev'
+
+                create("snapshotPublication", MavenPublication) {
+                    from components.debug
+                    groupId 'com.wallee.android.till'
+                    artifactId 'sdk-dev'
+                    version releaseVersionName
+                }
             }
         }
         repositories {
             maven {
-                url "https://gitlab.com/api/v4/projects/21028526/packages/maven"
+                url "https://gitlab.wallee.com/api/v4/projects/263/packages/maven"
                 name "GitLab"
                 credentials(HttpHeaderCredentials) {
                     name = 'Job-Token'
                     value = System.getenv("CI_JOB_TOKEN")
-                    //name = 'Private-Token'
-                    //value = gitLabPrivateToken
-                    // the variable resides in ~/.gradle/gradle.properties
                 }
                 authentication {
                     header(HttpHeaderAuthentication)
@@ -90,6 +133,8 @@ def getCurrentGitBranch() {
         if (result.exitValue() == 0) {
             gitBranch = result.text.trim()
         }
-    } catch (e) { }
+    } catch (e) {
+        println "Error getting git branch: ${e.message}"
+    }
     return gitBranch
 }
