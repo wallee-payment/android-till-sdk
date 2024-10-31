@@ -2,9 +2,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 def sdkVersion = "0.9.23"
-def currentGitBranch = getCurrentGitBranch()
 
 // Set versionName dynamically based on the branch
+def currentGitBranch = System.getenv("CI_COMMIT_REF_NAME") ?: getCurrentGitBranch()
 def isSnapshot = !currentGitBranch.equalsIgnoreCase("master")
 def releaseVersionName = isSnapshot ? "${sdkVersion}-SNAPSHOT".toString() : sdkVersion.toString()
 
@@ -83,6 +83,8 @@ afterEvaluate {
         ext.branch = currentGitBranch
     }
     println("Current Branch: " + branch)
+    print("Release version name: " + releaseVersionName)
+    print("isSnapshot" + isSnapshot)
     println("CI_JOB_TOKEN: " + System.getenv("CI_JOB_TOKEN"))
 
     publishing {
@@ -94,7 +96,7 @@ afterEvaluate {
                     from components.release
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
-                    version releaseVersionName
+                    version sdkVersion.toString()
                 }
 
             } else {
