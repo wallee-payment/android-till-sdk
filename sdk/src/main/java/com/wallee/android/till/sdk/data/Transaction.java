@@ -43,10 +43,12 @@ public final class Transaction {
 
     private final String transactionRefNumber;
 
+    private final Boolean showTrxResultScreens;
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -69,6 +71,7 @@ public final class Transaction {
         }
         this.language = language;
         this.transactionSyncNumber = transactionSyncNumber;
+        this.showTrxResultScreens = showTrxResultScreens;
     }
 
     public Currency getCurrency() {
@@ -125,6 +128,8 @@ public final class Transaction {
 
     public String getTransactionRefNumber() { return transactionRefNumber; }
 
+    public Boolean getShowTrxResultScreens() { return showTrxResultScreens; }
+
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
@@ -168,6 +173,8 @@ public final class Transaction {
 
         private String transactionRefNumber;
 
+        private Boolean showTrxResultScreens;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -192,6 +199,7 @@ public final class Transaction {
             this.metaData = new HashMap<>(transaction.metaData);
             this.transactionSyncNumber = transaction.transactionSyncNumber;
             this.transactionRefNumber = transaction.transactionRefNumber;
+            this.showTrxResultScreens = transaction.showTrxResultScreens;
         }
 
         public List<LineItem> getLineItems() {
@@ -219,6 +227,8 @@ public final class Transaction {
         public Integer getTransactionSyncNumber() {
             return transactionSyncNumber;
         }
+
+        public Boolean getShowTrxResultScreens() { return showTrxResultScreens; }
 
         public Builder setLineItems(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -293,8 +303,13 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setShowTrxResultScreens(Boolean showTrxResultScreens) {
+            this.showTrxResultScreens = showTrxResultScreens;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens);
         }
     }
 }
