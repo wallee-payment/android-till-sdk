@@ -200,6 +200,7 @@ public final class Transaction {
             this.transactionSyncNumber = transaction.transactionSyncNumber;
             this.transactionRefNumber = transaction.transactionRefNumber;
             this.showTrxResultScreens = transaction.showTrxResultScreens;
+
         }
 
         public List<LineItem> getLineItems() {
