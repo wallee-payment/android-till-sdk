@@ -274,10 +274,4 @@ public class Utils {
         intent.putExtra(ATI_EVENT_ID, AtiEvent.DISABLE_SYSTEM_BAR);
         context.sendBroadcast(intent);
     }
-     public static void handleFailedToConnectVpj(Context context) {
-         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage("com.wallee.android.pinpad");
-         if (launchIntent != null) {
-             context.startActivity(launchIntent);
-         }
-     }
 }
