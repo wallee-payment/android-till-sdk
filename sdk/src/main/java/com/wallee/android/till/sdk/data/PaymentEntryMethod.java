@@ -8,7 +8,8 @@ public enum PaymentEntryMethod {
     CTLS,
     QR,
     MANUAL,
-    NOT_APPLICABLE;
+    NOT_APPLICABLE,
+    QRC_SCAN;
 
 
     public static PaymentEntryMethod getValue(String value) {
@@ -27,6 +28,8 @@ public enum PaymentEntryMethod {
                 return QR;
             case "MANUAL":
                 return MANUAL;
+            case "QRC-SCAN":
+                return QRC_SCAN;
             default:
                 return null;
         }
