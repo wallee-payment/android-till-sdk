@@ -12,7 +12,7 @@ The main goal of the document is to provide third-party developers clear instruc
    - This allows the third-party app to be in the foreground until a transaction is initiated, after Wallee will manage the payment processing and return the original app to the foreground when complete.
 
 2. **Deprecation of `PrimaryApplication` Configuration**
-   - The existing `PrimaryApplication` setting in the Terminal Software Manager will be deprecated. Integrators must switch to using the `StartupApplication` configuration to manage which app is started up.
+   - The existing `PrimaryApplication` setting in the Terminal Software Manager will be deprecated. Moving forward, instead of using `PrimaryApplication`, Wallee Payment App will now save the last application that was in the foreground before starting a transaction. This application will be brought to the front once the transaction is completed.
 
 3. **Deprecation of Kiosk Mode in Android Till SDK**
    - The kiosk mode, previously defined via Android Till SDK manifest, will be deprecated. Integrators should migrate to the new `StartupApplication` method for managing app startup behavior.
