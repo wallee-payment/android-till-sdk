@@ -17,6 +17,8 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
+import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
+import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -320,6 +322,22 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_INITIALISATION.ordinal();
         Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Initiates an operation to retrieve the custom configuration for the specified application ID.
+     * When the operation will be finished a {@link ResponseHandler#executeGetCustomConfigurationResponse(GetCustomConfigurationResponse)} method will be called.
+     * @param customConfigurationRequest the request containing the application ID for which the custom configuration is needed.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void getCustomConfiguration(CustomConfigurationRequest customConfigurationRequest) throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GET_CUSTOM_CONFIGURATION.ordinal();
+        Bundle bundle = Utils.toBundle(customConfigurationRequest);
+
         msg.setData(bundle);
         msg.replyTo = callback;
         sendMessage(msg);

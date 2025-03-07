@@ -36,6 +36,7 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 - **getPinPadInformation**: Retrieve pinpad information (terminal ID, device serial number, space ID, merchant ID, and name).
 - **executeConfiguration**: Initiate configuration request (siConfigRequest) .
 - **executeInitialisation**: Initiate initialisation request (siInitRequest).
+- **getCustomConfiguration**: Get custom configuration for specified application ID.
 
 ## How to use the Android Till Interface SDK
 
@@ -134,6 +135,7 @@ To handle responses, extend the `ResponseHandler` class from the Till SDK to rec
 - **GeneratePanTokenResponse**:
 - **GetPinpadInformationResponse**:
 - **GetConfigDataResponse**:
+- **GetCustomConfigurationResponse**
 
 
 ##### Example
