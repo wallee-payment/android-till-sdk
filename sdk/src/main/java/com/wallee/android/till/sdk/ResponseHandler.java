@@ -12,6 +12,8 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
+import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
+import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
 import com.wallee.android.till.sdk.data.SubmissionResult;
@@ -98,6 +100,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             GetConfigDataResponse result = Utils.getConfigDataResponse(bundle);
             executeGetConfigDataResponse(result);
+        } else if (msg.arg1 == ApiMessageType.GET_CUSTOM_CONFIGURATION.ordinal()) {
+            Bundle bundle = msg.getData();
+            GetCustomConfigurationResponse result = Utils.getCustomConfigurationResponse(bundle);
+            executeGetCustomConfigurationResponse(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -187,5 +193,11 @@ public abstract class ResponseHandler extends Handler {
      * @param result the initialisation as it was processed.
      */
     public void executeInitialisationReply(InitialisationResult result) {}
+
+    /**
+     * The result from an {@link ApiClient#getCustomConfiguration(CustomConfigurationRequest)} call.
+     * @param result the custom configuration as it was processed.
+     */
+    public void executeGetCustomConfigurationResponse(GetCustomConfigurationResponse result) {}
 
 }
