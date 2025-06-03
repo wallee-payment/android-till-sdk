@@ -36,7 +36,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.wallee.android.till.sdk'
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -68,7 +67,7 @@ configurations {
 task javadoc(type: Javadoc) {
     failOnError false
     source = android.sourceSets.main.java.srcDirs
-    classpath += files(android.getBootClasspath()) + configurations.javadocCompile
+    classpath += files(android.getBootClasspath().join(File.pathSeparator)) + configurations.javadocCompile
     options.encoding = 'UTF-8'
     options.charSet = 'UTF-8'
     options.author = true
