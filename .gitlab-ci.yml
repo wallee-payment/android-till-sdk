@@ -1,4 +1,4 @@
-image: public.ecr.aws/docker/library/openjdk:17-jdk-buster
+image: openjdk:11-jdk
 
 variables:
   ANDROID_COMPILE_SDK: "29"
@@ -11,10 +11,7 @@ variables:
 
 before_script:
   - apt-get --quiet update --yes
-  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 aapt zip --no-install-recommends
-
-  # Setup path as android_home for moving/exporting the downloaded sdk into it
-  - export ANDROID_SDK_ROOT="${PWD}/../android-home"
+  - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 openjdk-11-jdk
 
   - install -d $ANDROID_SDK_ROOT
 
@@ -40,9 +37,9 @@ before_script:
   - set -o pipefail
 
   # Install gradle
-  - wget https://services.gradle.org/distributions/gradle-8.11.1-bin.zip
-  - unzip gradle-8.11.1-bin.zip
-  - export PATH=$PATH:`pwd`/gradle-8.11.1/bin
+  - wget https://services.gradle.org/distributions/gradle-7.6.3-bin.zip
+  - unzip gradle-7.6.3-bin.zip
+  - export PATH=$PATH:`pwd`/gradle-7.6.3/bin
 
   # Make Gradle wrapper executable
   - chmod +x ./gradlew
