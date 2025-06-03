@@ -37,6 +37,7 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 - **executeConfiguration**: Initiate configuration request (siConfigRequest) .
 - **executeInitialisation**: Initiate initialisation request (siInitRequest).
 - **getCustomConfiguration**: Get custom configuration for specified application ID.
+- **reprintReceipt**: Reprint the last receipt that was printed on the device.
 
 ## How to use the Android Till Interface SDK
 
@@ -136,6 +137,7 @@ To handle responses, extend the `ResponseHandler` class from the Till SDK to rec
 - **GetPinpadInformationResponse**:
 - **GetConfigDataResponse**:
 - **GetCustomConfigurationResponse**
+- **ReprintReceiptResponse**
 
 
 ##### Example
@@ -354,6 +356,7 @@ At the current state, the Android Till Interface SDK supports only a subset of a
 - [pinpadInformationRequest](https://lti.docs.wallee.com/lti_2.46/#pinpadinformation-message)
 - [siConfigRequest](https://lti.docs.wallee.com/lti_2.46/#siconfig-message)
 - [siInitRequest](https://lti.docs.wallee.com/lti_2.46/#siinit-message)
+- [reprintReceiptRequest](https://lti.docs.wallee.com/lti_2.49/#reprintreceipt-message)]
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
