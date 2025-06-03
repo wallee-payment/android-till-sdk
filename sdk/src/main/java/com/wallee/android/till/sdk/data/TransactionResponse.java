@@ -18,6 +18,17 @@ public final class TransactionResponse {
     private final State state;
     private final ResultCode resultCode;
     private final String authorizationCode;
+    private final String authorizationResponseCode;
+    private final String transactionResult;
+    private final String cardExpirationDate;
+    private final String cardSequenceNumber;
+    private final String dccTransactionAmount;
+    private final String dccTransactionCurrency;
+    private final String cvm;
+    private final String amountRemaining;
+    private final String amountAuth;
+    private final String amountAuthCurrency;
+    private final String partialApprovalFlag;
     private final String terminalId;
     private final String sequenceCount;
     private final String transactionTime;
@@ -34,8 +45,12 @@ public final class TransactionResponse {
     private final PaymentEntryMethod paymentEntryMethod;
     private final Integer transactionSyncNumber;
 
-    public TransactionResponse(@NonNull Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
-                               @Nullable String authorizationCode, @Nullable String terminalId,
+    public TransactionResponse(Transaction transaction, @NonNull State state, @NonNull ResultCode resultCode,
+                               @Nullable String authorizationCode, @Nullable String authorizationResponseCode, @Nullable String transactionResult,
+                               @Nullable String cardExpirationDate, @Nullable String cardSequenceNumber,
+                               @Nullable String dccTransactionAmount, @Nullable String dccTransactionCurrency,
+                               @Nullable String cvm, @Nullable String amountRemaining, @Nullable String amountAuth, @Nullable String amountAuthCurrency,
+                               @Nullable String partialApprovalFlag, @Nullable String terminalId,
                                @Nullable String sequenceCount, @Nullable String transactionTime,
                                @Nullable String reserveReference, @Nullable String acquirerId,
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
@@ -43,10 +58,21 @@ public final class TransactionResponse {
                                @Nullable String  cardAppId, @Nullable String amountTip,
                                @Nullable String panToken, @Nullable String merchantReference,
                                @Nullable PaymentEntryMethod paymentEntryMethod, @Nullable Integer transactionSyncNumber) {
-        this.transaction = requireNonNull(transaction, "transaction");
+        this.transaction = transaction;
         this.state = requireNonNull(state, "state");
         this.resultCode = requireNonNull(resultCode, "resultCode");
         this.authorizationCode = authorizationCode;
+        this.authorizationResponseCode = authorizationResponseCode;
+        this.transactionResult = transactionResult;
+        this.cardExpirationDate = cardExpirationDate;
+        this.cardSequenceNumber = cardSequenceNumber;
+        this.dccTransactionAmount = dccTransactionAmount;
+        this.dccTransactionCurrency = dccTransactionCurrency;
+        this.cvm = cvm;
+        this.amountRemaining = amountRemaining;
+        this.amountAuth = amountAuth;
+        this.amountAuthCurrency = amountAuthCurrency;
+        this.partialApprovalFlag = partialApprovalFlag;
         this.terminalId = terminalId;
         this.sequenceCount = sequenceCount;
         this.transactionTime = transactionTime;
@@ -82,6 +108,61 @@ public final class TransactionResponse {
     @Nullable
     public String getAuthorizationCode() {
         return authorizationCode;
+    }
+
+    @Nullable
+    public String getAuthorizationResponseCode() {
+        return authorizationResponseCode;
+    }
+
+    @Nullable
+    public String getTransactionResult() {
+        return transactionResult;
+    }
+
+    @Nullable
+    public String getCardExpirationDate() {
+        return cardExpirationDate;
+    }
+
+    @Nullable
+    public String getCardSequenceNumber() {
+        return cardSequenceNumber;
+    }
+
+    @Nullable
+    public String getDccTransactionAmount() {
+        return dccTransactionAmount;
+    }
+
+    @Nullable
+    public String getDccTransactionCurrency() {
+        return dccTransactionCurrency;
+    }
+
+    @Nullable
+    public String getCvm() {
+        return cvm;
+    }
+
+    @Nullable
+    public String getAmountRemaining() {
+        return amountRemaining;
+    }
+
+    @Nullable
+    public String getAmountAuth() {
+        return amountAuth;
+    }
+
+    @Nullable
+    public String getAmountAuthCurrency() {
+        return amountAuthCurrency;
+    }
+
+    @Nullable
+    public String getPartialApprovalFlag() {
+        return partialApprovalFlag;
     }
 
     @Nullable
@@ -148,10 +229,21 @@ public final class TransactionResponse {
     }
 
     public static class Builder {
-        private @NonNull Transaction transaction;
+        private Transaction transaction;
         private @NonNull State state;
         private @NonNull ResultCode resultCode;
         private String authorizationCode;
+        private String authorizationResponseCode;
+        private String transactionResult;
+        private String cardExpirationDate;
+        private String cardSequenceNumber;
+        private String dccTransactionAmount;
+        private String dccTransactionCurrency;
+        private String cvm;
+        private String amountRemaining;
+        private String amountAuth;
+        private String amountAuthCurrency;
+        private String partialApprovalFlag;
         private String terminalId;
         private String sequenceCount;
         private String transactionTime;
@@ -169,10 +261,21 @@ public final class TransactionResponse {
         private Integer transactionSyncNumber;
 
         public Builder(TransactionResponse transactionResponse) {
-            this.transaction = requireNonNull(transactionResponse.transaction, "transaction");
+            this.transaction = transactionResponse.transaction;
             this.state = requireNonNull(transactionResponse.state, "transaction");
             this.resultCode = requireNonNull(transactionResponse.resultCode, "transaction");
             this.authorizationCode = transactionResponse.authorizationCode;
+            this.authorizationResponseCode = transactionResponse.authorizationResponseCode;
+            this.transactionResult = transactionResponse.transactionResult;
+            this.cardExpirationDate = transactionResponse.cardExpirationDate;
+            this.cardSequenceNumber = transactionResponse.cardSequenceNumber;
+            this.dccTransactionAmount = transactionResponse.dccTransactionAmount;
+            this.dccTransactionCurrency = transactionResponse.dccTransactionCurrency;
+            this.cvm = transactionResponse.cvm;
+            this.amountRemaining = transactionResponse.amountRemaining;
+            this.amountAuth = transactionResponse.amountAuth;
+            this.amountAuthCurrency = transactionResponse.amountAuthCurrency;
+            this.partialApprovalFlag = transactionResponse.partialApprovalFlag;
             this.terminalId = transactionResponse.terminalId;
             this.sequenceCount = transactionResponse.sequenceCount;
             this.transactionTime = transactionResponse.transactionTime;
@@ -198,6 +301,13 @@ public final class TransactionResponse {
             this.receipts = receipts;
         }
 
+        // for reprintReceipt response
+        public Builder(@NonNull State state, @NonNull ResultCode resultCode, @NonNull List<Receipt> receipts) {
+            this.state = state;
+            this.resultCode = resultCode;
+            this.receipts = receipts;
+        }
+
         public Builder setTransaction(@NonNull Transaction transaction) {
             this.transaction = transaction;
             return this;
@@ -215,6 +325,61 @@ public final class TransactionResponse {
 
         public Builder setAuthorizationCode(String authorizationCode) {
             this.authorizationCode = authorizationCode;
+            return this;
+        }
+
+        public Builder setAuthorizationResponseCode(String authorizationResponseCode) {
+            this.authorizationResponseCode = authorizationResponseCode;
+            return this;
+        }
+
+        public Builder setTransactionResult(String transactionResult) {
+            this.transactionResult = transactionResult;
+            return this;
+        }
+
+        public Builder setCardExpirationDate(String cardExpirationDate) {
+            this.cardExpirationDate = cardExpirationDate;
+            return this;
+        }
+
+        public Builder setCardSequenceNumber(String cardSequenceNumber) {
+            this.cardSequenceNumber = cardSequenceNumber;
+            return this;
+        }
+
+        public Builder setDccTransactionAmount(String dccTransactionAmount) {
+            this.dccTransactionAmount = dccTransactionAmount;
+            return this;
+        }
+
+        public Builder setDccTransactionCurrency(String dccTransactionCurrency) {
+            this.dccTransactionCurrency = dccTransactionCurrency;
+            return this;
+        }
+
+        public Builder setCvm(String cvm) {
+            this.cvm = cvm;
+            return this;
+        }
+
+        public Builder setAmountRemaining(String amountRemaining) {
+            this.amountRemaining = amountRemaining;
+            return this;
+        }
+
+        public Builder setAmountAuth(String amountAuth) {
+            this.amountAuth = amountAuth;
+            return this;
+        }
+
+        public Builder setAmountAuthCurrency(String amountAuthCurrency) {
+            this.amountAuthCurrency = amountAuthCurrency;
+            return this;
+        }
+
+        public Builder setPartialApprovalFlag(String partialApprovalFlag) {
+            this.partialApprovalFlag = partialApprovalFlag;
             return this;
         }
 
@@ -364,7 +529,16 @@ public final class TransactionResponse {
         public Integer getTransactionSyncNumber() { return transactionSyncNumber; }
 
         public TransactionResponse build() {
-            return new TransactionResponse(this.transaction, this.state, this.resultCode, this.authorizationCode, this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference, this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry, this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken, this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber);
+            return new TransactionResponse(this.transaction, this.state, this.resultCode,
+                    this.authorizationCode, this.authorizationResponseCode, this.transactionResult,
+                    this.cardExpirationDate, this.cardSequenceNumber, this.dccTransactionAmount,
+                    this.dccTransactionCurrency, this.cvm, this.amountRemaining, this.amountAuth,
+                    this.amountAuthCurrency, this.partialApprovalFlag,
+                    this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference,
+                    this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry,
+                    this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken,
+                    this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber
+            );
         }
     }
 }

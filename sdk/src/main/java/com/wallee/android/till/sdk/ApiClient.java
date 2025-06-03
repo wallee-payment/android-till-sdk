@@ -21,6 +21,7 @@ import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
 import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
+import com.wallee.android.till.sdk.data.ReprintReceiptResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionResponse;
@@ -293,6 +294,20 @@ public class ApiClient {
     public void getConfigData() throws RemoteException {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.GET_CONFIG_DATA.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Start an operation to get the last transaction base on type
+     * When the operation will be finished a {@link ResponseHandler#executeReprintReceipt(ReprintReceiptResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void reprintReceipt() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.REPRINT_RECEIPT.ordinal();
         Bundle bundle = Utils.toBundle((Serializable) null);
         msg.setData(bundle);
         msg.replyTo = callback;

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 def sdkVersion = "0.9.23"
 def currentGitBranch = getCurrentGitBranch()
@@ -35,12 +36,21 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.wallee.android.till.sdk'
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.core:core-ktx:1.16.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -68,7 +78,7 @@ task javadoc(type: Javadoc) {
 
 // Build a jar with Javadoc
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
@@ -91,7 +101,7 @@ afterEvaluate {
                 println 'Publishing for master'
 
                 create("releasePublication", MavenPublication) {
-                    from components.release
+                    from components.findByName('release')
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
                     version releaseVersionName
@@ -101,7 +111,7 @@ afterEvaluate {
                 println 'Publishing for dev'
 
                 create("snapshotPublication", MavenPublication) {
-                    from components.debug
+                    from components.findByName('debug')
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk-dev'
                     version releaseVersionName

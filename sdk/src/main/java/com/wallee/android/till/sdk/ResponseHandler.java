@@ -16,6 +16,7 @@ import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
 import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
+import com.wallee.android.till.sdk.data.ReprintReceiptResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -104,6 +105,10 @@ public abstract class ResponseHandler extends Handler {
             Bundle bundle = msg.getData();
             GetCustomConfigurationResponse result = Utils.getCustomConfigurationResponse(bundle);
             executeGetCustomConfigurationResponse(result);
+        } else if (msg.arg1 == ApiMessageType.REPRINT_RECEIPT.ordinal()) {
+            Bundle bundle = msg.getData();
+            ReprintReceiptResponse result = Utils.getReprintReceiptResponse(bundle);
+            executeReprintReceipt(result);
         } else {
             Log.e(TAG, "Unknown message type: " + msg.arg1);
         }
@@ -181,6 +186,12 @@ public abstract class ResponseHandler extends Handler {
      * @param result the configdata as it was processed.
      */
     public void executeGetConfigDataResponse(GetConfigDataResponse result) {}
+
+    /**
+     * The result from an {@link ApiClient#reprintReceipt()} ()} call.
+     * @param result the last transaction result as it was processed.
+     */
+    public void executeReprintReceipt(ReprintReceiptResponse result) {}
 
     /**
      * The result from an {@link ApiClient#executeConfiguration()} ()} call.
