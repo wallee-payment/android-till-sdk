@@ -67,8 +67,14 @@ configurations {
 // Task to generate Javadocs
 task javadoc(type: Javadoc) {
     failOnError false
-    source = android.sourceSets.main.java.srcDirs
-    classpath += files(android.getBootClasspath().join(File.pathSeparator)) + configurations.javadocCompile
+    def javaDirs = android.sourceSets.main.java.srcDirs.findAll { it.exists() }
+    if (!javaDirs) {
+        println "No Java source directories found. Skipping Javadoc generation."
+        return
+    }
+    source = javaDirs
+    def bootClasspath = android.getBootClasspath().findAll {  it != null && it.toString().trim() }
+    classpath += files(bootClasspath) + configurations.javadocCompile
     options.encoding = 'UTF-8'
     options.charSet = 'UTF-8'
     options.author = true
