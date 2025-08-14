@@ -356,7 +356,7 @@ At the current state, the Android Till Interface SDK supports only a subset of a
 - [pinpadInformationRequest](https://lti.docs.wallee.com/lti_2.46/#pinpadinformation-message)
 - [siConfigRequest](https://lti.docs.wallee.com/lti_2.46/#siconfig-message)
 - [siInitRequest](https://lti.docs.wallee.com/lti_2.46/#siinit-message)
-- [reprintReceiptRequest](https://lti.docs.wallee.com/lti_2.49/#reprintreceipt-message)]
+- [reprintReceiptRequest](https://lti.docs.wallee.com/lti_2.49/#reprintreceipt-message)
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
