@@ -11,7 +11,6 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
-import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
 import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
@@ -48,7 +47,6 @@ public class Utils {
     private static final String KEY_INITIALISATION_RESULT_JSON = "initialisationResult";
     private static final String KEY_GET_CUSTOM_CONFIGURATION_RESPONSE_JSON = "getCustomConfigurationResponse";
     private static final String KEY_REPRINT_RECEIPT_RESPONSE_JSON = "reprintReceiptResponse";
-    private static final String KEY_CUSTOM_CONFIGURATION_REQUEST = "customConfigurationRequest";
     public static final String  PACKAGE = "com.wallee.android.pinpad";
     public static final String LOG_TYPE = "LogType";
     public static final String LOG_MESSAGE = "LogMessage";
@@ -301,18 +299,6 @@ public class Utils {
     public static Bundle toBundle(ReprintReceiptResponse response) {
         Bundle bundle = new Bundle();
         bundle.putString(Utils.KEY_REPRINT_RECEIPT_RESPONSE_JSON, Utils.GSON.toJson(response));
-        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
-        return bundle;
-    }
-
-    public static CustomConfigurationRequest getCustomConfiguration(Bundle bundle) {
-        String json = bundle.getString(KEY_CUSTOM_CONFIGURATION_REQUEST);
-        return GSON.fromJson(json, CustomConfigurationRequest.class);
-    }
-
-    public static Bundle toBundle(CustomConfigurationRequest customConfigurationRequest) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_CUSTOM_CONFIGURATION_REQUEST, Utils.GSON.toJson(customConfigurationRequest));
         bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
         return bundle;
     }
