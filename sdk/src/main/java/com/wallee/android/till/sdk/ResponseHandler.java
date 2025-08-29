@@ -12,7 +12,6 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
-import com.wallee.android.till.sdk.data.CustomConfigurationRequest;
 import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
@@ -206,7 +205,7 @@ public abstract class ResponseHandler extends Handler {
     public void executeInitialisationReply(InitialisationResult result) {}
 
     /**
-     * The result from an {@link ApiClient#getCustomConfiguration(CustomConfigurationRequest)} call.
+     * The result from an {@link ApiClient#getCustomConfiguration()} call.
      * @param result the custom configuration as it was processed.
      */
     public void executeGetCustomConfigurationResponse(GetCustomConfigurationResponse result) {}

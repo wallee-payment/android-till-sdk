@@ -14,7 +14,7 @@ The key words **“MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHAL
 ### Added
 - **StartupApplication parameter**: Added new configuration parameter called `StartupApplication` in the Terminal Software Manager. This parameter replaces the existing kiosk mode configuration and manages which application is in the foreground until a transaction is initiated. After processing, the Wallee Payment App will return control to the original app.
 - **ShowTrxResultScreens parameter**: Introduced `ShowTrxResultScreens` parameter to control whether transaction results are shown on the screen. The default is set to `True` (enabled), meaning Wallee will show transaction result screens. If set to `False`, the third-party app will display the transaction results instead.
-- **getCustomConfiguration method**: Added new method `getCustomConfiguration` which retrieves the custom configuration for a specified application ID.
+- **getCustomConfiguration method**: Added new method `getCustomConfiguration` which retrieves the custom configuration for the requesting application.
 
 ### Changed
 - **TillMode parameter in transaction requests**: The `TillMode` parameter no longer needs to be included in transaction requests. It will be handled internally by Wallee to determine the appropriate integration type (e.g., `SDKApp`, `VTIApp`, `POSApp`, `WEBApp`), simplifying integration.
