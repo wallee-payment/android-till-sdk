@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-def sdkVersion = "0.9.23"
+def sdkVersion = "2.0.0"
 def currentGitBranch = getCurrentGitBranch()
 
 // Set versionName dynamically based on the branch
