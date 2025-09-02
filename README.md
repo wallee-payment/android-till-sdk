@@ -346,17 +346,18 @@ The Wallee Paydroid application serves as the home application on android device
 
 At the current state, the Android Till Interface SDK supports only a subset of all requests provided by the [LTI](https://lti.docs.wallee.com). The following LTI requests are supported:
 
-- [financialTrxRequest](https://lti.docs.wallee.com/lti_2.46/#financialtrx-message)
-- [cancelReservationRequest](https://lti.docs.wallee.com/lti_2.46/#cancelreservation-message)
-- [reversalRequest](https://lti.docs.wallee.com/lti_2.46/#reversal-message)
-- [miSubmissionRequest](https://lti.docs.wallee.com/lti_2.46/#misubmission-message)
-- [beTransmissionRequest](https://lti.docs.wallee.com/lti_2.46/#betransmission-message)
-- [beFinalBalanceRequest](https://lti.docs.wallee.com/lti_2.46/#befinalbalance-message)
-- [generatePanTokenRequest](https://lti.docs.wallee.com/lti_2.46/#generatepantoken-message)
-- [pinpadInformationRequest](https://lti.docs.wallee.com/lti_2.46/#pinpadinformation-message)
-- [siConfigRequest](https://lti.docs.wallee.com/lti_2.46/#siconfig-message)
-- [siInitRequest](https://lti.docs.wallee.com/lti_2.46/#siinit-message)
-- [reprintReceiptRequest](https://lti.docs.wallee.com/lti_2.49/#reprintreceipt-message)
+- financialTrxRequest  
+- cancelReservationRequest  
+- reversalRequest  
+- miSubmissionRequest  
+- beTransmissionRequest  
+- beFinalBalanceRequest  
+- generatePanTokenRequest  
+- pinpadInformationRequest  
+- siConfigRequest  
+- siInitRequest  
+- reprintReceiptRequest  
+
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
