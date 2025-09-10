@@ -54,7 +54,7 @@ stages:
 build_javadoc:
   stage: build
   script:
-    - ./gradlew javadoc
+    - ./gradlew dokkaHtml
   artifacts:
     paths:
       - sdk/build/docs/javadoc
