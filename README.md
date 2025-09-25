@@ -43,7 +43,7 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 
 ## Documentation
 
-For more detailed information on using the SDK, please refer to the official SDK documentation. [Documentation](https://wallee-payment.gitlab.io/device-software/com.wallee.android.till.sdk/).
+For more detailed information on using the SDK, please refer to the official SDK documentation. [Documentation](https://com-wallee-android-till-sdk-device-software-andr-edbc8dfaa66fac.pages.wallee.io/).
 
 
 ## Example Application
