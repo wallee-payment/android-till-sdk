@@ -8,8 +8,8 @@ The main goal of the document is to provide third-party developers clear instruc
 ### Key Changes:
 
 1. **New Startup Application Configuration**
-   - **StartupApplication Setting:** A new configuration parameter called `StartupApplication` will be added in the Terminal Software Manager, replacing the existing kiosk mode defined via the manifest file.
-   - This allows the third-party app to be in the foreground until a transaction is initiated, after Wallee will manage the payment processing and return the original app to the foreground when complete.
+   - **StartupApplication Setting:** A new configuration parameter called `StartupApplication` will be added in the Terminal Software Manager.
+   - This parameter replaces the existing kiosk mode configuration and defines which application is launched automatically after terminal reboot.
 
 2. **Deprecation of `PrimaryApplication` Configuration**
    - The existing `PrimaryApplication` setting in the Terminal Software Manager will be deprecated. Moving forward, instead of using `PrimaryApplication`, Wallee Payment App will now save the last application that was in the foreground before starting a transaction. This application will be brought to the front once the transaction is completed.
@@ -26,7 +26,7 @@ The main goal of the document is to provide third-party developers clear instruc
    - This simplifies integration, allows Wallee to determine the appropriate mode.
 
 ### Migration Notes:
-- **Existing Behavior Support:** The current behavior involving `TillMode`, `PrimaryApplication`, and kiosk mode will continue to be supported temporarily during the transition phase to avoid disruptions. A timeline for complete deprecation will be provided.
+- **Existing Behavior Support:** The current behavior involving `TillMode` will continue to be supported temporarily during the transition phase to avoid disruptions. A timeline for complete deprecation will be provided.
 - **Recommended Actions for Developers:**
   - Update your configuration to use the `StartupApplication` parameter in the Terminal Software Manager.
   - Migrate away from using `PrimaryApplication` and kiosk mode settings.
