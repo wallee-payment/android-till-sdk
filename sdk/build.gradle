@@ -4,13 +4,31 @@ apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.dokka'
 
 def sdkVersion = "2.0.0"
+
 def currentGitBranch = getCurrentGitBranch()
 def projectName = "Wallee Android Till SDK"
 
-// Set versionName dynamically based on the branch
-def isSnapshot = !currentGitBranch.equalsIgnoreCase("master")
+def resolvedBranch = (project.hasProperty("branch")
+        ? project.getProperty("branch")
+        : (System.getenv("CI_COMMIT_REF_NAME") ?: currentGitBranch ?: "unknown"))
+        .trim()
+
+def normalizedBranch = resolvedBranch.toLowerCase()
+def isMasterBranch = (normalizedBranch == "master" || normalizedBranch.endsWith("/master"))
+def isSnapshot = !isMasterBranch
 def releaseVersionName = isSnapshot ? "${sdkVersion}-SNAPSHOT".toString() : sdkVersion.toString()
 
+println "===== Wallee Till SDK build info ====="
+println "sdkVersion          = '${sdkVersion}'"
+println "currentGitBranch    = '${currentGitBranch}'"
+println "CI_COMMIT_REF_NAME  = '${System.getenv("CI_COMMIT_REF_NAME")}'"
+println "Gradle -Pbranch     = '${project.hasProperty("branch") ? project.getProperty("branch") : "N/A"}'"
+println "resolvedBranch      = '${resolvedBranch}'"
+println "normalizedBranch    = '${normalizedBranch}'"
+println "isMasterBranch      = ${isMasterBranch}"
+println "isSnapshot          = ${isSnapshot}"
+println "releaseVersionName  = '${releaseVersionName}'"
+println "======================================"
 
 android {
     compileSdkVersion 29
@@ -79,18 +97,21 @@ artifacts {
 }
 
 afterEvaluate {
-    if (project.hasProperty("branch")) {
-        ext.branch = project.getProperty("branch")
-    } else {
-        ext.branch = currentGitBranch
-    }
-    println("Current Branch: " + branch)
-    println("CI_JOB_TOKEN: " + System.getenv("CI_JOB_TOKEN"))
+    // Esponi il branch come proprietà (come prima), ma usa quello risolto
+    ext.branch = resolvedBranch
+
+    println "===== Wallee Till SDK publishing info ====="
+    println "Publishing from branch       = '${branch}'"
+    println "isMasterBranch               = ${isMasterBranch}"
+    println "Publishing version           = '${releaseVersionName}'"
+    println "Will publish artifactId      = '${isMasterBranch ? "sdk" : "sdk-dev"}'"
+    println "Component                    = '${isMasterBranch ? "release" : "debug"}'"
+    println "==========================================="
 
     publishing {
         publications {
-            if (branch.equalsIgnoreCase("master")) {
-                println 'Publishing for master'
+            if (isMasterBranch) {
+                println 'Creating MavenPublication: releasePublication (master)'
 
                 create("releasePublication", MavenPublication) {
                     from components.findByName('release')
@@ -100,7 +121,7 @@ afterEvaluate {
                 }
 
             } else {
-                println 'Publishing for dev'
+                println 'Creating MavenPublication: snapshotPublication (non-master)'
 
                 create("snapshotPublication", MavenPublication) {
                     from components.findByName('debug')
