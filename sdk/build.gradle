@@ -1,10 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.dokka'
 
-def sdkVersion = "0.9.23"
+def sdkVersion = "2.0.0"
+def currentGitBranch = getCurrentGitBranch()
+def projectName = "Wallee Android Till SDK"
 
 // Set versionName dynamically based on the branch
-def currentGitBranch = System.getenv("CI_COMMIT_REF_NAME") ?: getCurrentGitBranch()
 def isSnapshot = !currentGitBranch.equalsIgnoreCase("master")
 def releaseVersionName = isSnapshot ? "${sdkVersion}-SNAPSHOT".toString() : sdkVersion.toString()
 
@@ -35,41 +38,40 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.core:core-ktx:1.16.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
-// Create a new resolvable configuration for Javadoc
-configurations {
-    javadocCompile {
-        extendsFrom implementation
-        canBeResolved = true
+tasks.dokkaHtml {
+    outputDirectory.set(layout.buildDirectory.dir("docs/javadoc"))
+
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set(projectName)
+            displayName.set(projectName)
+        }
     }
 }
 
-// Task to generate Javadocs
-task javadoc(type: Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.srcDirs
-    classpath += files(android.getBootClasspath().join(File.pathSeparator)) + configurations.javadocCompile
-    options.encoding = 'UTF-8'
-    options.charSet = 'UTF-8'
-    options.author = true
-    options.version = true
-    options.links("https://developer.android.com/reference/")
-}
-
-// Build a jar with Javadoc
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+// Build a JAR with Dokka output (Java + Kotlin docs)
+task javadocJar(type: Jar, dependsOn: dokkaHtml) {
+    archiveClassifier.set('javadoc')
+    from(layout.buildDirectory.dir("docs/javadoc"))
 }
 
 artifacts {
@@ -83,8 +85,6 @@ afterEvaluate {
         ext.branch = currentGitBranch
     }
     println("Current Branch: " + branch)
-    print("Release version name: " + releaseVersionName)
-    print("isSnapshot" + isSnapshot)
     println("CI_JOB_TOKEN: " + System.getenv("CI_JOB_TOKEN"))
 
     publishing {
@@ -93,17 +93,17 @@ afterEvaluate {
                 println 'Publishing for master'
 
                 create("releasePublication", MavenPublication) {
-                    from components.release
+                    from components.findByName('release')
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk'
-                    version sdkVersion.toString()
+                    version releaseVersionName
                 }
 
             } else {
                 println 'Publishing for dev'
 
                 create("snapshotPublication", MavenPublication) {
-                    from components.debug
+                    from components.findByName('debug')
                     groupId 'com.wallee.android.till'
                     artifactId 'sdk-dev'
                     version releaseVersionName
