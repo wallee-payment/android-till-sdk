@@ -11,8 +11,10 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
+import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
+import com.wallee.android.till.sdk.data.ReprintReceiptResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionCompletion;
@@ -43,6 +45,8 @@ public class Utils {
     private static final String KEY_GET_CONFIG_DATA_RESPONSE_JSON = "configDataResponse";
     private static final String KEY_CONFIGURATION_RESULT_JSON = "configurationResult";
     private static final String KEY_INITIALISATION_RESULT_JSON = "initialisationResult";
+    private static final String KEY_GET_CUSTOM_CONFIGURATION_RESPONSE_JSON = "getCustomConfigurationResponse";
+    private static final String KEY_REPRINT_RECEIPT_RESPONSE_JSON = "reprintReceiptResponse";
     public static final String  PACKAGE = "com.wallee.android.pinpad";
     public static final String LOG_TYPE = "LogType";
     public static final String LOG_MESSAGE = "LogMessage";
@@ -273,5 +277,29 @@ public class Utils {
         intent.setAction(ATI_EVENT);
         intent.putExtra(ATI_EVENT_ID, AtiEvent.DISABLE_SYSTEM_BAR);
         context.sendBroadcast(intent);
+    }
+
+    public static GetCustomConfigurationResponse getCustomConfigurationResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_GET_CUSTOM_CONFIGURATION_RESPONSE_JSON);
+        return GSON.fromJson(json, GetCustomConfigurationResponse.class);
+    }
+
+    public static Bundle toBundle(GetCustomConfigurationResponse result) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_GET_CUSTOM_CONFIGURATION_RESPONSE_JSON, Utils.GSON.toJson(result));
+        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
+    }
+
+    public static ReprintReceiptResponse getReprintReceiptResponse(Bundle bundle) {
+        String json = bundle.getString(KEY_REPRINT_RECEIPT_RESPONSE_JSON);
+        return GSON.fromJson(json, ReprintReceiptResponse.class);
+    }
+
+    public static Bundle toBundle(ReprintReceiptResponse response) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Utils.KEY_REPRINT_RECEIPT_RESPONSE_JSON, Utils.GSON.toJson(response));
+        bundle.putString(Utils.KEY_SDK_VERSION, ApiClient.VERSION);
+        return bundle;
     }
 }

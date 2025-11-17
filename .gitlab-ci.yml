@@ -37,9 +37,9 @@ before_script:
   - set -o pipefail
 
   # Install gradle
-  - wget https://services.gradle.org/distributions/gradle-7.5.1-bin.zip
-  - unzip gradle-7.5.1-bin.zip
-  - export PATH=$PATH:`pwd`/gradle-7.5.1/bin
+  - wget https://services.gradle.org/distributions/gradle-7.6.3-bin.zip
+  - unzip gradle-7.6.3-bin.zip
+  - export PATH=$PATH:`pwd`/gradle-7.6.3/bin
 
   # Make Gradle wrapper executable
   - chmod +x ./gradlew
@@ -54,7 +54,7 @@ stages:
 build_javadoc:
   stage: build
   script:
-    - ./gradlew javadoc
+    - ./gradlew dokkaHtml
   artifacts:
     paths:
       - sdk/build/docs/javadoc

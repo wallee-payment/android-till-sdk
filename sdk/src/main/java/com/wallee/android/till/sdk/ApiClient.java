@@ -17,8 +17,10 @@ import com.wallee.android.till.sdk.data.ConfigurationResult;
 import com.wallee.android.till.sdk.data.FinalBalanceResult;
 import com.wallee.android.till.sdk.data.GeneratePanTokenResponse;
 import com.wallee.android.till.sdk.data.GetConfigDataResponse;
+import com.wallee.android.till.sdk.data.GetCustomConfigurationResponse;
 import com.wallee.android.till.sdk.data.GetPinpadInformationResponse;
 import com.wallee.android.till.sdk.data.InitialisationResult;
+import com.wallee.android.till.sdk.data.ReprintReceiptResponse;
 import com.wallee.android.till.sdk.data.SubmissionResult;
 import com.wallee.android.till.sdk.data.Transaction;
 import com.wallee.android.till.sdk.data.TransactionResponse;
@@ -298,6 +300,20 @@ public class ApiClient {
     }
 
     /**
+     * Start an operation to get the last transaction base on type
+     * When the operation will be finished a {@link ResponseHandler#executeReprintReceipt(ReprintReceiptResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void reprintReceipt() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.REPRINT_RECEIPT.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
      * Start a configuration operation. The operation will be processed in background.
      * When the operation will be finished a {@link ResponseHandler#executeConfigurationReply(ConfigurationResult)} method will be called.
      * @throws RemoteException any errors while communicating with the API server.
@@ -320,6 +336,20 @@ public class ApiClient {
         Message msg = Message.obtain();
         msg.arg1 = ApiMessageType.EXECUTE_INITIALISATION.ordinal();
         Bundle bundle = Utils.toBundle((Serializable) null);
+        msg.setData(bundle);
+        msg.replyTo = callback;
+        sendMessage(msg);
+    }
+
+    /**
+     * Initiates an operation to retrieve the custom configuration for the specified application ID.
+     * When the operation will be finished a {@link ResponseHandler#executeGetCustomConfigurationResponse(GetCustomConfigurationResponse)} method will be called.
+     * @throws RemoteException any errors while communicating with the API server.
+     */
+    public void getCustomConfiguration() throws RemoteException {
+        Message msg = Message.obtain();
+        msg.arg1 = ApiMessageType.GET_CUSTOM_CONFIGURATION.ordinal();
+        Bundle bundle = Utils.toBundle((Serializable)null);
         msg.setData(bundle);
         msg.replyTo = callback;
         sendMessage(msg);

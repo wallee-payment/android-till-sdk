@@ -36,12 +36,14 @@ The [ApiClient](sdk/src/main/java/com/wallee/android/till/sdk/ApiClient.java) cl
 - **getPinPadInformation**: Retrieve pinpad information (terminal ID, device serial number, space ID, merchant ID, and name).
 - **executeConfiguration**: Initiate configuration request (siConfigRequest) .
 - **executeInitialisation**: Initiate initialisation request (siInitRequest).
+- **getCustomConfiguration**: Get custom configuration for specified application ID.
+- **reprintReceipt**: Reprint the last receipt that was printed on the device.
 
 ## How to use the Android Till Interface SDK
 
 ## Documentation
 
-For more detailed information on using the SDK, please refer to the official SDK documentation. [Documentation](https://wallee-payment.gitlab.io/device-software/com.wallee.android.till.sdk/).
+For more detailed information on using the SDK, please refer to the official SDK documentation. [Documentation](https://com-wallee-android-till-sdk-device-software-andr-edbc8dfaa66fac.pages.wallee.io/).
 
 
 ## Example Application
@@ -134,6 +136,8 @@ To handle responses, extend the `ResponseHandler` class from the Till SDK to rec
 - **GeneratePanTokenResponse**:
 - **GetPinpadInformationResponse**:
 - **GetConfigDataResponse**:
+- **GetCustomConfigurationResponse**
+- **ReprintReceiptResponse**
 
 
 ##### Example
@@ -342,16 +346,18 @@ The Wallee Paydroid application serves as the home application on android device
 
 At the current state, the Android Till Interface SDK supports only a subset of all requests provided by the [LTI](https://lti.docs.wallee.com). The following LTI requests are supported:
 
-- [financialTrxRequest](https://lti.docs.wallee.com/lti_2.46/#financialtrx-message)
-- [cancelReservationRequest](https://lti.docs.wallee.com/lti_2.46/#cancelreservation-message)
-- [reversalRequest](https://lti.docs.wallee.com/lti_2.46/#reversal-message)
-- [miSubmissionRequest](https://lti.docs.wallee.com/lti_2.46/#misubmission-message)
-- [beTransmissionRequest](https://lti.docs.wallee.com/lti_2.46/#betransmission-message)
-- [beFinalBalanceRequest](https://lti.docs.wallee.com/lti_2.46/#befinalbalance-message)
-- [generatePanTokenRequest](https://lti.docs.wallee.com/lti_2.46/#generatepantoken-message)
-- [pinpadInformationRequest](https://lti.docs.wallee.com/lti_2.46/#pinpadinformation-message)
-- [siConfigRequest](https://lti.docs.wallee.com/lti_2.46/#siconfig-message)
-- [siInitRequest](https://lti.docs.wallee.com/lti_2.46/#siinit-message)
+- financialTrxRequest  
+- cancelReservationRequest  
+- reversalRequest  
+- miSubmissionRequest  
+- beTransmissionRequest  
+- beFinalBalanceRequest  
+- generatePanTokenRequest  
+- pinpadInformationRequest  
+- siConfigRequest  
+- siInitRequest  
+- reprintReceiptRequest  
+
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
