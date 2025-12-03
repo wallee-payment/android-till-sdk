@@ -337,6 +337,35 @@ private void requestOverlayPermission() {
     }
 }
 ```
+
+
+## Package Visibility Requirements for Android 11 and Above
+
+Starting with Android 11 (API level 30) and enforced on Android 12+, applications can no longer query or discover other installed apps unless those apps are explicitly declared in the manifest. You must declare visibility rules.
+
+### Required Manifest Configuration
+
+Add the following `<queries>` block **outside** the `<application>` tag of your `AndroidManifest.xml`:
+
+```xml
+<manifest ...>
+
+    <!-- Required to discover launchable applications on Android 11+ -->
+    <queries>
+    <package android:name="com.wallee.android.pinpad" />
+    </queries>
+
+    <application ...>
+        ...
+    </application>
+</manifest>
+```
+
+This declaration ensures that calls such as `PackageManager.queryIntentActivities()` correctly return launchable applications when using the Android Till Interface SDK.
+
+Without this entry, Android 12+ devices will return empty results, preventing the integrator app from discovering Paydroid or other required apps.
+
+
 ## Home Application
 
 The Wallee Paydroid application serves as the home application on android devices, we strongly advise against using third-party apps as the home application.
