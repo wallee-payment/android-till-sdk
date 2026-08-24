@@ -9,6 +9,13 @@ The SDK is following semantic versioning [Semantic Versioning 2.0.0](https://sem
 
 The key words **“MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”** in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
+## [2.1.0]
+
+### Added
+- **DisplayMessageSuppressionFlag transaction parameter**:
+    - Added an optional flag for suppressing cardholder display messages during a transaction.
+    - Omitting the flag preserves the existing terminal behaviour.
+
 ## [2.0.0]
 
 ### Added
@@ -41,7 +48,5 @@ The key words **“MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHAL
 - Developers are recommended to update their configurations to include the new `StartupApplication` and `ShowTrxResultScreens` parameters and migrate away from deprecated settings.
 
 ---
-
-
 
 

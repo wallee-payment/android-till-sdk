@@ -45,10 +45,12 @@ public final class Transaction {
 
     private final Boolean showTrxResultScreens;
 
+    private final Boolean displayMessageSuppressionFlag;
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens, Boolean displayMessageSuppressionFlag) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
@@ -72,6 +74,7 @@ public final class Transaction {
         this.language = language;
         this.transactionSyncNumber = transactionSyncNumber;
         this.showTrxResultScreens = showTrxResultScreens;
+        this.displayMessageSuppressionFlag = displayMessageSuppressionFlag;
     }
 
     public Currency getCurrency() {
@@ -130,6 +133,14 @@ public final class Transaction {
 
     public Boolean getShowTrxResultScreens() { return showTrxResultScreens; }
 
+    /**
+     * Returns the display-message preference supplied for this transaction.
+     *
+     * @return {@code true} when cardholder display messages should be suppressed,
+     *         {@code false} when they should be shown, or {@code null} when no preference was supplied.
+     */
+    public Boolean getDisplayMessageSuppressionFlag() { return displayMessageSuppressionFlag; }
+
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
@@ -175,6 +186,8 @@ public final class Transaction {
 
         private Boolean showTrxResultScreens;
 
+        private Boolean displayMessageSuppressionFlag;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -200,6 +213,7 @@ public final class Transaction {
             this.transactionSyncNumber = transaction.transactionSyncNumber;
             this.transactionRefNumber = transaction.transactionRefNumber;
             this.showTrxResultScreens = transaction.showTrxResultScreens;
+            this.displayMessageSuppressionFlag = transaction.displayMessageSuppressionFlag;
 
         }
 
@@ -230,6 +244,14 @@ public final class Transaction {
         }
 
         public Boolean getShowTrxResultScreens() { return showTrxResultScreens; }
+
+        /**
+         * Returns the display-message preference configured on this builder.
+         *
+         * @return {@code true} when cardholder display messages should be suppressed,
+         *         {@code false} when they should be shown, or {@code null} when no preference was supplied.
+         */
+        public Boolean getDisplayMessageSuppressionFlag() { return displayMessageSuppressionFlag; }
 
         public Builder setLineItems(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -309,8 +331,21 @@ public final class Transaction {
             return this;
         }
 
+        /**
+         * Controls whether cardholder display messages are suppressed for this transaction.
+         * Leaving the value {@code null} keeps the terminal's default behaviour.
+         *
+         * @param displayMessageSuppressionFlag {@code true} to suppress cardholder display messages,
+         *                                      {@code false} to show them, or {@code null} to use the default.
+         * @return this builder.
+         */
+        public Builder setDisplayMessageSuppressionFlag(Boolean displayMessageSuppressionFlag) {
+            this.displayMessageSuppressionFlag = displayMessageSuppressionFlag;
+            return this;
+        }
+
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens);
+            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens, this.displayMessageSuppressionFlag);
         }
     }
 }
