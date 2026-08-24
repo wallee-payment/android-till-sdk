@@ -119,6 +119,20 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
+### Suppressing cardholder display messages
+
+Unattended integrations that already present payment status on their own display can suppress
+cardholder display messages for an individual transaction:
+
+```java
+Transaction transaction = new Transaction.Builder(lineItems)
+        .setCurrency(currency)
+        .setDisplayMessageSuppressionFlag(true)
+        .build();
+```
+
+The property is optional. Omitting it, or setting it to `false`, keeps cardholder display messages enabled.
+
 ## Handling Responses
 
 To handle responses, extend the `ResponseHandler` class from the Till SDK to receive requests' responses
@@ -390,4 +404,3 @@ At the current state, the Android Till Interface SDK supports only a subset of a
 
 
 ### Please find the error codes in  [ERROR-CODES](ERRORCODES.md)
-
