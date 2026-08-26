@@ -20,6 +20,7 @@ public final class Transaction {
     private final List<LineItem> lineItems;
 
     private final String merchantReference;
+    private final MerchantServiceLocation merchantServiceLocation;
     private final String invoiceReference;
 
     private final String customerId;
@@ -50,9 +51,10 @@ public final class Transaction {
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens, Boolean displayMessageSuppressionFlag) {
+    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, MerchantServiceLocation merchantServiceLocation, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens, Boolean displayMessageSuppressionFlag) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
+        this.merchantServiceLocation = merchantServiceLocation;
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
         this.customerId = customerId;
         this.currency = currency;
@@ -83,6 +85,16 @@ public final class Transaction {
 
     public String getMerchantReference() {
         return merchantReference;
+    }
+
+    /**
+     * Returns the physical service location supplied for this transaction.
+     *
+     * @return the merchant service location, or {@code null} when the configured merchant address
+     *         applies to the transaction.
+     */
+    public MerchantServiceLocation getMerchantServiceLocation() {
+        return merchantServiceLocation;
     }
 
     public String getInvoiceReference() {
@@ -161,6 +173,7 @@ public final class Transaction {
         private List<LineItem> lineItems;
 
         private String merchantReference = "";
+        private MerchantServiceLocation merchantServiceLocation;
         private String invoiceReference;
 
         private String customerId;
@@ -199,6 +212,7 @@ public final class Transaction {
         public Builder(Transaction transaction) {
             this.lineItems = new ArrayList<>(transaction.lineItems);
             this.merchantReference = transaction.merchantReference;
+            this.merchantServiceLocation = transaction.merchantServiceLocation;
             this.invoiceReference = transaction.invoiceReference;
             this.customerId = transaction.customerId;
             this.currency = transaction.currency;
@@ -260,6 +274,18 @@ public final class Transaction {
 
         public Builder setMerchantReference(String merchantReference) {
             this.merchantReference = merchantReference;
+            return this;
+        }
+
+        /**
+         * Sets the physical service location for this transaction.
+         *
+         * @param merchantServiceLocation the location of the cardholder interaction when it differs
+         *                                from the configured merchant address, or {@code null} to omit it.
+         * @return this builder.
+         */
+        public Builder setMerchantServiceLocation(MerchantServiceLocation merchantServiceLocation) {
+            this.merchantServiceLocation = merchantServiceLocation;
             return this;
         }
 
@@ -345,7 +371,7 @@ public final class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens, this.displayMessageSuppressionFlag);
+            return new Transaction(this.lineItems, this.merchantReference, this.merchantServiceLocation, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens, this.displayMessageSuppressionFlag);
         }
     }
 }

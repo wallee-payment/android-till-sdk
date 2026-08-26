@@ -133,6 +133,31 @@ Transaction transaction = new Transaction.Builder(lineItems)
 
 The property is optional. Omitting it, or setting it to `false`, keeps cardholder display messages enabled.
 
+### Providing the Merchant Service Location
+
+When the physical cardholder interaction takes place somewhere other than the merchant address
+configured for the terminal, provide the actual service location with the transaction:
+
+```java
+MerchantServiceLocation merchantServiceLocation = new MerchantServiceLocation.Builder()
+        .setCity("Zurich")
+        .setCountryCode("756")
+        .setCountrySubdivisionCode("ZH")
+        .setPostalCode("8001")
+        .build();
+
+Transaction transaction = new Transaction.Builder(lineItems)
+        .setCurrency(currency)
+        .setMerchantServiceLocation(merchantServiceLocation)
+        .build();
+```
+
+City, country code, country subdivision code, and postal code are required whenever the Merchant
+Service Location is provided. The country code uses the ISO 3166 numeric representation and has a
+maximum length of 3 digits.
+Merchant Service Location is supported for EP2 8.2 and forwarding requires the corresponding
+terminal option to be enabled.
+
 ## Handling Responses
 
 To handle responses, extend the `ResponseHandler` class from the Till SDK to receive requests' responses
