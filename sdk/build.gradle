@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.dokka'
 
-def sdkVersion = "2.1.0"
+def sdkVersion = "2.2.0"
 
 def currentGitBranch = getCurrentGitBranch()
 def projectName = "Wallee Android Till SDK"

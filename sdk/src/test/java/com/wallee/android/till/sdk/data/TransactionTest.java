@@ -10,6 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -53,6 +54,64 @@ public class TransactionTest {
 
         assertNull(transaction.getDisplayMessageSuppressionFlag());
         assertFalse(new Gson().toJson(transaction).contains("displayMessageSuppressionFlag"));
+    }
+
+    /**
+     * Verifies that an explicit merchant service location is retained and serialized for the API service.
+     */
+    @Test
+    public void ifMerchantServiceLocationIsConfiguredThenTransactionSerializesIt() {
+        MerchantServiceLocation location = new MerchantServiceLocation.Builder()
+                .setCity("Zurich")
+                .setCountryCode("756")
+                .setCountrySubdivisionCode("ZH")
+                .setPostalCode("8001")
+                .build();
+        Transaction transaction = createTransactionBuilder()
+                .setMerchantServiceLocation(location)
+                .build();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(transaction);
+        Transaction deserialized = gson.fromJson(json, Transaction.class);
+
+        assertSame(location, transaction.getMerchantServiceLocation());
+        assertTrue(json.contains("\"merchantServiceLocation\""));
+        assertTrue(json.contains("\"city\":\"Zurich\""));
+        assertTrue(json.contains("\"countryCode\":\"756\""));
+        assertEquals("Zurich", deserialized.getMerchantServiceLocation().getCity());
+        assertEquals("756", deserialized.getMerchantServiceLocation().getCountryCode());
+    }
+
+    /**
+     * Verifies that copying a transaction preserves its merchant service location.
+     */
+    @Test
+    public void ifTransactionIsCopiedThenMerchantServiceLocationIsPreserved() {
+        MerchantServiceLocation location = new MerchantServiceLocation.Builder()
+                .setCity("Zurich")
+                .setCountryCode("756")
+                .setCountrySubdivisionCode("ZH")
+                .setPostalCode("8001")
+                .build();
+        Transaction original = createTransactionBuilder()
+                .setMerchantServiceLocation(location)
+                .build();
+
+        Transaction copy = new Transaction.Builder(original).build();
+
+        assertSame(location, copy.getMerchantServiceLocation());
+    }
+
+    /**
+     * Verifies that existing callers retain the previous transaction JSON shape.
+     */
+    @Test
+    public void ifMerchantServiceLocationIsNotConfiguredThenItRemainsAbsent() {
+        Transaction transaction = createTransactionBuilder().build();
+
+        assertNull(transaction.getMerchantServiceLocation());
+        assertFalse(new Gson().toJson(transaction).contains("merchantServiceLocation"));
     }
 
     private static List<LineItem> createLineItems() {
