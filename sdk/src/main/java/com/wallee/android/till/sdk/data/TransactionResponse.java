@@ -41,6 +41,7 @@ public final class TransactionResponse {
     private final String cardAppId;
     private final String amountTip;
     private final String panToken;
+    private final String orderId;
     private final String merchantReference;
     private final PaymentEntryMethod paymentEntryMethod;
     private final Integer transactionSyncNumber;
@@ -56,7 +57,7 @@ public final class TransactionResponse {
                                @NonNull List<Receipt> receipts, @Nullable String cardNumber,
                                @Nullable String cardIssuingCountry, @Nullable String cardAppLabel,
                                @Nullable String  cardAppId, @Nullable String amountTip,
-                               @Nullable String panToken, @Nullable String merchantReference,
+                               @Nullable String panToken, @Nullable String orderId, @Nullable String merchantReference,
                                @Nullable PaymentEntryMethod paymentEntryMethod, @Nullable Integer transactionSyncNumber) {
         this.transaction = transaction;
         this.state = requireNonNull(state, "state");
@@ -85,6 +86,7 @@ public final class TransactionResponse {
         this.cardAppId = cardAppId;
         this.amountTip = amountTip;
         this.panToken = panToken;
+        this.orderId = orderId;
         this.merchantReference = merchantReference;
         this.paymentEntryMethod = paymentEntryMethod;
         this.transactionSyncNumber = transactionSyncNumber;
@@ -217,6 +219,8 @@ public final class TransactionResponse {
 
     public String getPanToken() { return panToken; }
 
+    public String getOrderId() { return  orderId; }
+
     public String getMerchantReference() { return merchantReference; }
 
     @Nullable
@@ -256,6 +260,7 @@ public final class TransactionResponse {
         private String cardAppId;
         private String amountTip;
         private String panToken;
+        private String orderId;
         private String merchantReference;
         private PaymentEntryMethod paymentEntryMethod;
         private Integer transactionSyncNumber;
@@ -288,6 +293,7 @@ public final class TransactionResponse {
             this.cardAppId = transactionResponse.cardAppId;
             this.amountTip = transactionResponse.amountTip;
             this.panToken = transactionResponse.panToken;
+            this.orderId = transactionResponse.orderId;
             this.merchantReference = transactionResponse.merchantReference;
             this.paymentEntryMethod = transactionResponse.paymentEntryMethod;
             this.transactionSyncNumber = transactionResponse.transactionSyncNumber;
@@ -443,6 +449,11 @@ public final class TransactionResponse {
             return this;
         }
 
+        public Builder setOrderId(String orderId) {
+            this.orderId = orderId;
+            return this;
+        }
+
         public Builder setMerchantReference(String merchantReference) {
             this.merchantReference = merchantReference;
             return this;
@@ -520,6 +531,8 @@ public final class TransactionResponse {
 
         public String getPanToken() { return panToken; }
 
+        public String getOrderId() { return orderId; }
+
         public String getMerchantReference() { return merchantReference; }
 
         public PaymentEntryMethod getPaymentEntryMethod() {
@@ -537,7 +550,7 @@ public final class TransactionResponse {
                     this.terminalId, this.sequenceCount, this.transactionTime, this.reserveReference,
                     this.acquirerId, this.receipts, this.cardNumber, this.cardIssuingCountry,
                     this.cardAppLabel, this.cardAppId, this.amountTip, this.panToken,
-                    this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber
+                    this.orderId, this.merchantReference, this.paymentEntryMethod, this.transactionSyncNumber
             );
         }
     }
