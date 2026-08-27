@@ -9,6 +9,12 @@ The SDK is following semantic versioning [Semantic Versioning 2.0.0](https://sem
 
 The key words **“MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”** in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
+## [2.3.0]
+
+### Added
+- **OrderId transaction parameter**:
+  - Added the optional orderId for transactions. OrderId is of type `ans` and max-length `48`
+
 ## [2.2.0]
 
 ### Added

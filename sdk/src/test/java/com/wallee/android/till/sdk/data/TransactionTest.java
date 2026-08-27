@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -122,5 +123,55 @@ public class TransactionTest {
         return new Transaction.Builder(createLineItems())
                 .setMerchantReference("merchant-reference")
                 .setInvoiceReference("invoice-reference");
+    }
+
+    @Test
+    public void ifOrderIdIsOmittedThenOrderIdRemainsNull() {
+        Transaction transaction = createTransactionBuilder().build();
+        assertNull(transaction.getOrderId());
+    }
+
+    @Test
+    public void ifOrderIdIsNullThenOrderIdRemainsNull() {
+        Transaction transaction = createTransactionBuilder()
+                .setOrderId(null)
+                .build();
+        assertNull(transaction.getOrderId());
+    }
+
+    @Test
+    public void ifOrderIdHas48CharactersThenTransactionIsCreated() {
+        String orderId = "123456789012345678901234567890123456789012345678";
+        Transaction transaction = createTransactionBuilder()
+                .setOrderId(orderId)
+                .build();
+        assertEquals(orderId, transaction.getOrderId());
+    }
+
+    @Test
+    public void ifOrderIdHas49CharactersThenTransactionCreationFails() {
+        String orderId = "1234567890123456789012345678901234567890123456789";
+        assertThrows(IllegalArgumentException.class, () ->
+                createTransactionBuilder().setOrderId(orderId).build()
+        );
+    }
+
+    @Test
+    public void ifOrderIdContainsUnsupportedCharactersThenTransactionCreationFails() {
+        String orderId = "orderId-€";
+        assertThrows(IllegalArgumentException.class, () ->
+                createTransactionBuilder().setOrderId(orderId).build()
+        );
+    }
+
+    @Test
+    public void ifOrderIdContainsLatin1CharactersThenTransactionIsCreated() {
+        String orderId = "Zürich-123";
+
+        Transaction transaction = createTransactionBuilder()
+                .setOrderId(orderId)
+                .build();
+
+        assertEquals(orderId, transaction.getOrderId());
     }
 }

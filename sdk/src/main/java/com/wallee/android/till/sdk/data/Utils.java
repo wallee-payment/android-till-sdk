@@ -37,6 +37,16 @@ class Utils {
         return s;
     }
 
+    @NonNull
+    static String checkAns(@NonNull String value, @NonNull String name) {
+        if (!value.matches(ANS)) {
+            throw new IllegalArgumentException(
+                    name + " can contain only alphanumeric and special characters:\n " + value
+            );
+        }
+        return value;
+    }
+
     @Nullable
     static String checkPrintableNoLineBreaks(@Nullable String s, @NonNull String name) {
         if (s != null) {
@@ -112,6 +122,11 @@ class Utils {
      * Matches all ASCII chars which are printable including spaces, but without line breaks.
      */
     public static final String ASCII = "[\t\\x20-\\x7e]*";
+
+    /**
+     * Matches alphanumeric and special characters as defined by the EP2 v8.2 {@code ans} data type.
+     */
+    public static final String ANS = "[\\x{0020}-\\x{007E}\\x{00A0}-\\x{00FF}]+";
 
     /**
      * Matches all printable UTF-8 chars including spaces and line breaks.

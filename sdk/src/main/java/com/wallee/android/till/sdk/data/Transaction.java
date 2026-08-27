@@ -1,6 +1,7 @@
 package com.wallee.android.till.sdk.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.wallee.android.till.sdk.data.Utils.checkAns;
 import static com.wallee.android.till.sdk.data.Utils.checkAscii;
+import static com.wallee.android.till.sdk.data.Utils.checkLength;
 import static com.wallee.android.till.sdk.data.Utils.requireNonNull;
 
 /**
@@ -23,6 +26,7 @@ public final class Transaction {
     private final MerchantServiceLocation merchantServiceLocation;
     private final String invoiceReference;
 
+    private final String orderId;
     private final String customerId;
     private final Currency currency;
 
@@ -48,14 +52,45 @@ public final class Transaction {
 
     private final Boolean displayMessageSuppressionFlag;
 
+    private String validateOrderId(@Nullable String orderId) {
+        if (orderId == null || orderId.isEmpty()) {
+            return orderId;
+        }
+        final String name = "orderId";
+        final int max_length = 48; // Defined by EP2 v8.1
+        checkLength(orderId, name, max_length);
+        return checkAns(orderId, name);
+    }
+
     /**
      * Ctor for Builder
      */
-    private Transaction(@NonNull List<LineItem> lineItems, String merchantReference, MerchantServiceLocation merchantServiceLocation, String invoiceReference, String customerId, Currency currency, String customerEmailAddress, Address billingAddress, Address shippingAddress, TransactionProcessingBehavior transactionProcessingBehavior, Map<String, String> metaData, String customText, String language, Boolean generatePanToken, Integer transactionSyncNumber, String transactionRefNumber, Boolean showTrxResultScreens, Boolean displayMessageSuppressionFlag) {
+    private Transaction(
+            @NonNull List<LineItem> lineItems,
+            String merchantReference,
+            MerchantServiceLocation merchantServiceLocation,
+            String invoiceReference,
+            String orderId,
+            String customerId,
+            Currency currency,
+            String customerEmailAddress,
+            Address billingAddress,
+            Address shippingAddress,
+            TransactionProcessingBehavior transactionProcessingBehavior,
+            Map<String, String> metaData,
+            String customText,
+            String language,
+            Boolean generatePanToken,
+            Integer transactionSyncNumber,
+            String transactionRefNumber,
+            Boolean showTrxResultScreens,
+            Boolean displayMessageSuppressionFlag
+    ) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
         this.merchantServiceLocation = merchantServiceLocation;
         this.invoiceReference = checkAscii(invoiceReference, "invoiceReference", 100);
+        this.orderId = this.validateOrderId(orderId);
         this.customerId = customerId;
         this.currency = currency;
         this.customerEmailAddress = customerEmailAddress;
@@ -99,6 +134,10 @@ public final class Transaction {
 
     public String getInvoiceReference() {
         return invoiceReference;
+    }
+
+    public String getOrderId() {
+        return orderId;
     }
 
     public String getCustomerId() {
@@ -176,6 +215,7 @@ public final class Transaction {
         private MerchantServiceLocation merchantServiceLocation;
         private String invoiceReference;
 
+        private String orderId;
         private String customerId;
         private Currency currency = Currency.getInstance("CHF");
 
@@ -214,6 +254,7 @@ public final class Transaction {
             this.merchantReference = transaction.merchantReference;
             this.merchantServiceLocation = transaction.merchantServiceLocation;
             this.invoiceReference = transaction.invoiceReference;
+            this.orderId = transaction.orderId;
             this.customerId = transaction.customerId;
             this.currency = transaction.currency;
             this.customerEmailAddress = transaction.customerEmailAddress;
@@ -294,6 +335,10 @@ public final class Transaction {
             return this;
         }
 
+        public Builder setOrderId(String orderId) {
+            this.orderId = orderId;
+            return this;
+        }
         public Builder setCustomerId(String customerId) {
             this.customerId = customerId;
             return this;
@@ -371,7 +416,27 @@ public final class Transaction {
         }
 
         public Transaction build() {
-            return new Transaction(this.lineItems, this.merchantReference, this.merchantServiceLocation, this.invoiceReference, this.customerId, this.currency, this.customerEmailAddress, this.billingAddress, this.shippingAddress, this.transactionProcessingBehavior, this.metaData, this.customText, this.language, this.generatePanToken, this.transactionSyncNumber, this.transactionRefNumber, this.showTrxResultScreens, this.displayMessageSuppressionFlag);
+            return new Transaction(
+                    this.lineItems,
+                    this.merchantReference,
+                    this.merchantServiceLocation,
+                    this.invoiceReference,
+                    this.orderId,
+                    this.customerId,
+                    this.currency,
+                    this.customerEmailAddress,
+                    this.billingAddress,
+                    this.shippingAddress,
+                    this.transactionProcessingBehavior,
+                    this.metaData,
+                    this.customText,
+                    this.language,
+                    this.generatePanToken,
+                    this.transactionSyncNumber,
+                    this.transactionRefNumber,
+                    this.showTrxResultScreens,
+                    this.displayMessageSuppressionFlag
+            );
         }
     }
 }
