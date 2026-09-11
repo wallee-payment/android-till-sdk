@@ -158,6 +158,28 @@ maximum length of 3 digits.
 Merchant Service Location is supported for EP2 8.2 and forwarding requires the corresponding
 terminal option to be enabled.
 
+### Requesting an accessibility mode
+
+Set the accessibility mode on the transaction before calling `authorizeTransaction`:
+
+```java
+Transaction transaction = new Transaction.Builder(lineItems)
+        .setMerchantReference("checkout-123")
+        .setInvoiceReference("invoice-123")
+        .setAccessMode(AccessibilityMode.BLIND_MODE)
+        .build();
+client.authorizeTransaction(transaction);
+```
+
+| Mode | Description |
+| --- | --- |
+| `DISABLED` | Standard interface (default) |
+| `BLIND_MODE` | Blind mode with spoken instructions |
+| `COLOUR_BLIND_MODE` | Colour-blind mode (currently unsupported) |
+
+The same setting is available on `TransactionCompletion.Builder`. It applies only to the requested
+transaction and requires terminal support. Omitting it or passing `null` selects `DISABLED`.
+
 ## Handling Responses
 
 To handle responses, extend the `ResponseHandler` class from the Till SDK to receive requests' responses

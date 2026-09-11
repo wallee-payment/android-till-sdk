@@ -52,6 +52,8 @@ public final class Transaction {
 
     private final Boolean displayMessageSuppressionFlag;
 
+    private final AccessibilityMode accessMode;
+
     private String validateOrderId(@Nullable String orderId) {
         if (orderId == null || orderId.isEmpty()) {
             return orderId;
@@ -84,7 +86,8 @@ public final class Transaction {
             Integer transactionSyncNumber,
             String transactionRefNumber,
             Boolean showTrxResultScreens,
-            Boolean displayMessageSuppressionFlag
+            Boolean displayMessageSuppressionFlag,
+            AccessibilityMode accessMode
     ) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.merchantReference = checkAscii(merchantReference, "merchantReference", 100);
@@ -112,6 +115,7 @@ public final class Transaction {
         this.transactionSyncNumber = transactionSyncNumber;
         this.showTrxResultScreens = showTrxResultScreens;
         this.displayMessageSuppressionFlag = displayMessageSuppressionFlag;
+        this.accessMode = accessMode == null ? AccessibilityMode.DISABLED : accessMode;
     }
 
     public Currency getCurrency() {
@@ -192,6 +196,16 @@ public final class Transaction {
      */
     public Boolean getDisplayMessageSuppressionFlag() { return displayMessageSuppressionFlag; }
 
+    /**
+     * Returns the accessibility interface requested for this transaction.
+     *
+     * @return the requested mode, or {@link AccessibilityMode#DISABLED} when absent or invalid.
+     */
+    @NonNull
+    public AccessibilityMode getAccessMode() {
+        return accessMode == null ? AccessibilityMode.DISABLED : accessMode;
+    }
+
     public BigDecimal getTotalAmountIncludingTax() {
         BigDecimal result = BigDecimal.ZERO;
         for (LineItem item : this.lineItems) {
@@ -241,6 +255,8 @@ public final class Transaction {
 
         private Boolean displayMessageSuppressionFlag;
 
+        private AccessibilityMode accessMode = AccessibilityMode.DISABLED;
+
         public Builder(List<LineItem> lineItems) {
             this.lineItems = lineItems;
         }
@@ -269,6 +285,7 @@ public final class Transaction {
             this.transactionRefNumber = transaction.transactionRefNumber;
             this.showTrxResultScreens = transaction.showTrxResultScreens;
             this.displayMessageSuppressionFlag = transaction.displayMessageSuppressionFlag;
+            this.accessMode = transaction.getAccessMode();
 
         }
 
@@ -307,6 +324,16 @@ public final class Transaction {
          *         {@code false} when they should be shown, or {@code null} when no preference was supplied.
          */
         public Boolean getDisplayMessageSuppressionFlag() { return displayMessageSuppressionFlag; }
+
+        /**
+         * Returns the accessibility interface configured on this builder.
+         *
+         * @return the configured mode, defaulting to {@link AccessibilityMode#DISABLED}.
+         */
+        @NonNull
+        public AccessibilityMode getAccessMode() {
+            return accessMode;
+        }
 
         public Builder setLineItems(List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -415,6 +442,18 @@ public final class Transaction {
             return this;
         }
 
+        /**
+         * Requests an accessibility interface for this transaction. Terminal support is required;
+         * the request does not change the default for subsequent transactions.
+         *
+         * @param accessMode the requested mode, or {@code null} for the standard interface.
+         * @return this builder.
+         */
+        public Builder setAccessMode(@Nullable AccessibilityMode accessMode) {
+            this.accessMode = accessMode == null ? AccessibilityMode.DISABLED : accessMode;
+            return this;
+        }
+
         public Transaction build() {
             return new Transaction(
                     this.lineItems,
@@ -435,7 +474,8 @@ public final class Transaction {
                     this.transactionSyncNumber,
                     this.transactionRefNumber,
                     this.showTrxResultScreens,
-                    this.displayMessageSuppressionFlag
+                    this.displayMessageSuppressionFlag,
+                    this.accessMode
             );
         }
     }
