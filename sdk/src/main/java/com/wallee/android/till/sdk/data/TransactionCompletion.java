@@ -18,15 +18,17 @@ public final class TransactionCompletion {
     private final String reserveReference;
     private final Currency currency;
     private final Integer transactionSyncNumber;
+    private final AccessibilityMode accessMode;
 
     /**
      * Ctor for Builder
      */
-    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull String reserveReference, @NonNull Currency currency, @Nullable Integer transactionSyncNumber) {
+    private TransactionCompletion(@NonNull List<LineItem> lineItems, @NonNull String reserveReference, @NonNull Currency currency, @Nullable Integer transactionSyncNumber, AccessibilityMode accessMode) {
         this.lineItems = Collections.unmodifiableList(new ArrayList<>(requireNonNull(lineItems, "lineItems")));
         this.reserveReference = requireNonNull(reserveReference, "reserveReference");
         this.currency = requireNonNull(currency, "currency");
         this.transactionSyncNumber = transactionSyncNumber;
+        this.accessMode = accessMode == null ? AccessibilityMode.DISABLED : accessMode;
         if (lineItems.isEmpty()) throw new IllegalArgumentException("At least one lineItem is required!");
         // When we have the currency object we can validate here if the line item amounts are fitting the currency's number of decimal places.
         for (LineItem lineItem : lineItems) {
@@ -55,6 +57,16 @@ public final class TransactionCompletion {
         return transactionSyncNumber;
     }
 
+    /**
+     * Returns the accessibility interface requested for this completion transaction.
+     *
+     * @return the requested mode, or {@link AccessibilityMode#DISABLED} when absent or invalid.
+     */
+    @NonNull
+    public AccessibilityMode getAccessMode() {
+        return accessMode == null ? AccessibilityMode.DISABLED : accessMode;
+    }
+
 
     @NonNull
     public BigDecimal getTotalAmountIncludingTax() {
@@ -78,6 +90,7 @@ public final class TransactionCompletion {
         private String reserveReference;
         private Currency currency = Currency.getInstance("CHF");
         private Integer transactionSyncNumber;
+        private AccessibilityMode accessMode = AccessibilityMode.DISABLED;
 
         public Builder(@NonNull List<LineItem> lineItems) {
             this.lineItems = lineItems;
@@ -91,6 +104,7 @@ public final class TransactionCompletion {
             this.reserveReference = transaction.reserveReference;
             this.currency = transaction.currency;
             this.transactionSyncNumber = transaction.transactionSyncNumber;
+            this.accessMode = transaction.getAccessMode();
         }
 
         @NonNull
@@ -117,9 +131,22 @@ public final class TransactionCompletion {
             return this;
         }
 
+        /**
+         * Requests an accessibility interface for this completion transaction. The mode is not
+         * inherited from the original reservation and requires terminal support.
+         *
+         * @param accessMode the requested mode, or {@code null} for the standard interface.
+         * @return this builder.
+         */
+        @NonNull
+        public Builder setAccessMode(@Nullable AccessibilityMode accessMode) {
+            this.accessMode = accessMode == null ? AccessibilityMode.DISABLED : accessMode;
+            return this;
+        }
+
         @NonNull
         public TransactionCompletion build() {
-            return new TransactionCompletion(this.lineItems, this.reserveReference, this.currency, this.transactionSyncNumber);
+            return new TransactionCompletion(this.lineItems, this.reserveReference, this.currency, this.transactionSyncNumber, this.accessMode);
         }
     }
 }
